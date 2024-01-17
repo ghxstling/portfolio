@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import avatar from "./avatar.jpg";
+import "./App.css";
+import { Avatar, Container, Stack } from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
+import Item from "@mui/material/ListItem";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Grid container spacing={1}>
+        <Grid>
+          <Avatar
+            alt="Dylan Choy"
+            src={avatar}
+            sx={{
+              width: 200,
+              height: 200,
+              alignContent: "center",
+            }}
+          />
+          <code>Hey. I'm Dylan.</code>
+          <Grid container>
+            <Item>test</Item>
+            <Item>dsa</Item>
+          </Grid>
+          <Grid></Grid>
+        </Grid>
+      </Grid>
+    </>
   );
 }
 
