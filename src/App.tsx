@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
-// import './App.css'
+import React, { useState } from 'react'
 
 import avatar from './assets/avatar.jpg'
-import cv from './assets/cv.jpg'
 import cs101 from './assets/cs101.jpg'
 import cs399 from './assets/cs399.jpg'
 import cs335 from './assets/cs335.jpg'
+import transcript_p1 from './assets/transcript_p1.jpg'
+import transcript_p2 from './assets/transcript_p2.jpg'
+import transcript_p3 from './assets/transcript_p3.jpg'
 
 import {
   Avatar,
@@ -33,24 +34,6 @@ import Grid from '@mui/material/Unstable_Grid2'
 import Item from '@mui/material/ListItem'
 
 import { Instagram, GitHub, LinkedIn, Description } from '@mui/icons-material/'
-
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-
-declare module '@mui/material/styles' {
-  interface TypographyVariants {
-    cvName: React.CSSProperties
-  }
-
-  interface TypographyVariantsOptions {
-    cvName?: React.CSSProperties
-  }
-}
-
-declare module '@mui/material/Typography' {
-  interface TypographyPropsVariantOverrides {
-    cvName: true
-  }
-}
 
 function Header() {
   const fontSize = {
@@ -104,13 +87,10 @@ function MyDocuments() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    // width: '30vw',
     bgcolor: '#373a42',
     boxShadow: 24,
     p: 4,
   }
-
-  const imgData = [{}, {}]
 
   return (
     <>
@@ -138,6 +118,14 @@ function MyDocuments() {
       <Menu
         id="menu"
         anchorEl={menuAnchor}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
         open={Boolean(menuAnchor)}
         onClose={handleMenuClose}
         MenuListProps={{
@@ -189,31 +177,24 @@ function MyDocuments() {
           }}
         >
           <Fade in={open}>
-            <Box sx={modalStyle}>
-              {modal === 'cv' ? (
-                <>
-                  <CV />
-                </>
-              ) : modal === 'transcript' ? (
-                <>
-                  <ImageList>
-                    <ImageListItem key={cv}>
-                      <img src={cv} width="50vw" alt={"Dylan Choy's CV"} loading="lazy" />
-                    </ImageListItem>
-                  </ImageList>
-                </>
-              ) : modal === 'awards' ? (
-                <>
-                  <ImageList>
-                    <ImageListItem key={cv} sx={{}}>
-                      <img src={cv} width="50vw" alt={"Dylan Choy's CV"} loading="lazy" />
-                    </ImageListItem>
-                  </ImageList>
-                </>
-              ) : (
-                <></>
-              )}
-            </Box>
+            {modal === 'cv' ? (
+              <Box sx={{ ...modalStyle, width: '40rem' }}>
+                <CV />
+              </Box>
+            ) : modal === 'transcript' ? (
+              <Box sx={{ ...modalStyle }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                  My Academic Transcript
+                </Typography>
+                <Transcript />
+              </Box>
+            ) : modal === 'awards' ? (
+              <Box sx={{ ...modalStyle }}>
+                <Awards />
+              </Box>
+            ) : (
+              <></>
+            )}
           </Fade>
         </Modal>
       </div>
@@ -266,673 +247,269 @@ function Footer() {
 }
 
 function CV() {
-  const font = createTheme({
-    typography: {
-      cvName: {
-        fontFamily: 'sans-serif',
-        font: 'Merriweather',
-        fontSize: '1vw',
-        fontWeight: 'bold',
-      },
-    },
-  })
+  const alignLeft = {
+    ml: 2,
+    textAlign: 'left',
+  }
+  const divider = {
+    mt: 1,
+    mb: 1,
+  }
 
   return (
-    <ThemeProvider theme={font}>
-      <Container>
-        <Paper sx={{ p: 2 }}>
-          {/* Name */}
-          <Grid>
-            <Typography
-              className="cvName"
-              sx={{
-                ml: 2,
-                textAlign: 'left',
-              }}
-            >
-              Dylan Choy
-            </Typography>
+    <Container>
+      <Paper sx={{ p: 2 }}>
+        {/* Name */}
+        <Grid>
+          <Typography id="cvName" sx={alignLeft}>
+            Dylan Choy
+          </Typography>
+          <Box sx={divider}>
             <Divider variant="middle" />
+          </Box>
+        </Grid>
+        {/* Summary and Contact */}
+        <Grid container direction={'row'} spacing={1} sx={alignLeft}>
+          <Grid xs={7}>
+            <Typography id="cvHeading1">Summary</Typography>
+            <Typography id="cvText">
+              Highly motivated and dynamic person with a diligent attitude in a workspace environment and strive to
+              learn new experiences and improve my excellent skills. I aspire to pursue a career in Software Development
+              as a Software Engineer.
+            </Typography>
           </Grid>
-          {/* Summary and Contact */}
-          <Grid
-            container
-            direction={'row'}
-            spacing={1}
-            sx={{
-              mt: 1,
-              mb: 1,
-            }}
-          >
-            <Grid xs={7}>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '24px',
-                  fontWeight: 'bold',
-                }}
-              >
-                Summary
-              </Typography>
-
-              <Typography
-                sx={{
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '1rem',
-                }}
-              >
-                Highly motivated and dynamic person with a diligent attitude in a workspace environment and strive to
-                learn new experiences and improve my excellent skills. I aspire to pursue a career in Software
-                Development as a Software Engineer.
-              </Typography>
-            </Grid>
-            <Grid xs={5}>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '1vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Contact
-              </Typography>
-              <List disablePadding>
-                <ListItem disablePadding>
-                  <Typography
-                    sx={{
-                      ml: 2,
-                      textAlign: 'left',
-                      fontFamily: ['Montserrat', 'sans-serif'],
-                      fontSize: '0.8vw',
-                    }}
-                  >
-                    dylan.choy21@gmail.com
+          <Grid xs={5}>
+            <Typography id="cvHeading1">Contact</Typography>
+            <Typography id="cvText">
+              dylan.choy21@gmail.com
+              <br />
+              https://www.linkedin.com/in/dylan-choy/
+              <br />
+              022 439 2298
+              <br />
+              Mount Eden, Auckland
+            </Typography>
+          </Grid>
+        </Grid>
+        <Box sx={divider}>
+          <Divider variant="middle" />
+        </Box>
+        {/* Body */}
+        <Grid container direction={'row'} spacing={1} sx={alignLeft}>
+          {/* Education */}
+          <Grid xs={4}>
+            <Typography id="cvHeading1">Education</Typography>
+            <Typography id="cvHeading2">AUCKALND GRAMMAR SCHOOL</Typography>
+            <Typography id="cvText">
+              CIE NZ
+              <br />
+              2016 - 2020
+              <br />
+              Average Grade: A
+            </Typography>
+            <Box sx={{ pb: 1 }} />
+            <Typography id="cvHeading2">UNIVERSITY OF AUCKLAND</Typography>
+            <Typography id="cvText">
+              BCom / BSci
+              <br />
+              Computer Science & Information Systems
+              <br />
+              2021 - 2025
+              <br />
+              Cumulative GPA: 6.5
+            </Typography>
+            <Box sx={{ ...divider, ml: -2 }}>
+              <Divider variant="middle" />
+            </Box>
+            {/* Skills */}
+            <Typography id="cvHeading1">Skills</Typography>
+            <Typography id="cvHeading2">Programming Languages</Typography>
+            <Typography id="cvText">Python, Java, C#, Typescript, NodeJS</Typography>
+            <Box sx={{ pb: 1 }} />
+            <Typography id="cvHeading2">Web Technologies</Typography>
+            <Typography id="cvText">Next.JS, RESTful, HTML5, CSS, git</Typography>
+            <Box sx={{ pb: 1 }} />
+            <Typography id="cvHeading2">Tools & Technologies</Typography>
+            <Typography id="cvText">Word, PowerPoint, Excel, AWS</Typography>
+            <Box sx={{ pb: 1 }} />
+            <Typography id="cvHeading2">Other Skills</Typography>
+            <Typography id="cvText">
+              Communication, Teamwork, Problem-solving, Adaptability, Working under Pressure
+            </Typography>
+            <Box sx={{ ...divider, ml: -2 }}>
+              <Divider variant="middle" />
+            </Box>
+            {/* References */}
+            <Typography id="cvHeading1">References</Typography>
+            <Typography id="cvText">Available upon request.</Typography>
+          </Grid>
+          {/* Work Experience */}
+          <Grid xs={8}>
+            <Typography id="cvHeading1">Experience</Typography>
+            <Typography id="cvHeading2">BACKEND DEVELOPER</Typography>
+            <Typography id="cvText">
+              UNIVERSITY OF AUCKLAND CAPSTONE PROJECT <br />
+              Jul 2023 - Oct 2023
+              <List disablePadding sx={{ ml: 1, listStyleType: 'disc' }}>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Project URL: https://www.markituoa.xyz/
                   </Typography>
                 </ListItem>
-                <ListItem disablePadding>
-                  <Typography
-                    sx={{
-                      ml: 2,
-                      textAlign: 'left',
-                      fontFamily: ['Montserrat', 'sans-serif'],
-                      fontSize: '0.8vw',
-                    }}
-                  >
-                    https://www.linkedin.com/in/dylan-choy/
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Worked with a team of 6 people to develop a Next.js Web Application called Markit-UOA for organising
+                    student markers to various courses
                   </Typography>
                 </ListItem>
-                <ListItem disablePadding>
-                  <Typography
-                    sx={{
-                      ml: 2,
-                      textAlign: 'left',
-                      fontFamily: ['Montserrat', 'sans-serif'],
-                      fontSize: '0.8vw',
-                    }}
-                  >
-                    022 439 2298
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Developed a feature-rich API specifically tailored to the project, with functions like personalised
+                    email sender, CSV writer, and persistent file storing
                   </Typography>
                 </ListItem>
-                <ListItem disablePadding>
-                  <Typography
-                    sx={{
-                      ml: 2,
-                      textAlign: 'left',
-                      fontFamily: ['Montserrat', 'sans-serif'],
-                      fontSize: '0.8vw',
-                    }}
-                  >
-                    Mount Eden, Auckland
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Learned & utilised new technologies quickly, like TypeScript, AWS, and NodeJS, during project
+                    development
+                  </Typography>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Adopted good software development practices like Agile-driven development and Feature Branch
+                    Workflow
                   </Typography>
                 </ListItem>
               </List>
-            </Grid>
+            </Typography>
+            <Box sx={{ pb: 1 }} />
+            <Typography id="cvHeading2">SHOP ASSISTANT</Typography>
+            <Typography id="cvText">
+              PB TECH ST LUKE'S
+              <br />
+              Apr 2022 - Present
+              <List disablePadding sx={{ ml: 1, listStyleType: 'disc' }}>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Delivered excellent customer service with a positive attitude
+                  </Typography>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Provided customers with product recommendations tailored to their requirements
+                  </Typography>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Maintained a high level of attention to detail with every task
+                  </Typography>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    Worked in a fast-paced work environment
+                  </Typography>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    As a Cashier:
+                  </Typography>
+                  <List disablePadding sx={{ ml: 2, listStyleType: 'disc' }}>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Prepared daily cash/bank reconciliation reports
+                      </Typography>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Identified and fixed any accounting errors with credits/invoices
+                      </Typography>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Processed payments/credits at checkout for customers
+                      </Typography>
+                    </ListItem>
+                  </List>
+                </ListItem>
+                <ListItem disablePadding sx={{ display: 'list-item' }}>
+                  <Typography id="cvText" sx={{ ml: 1 }}>
+                    As a Service Technician:
+                  </Typography>
+                  <List disablePadding sx={{ ml: 2, listStyleType: 'disc' }}>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Booked in service/repair jobs with participating service agents on behalf of customers
+                      </Typography>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Handled customer complaints calmly & professionally
+                      </Typography>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Performed diagnostics and on-site repairs for desktop PCs and laptops
+                      </Typography>
+                    </ListItem>
+                    <ListItem disablePadding sx={{ display: 'list-item' }}>
+                      <Typography id="cvText" sx={{ ml: 1 }}>
+                        Assisted customers in resolving issues regarding their purchases
+                      </Typography>
+                    </ListItem>
+                  </List>
+                </ListItem>
+              </List>
+            </Typography>
           </Grid>
-          <Divider variant="middle" />
-          {/* Body */}
-          <Grid
-            container
-            direction={'row'}
-            spacing={1}
-            sx={{
-              mt: 1,
-              mb: 1,
-            }}
-          >
-            {/* Education */}
-            <Grid xs={4}>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '1vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Education
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                AUCKALND GRAMMAR SCHOOL
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  pb: 2,
-                }}
-              >
-                CIE NZ
-                <br />
-                2016 - 2020
-                <br />
-                Average Grade: A
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                UNIVERSITY OF AUCKLAND
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                }}
-              >
-                BCom / BSci
-                <br />
-                Computer Science & Information Systems
-                <br />
-                2021 - 2025
-                <br />
-                Cumulative GPA: 6.5
-              </Typography>
-              <Box
-                sx={{
-                  mt: 1,
-                  mb: 1,
-                }}
-              >
-                <Divider variant="middle" />
-              </Box>
-              {/* Skills */}
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '1vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Skills
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Programming Languages
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  pb: 2,
-                }}
-              >
-                Python, Java, C#, Typescript, NodeJS
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Web Technologies
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  pb: 2,
-                }}
-              >
-                Next.JS, RESTful, HTML5, CSS, git
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Tools & Technologies
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  pb: 2,
-                }}
-              >
-                Word, PowerPoint, Excel, AWS
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Other Skills
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                }}
-              >
-                Communication, Teamwork, Problem-solving, Adaptability, Working under Pressure
-              </Typography>
-            </Grid>
-            {/* Work Experience
-            <Grid xs={8}>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '1vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                Experience
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                BACKEND DEVELOPER
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  pb: 2,
-                }}
-              >
-                UNIVERSITY OF AUCKLAND CAPSTONE PROJECT <br />
-                Jul 2023 - Oct 2023
-                <List disablePadding sx={{ listStyleType: 'disc' }}>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Project URL: https://www.markituoa.xyz/
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Worked with a team of 6 people to develop a Next.js Web Application called Markit-UOA for
-                      organising student markers to various courses
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Developed a feature-rich API specifically tailored to the project, with functions like
-                      personalised email sender, CSV writer, and persistent file storing
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Learned & utilised new technologies quickly, like TypeScript, AWS, and NodeJS, during project
-                      development
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Adopted good software development practices like Agile-driven development and Feature Branch
-                      Workflow
-                    </Typography>
-                  </ListItem>
-                </List>
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  fontWeight: 'bold',
-                }}
-              >
-                SHOP ASSISTANT
-              </Typography>
-              <Typography
-                sx={{
-                  p: 'auto',
-                  ml: 2,
-                  textAlign: 'left',
-                  fontFamily: ['Montserrat', 'sans-serif'],
-                  fontSize: '0.8vw',
-                  pb: 2,
-                }}
-              >
-                PB TECH ST LUKE'S
-                <br />
-                Apr 2022 - Present
-                <List disablePadding sx={{ listStyleType: 'disc' }}>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Delivered excellent customer service with a positive attitude
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Provided customers with product recommendations tailored to their requirements
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Maintained a high level of attention to detail with every task
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      Worked in a fast-paced work environment
-                    </Typography>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      As a Cashier:
-                    </Typography>
-                    <List disablePadding sx={{ listStyleType: 'disc' }}>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.8vw',
-                          }}
-                        >
-                          Prepared daily cash/bank reconciliation reports
-                        </Typography>
-                      </ListItem>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.8vw',
-                          }}
-                        >
-                          Identified and fixed any accounting errors with credits/invoices
-                        </Typography>
-                      </ListItem>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.8vw',
-                          }}
-                        >
-                          Processed payments/credits at checkout for customers
-                        </Typography>
-                      </ListItem>
-                    </List>
-                  </ListItem>
-                  <ListItem disablePadding sx={{ ml: 2, display: 'list-item' }}>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    >
-                      As a Service Technician:
-                    </Typography>
-                    <List disablePadding sx={{ listStyleType: 'disc' }}>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.8vw',
-                          }}
-                        >
-                          Booked in service/repair jobs with participating service agents on behalf of customers
-                        </Typography>
-                      </ListItem>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.8vw',
-                          }}
-                        >
-                          Handled customer complaints calmly & professionally
-                        </Typography>
-                      </ListItem>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.8vw',
-                          }}
-                        >
-                          Performed diagnostics and on-site repairs for desktop PCs and laptops
-                        </Typography>
-                      </ListItem>
-                      <ListItem disablePadding sx={{ ml: 4, display: 'list-item' }}>
-                        <Typography
-                          sx={{
-                            ml: 2,
-                            textAlign: 'left',
-                            fontFamily: ['Montserrat', 'sans-serif'],
-                            fontSize: '0.7vw',
-                          }}
-                        >
-                          Assisted customers in resolving issues regarding their purchases
-                        </Typography>
-                      </ListItem>
-                    </List>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    ></Typography>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    ></Typography>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    ></Typography>
-                  </ListItem>
-                  <ListItem disablePadding>
-                    <Typography
-                      sx={{
-                        ml: 2,
-                        textAlign: 'left',
-                        fontFamily: ['Montserrat', 'sans-serif'],
-                        fontSize: '0.8vw',
-                      }}
-                    ></Typography>
-                  </ListItem>
-                </List>
-              </Typography>
-            </Grid> */}
-          </Grid>
-        </Paper>
-      </Container>
-    </ThemeProvider>
+        </Grid>
+      </Paper>
+    </Container>
+  )
+}
+
+function Awards() {
+  const imgData = [
+    { img: cs101, title: 'COMPSCI 101' },
+    { img: cs335, title: 'COMPSCI 335' },
+    { img: cs399, title: 'COMPSCI 399' },
+  ]
+
+  return (
+    <ImageList cols={3} gap={10}>
+      {imgData.map((item) => (
+        <ImageListItem
+          key={item.img}
+          sx={{
+            width: '25rem',
+          }}
+        >
+          <img src={item.img} alt={item.title} loading="eager" />
+        </ImageListItem>
+      ))}
+    </ImageList>
+  )
+}
+
+function Transcript() {
+  const imgData = [
+    { img: transcript_p1, title: 'Transcript Page 1' },
+    { img: transcript_p2, title: 'Transcript Page 2' },
+    { img: transcript_p3, title: 'Transcript Page 3' },
+  ]
+
+  return (
+    <ImageList cols={3} gap={10}>
+      {imgData.map((item) => (
+        <ImageListItem
+          key={item.img}
+          sx={{
+            width: '25rem',
+          }}
+        >
+          <img src={item.img} alt={item.title} loading="eager" />
+        </ImageListItem>
+      ))}
+    </ImageList>
   )
 }
 
