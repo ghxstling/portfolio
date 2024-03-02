@@ -7,6 +7,8 @@ import cs335 from './assets/cs335.jpg'
 import transcript_p1 from './assets/transcript_p1.jpg'
 import transcript_p2 from './assets/transcript_p2.jpg'
 import transcript_p3 from './assets/transcript_p3.jpg'
+import project1 from './assets/project1.jpg'
+import project2 from './assets/project2.jpg'
 
 import {
   Avatar,
@@ -29,11 +31,11 @@ import {
   Divider,
   List,
   ListItem,
+  Button,
 } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
-import Item from '@mui/material/ListItem'
 
-import { Instagram, GitHub, LinkedIn, Description } from '@mui/icons-material/'
+import { Instagram, GitHub, LinkedIn, Description, Launch } from '@mui/icons-material/'
 
 function Header() {
   const fontSize = {
@@ -70,8 +72,80 @@ function Header() {
   )
 }
 
-function Carousel() {
-  return <></>
+function Projects() {
+  const projectData = [
+    {
+      img: project1,
+      title: 'Markit-UOA',
+      desc: 'A web platform for organising student markers',
+      link: 'https://www.markituoa.xyz',
+    },
+    {
+      img: project2,
+      title: 'Calculator',
+      desc: 'An online Calculator tool',
+      link: 'https://calculator-lake-eight.vercel.app/',
+    },
+  ]
+
+  const paperStyle = {
+    p: 1,
+    bgcolor: '#525765',
+  }
+  const imgDivStyle = {
+    overflow: 'hidden',
+    width: '20rem',
+  }
+  const textStyle = {
+    color: 'white',
+    fontSize: '0.8rem',
+    pt: 1,
+  }
+
+  const [hover, setHover] = useState<number>(-1)
+
+  return (
+    <Grid
+      container
+      direction={'row'}
+      spacing={5}
+      sx={{
+        mt: '8rem',
+        mb: '2rem',
+      }}
+    >
+      {projectData.map((item, index) => (
+        <Grid>
+          <Paper
+            onMouseEnter={() => setHover(index)}
+            onMouseLeave={() => setHover(-1)}
+            square={false}
+            elevation={20}
+            sx={paperStyle}
+          >
+            <ImageListItem key={item.img} sx={imgDivStyle}>
+              <img src={item.img} alt={item.title} loading="eager" />
+            </ImageListItem>
+            <Link href={item.link} target="_blank" color="inherit" underline="none">
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="overline" textAlign={'left'} sx={textStyle}>
+                  {item.title}
+                </Typography>
+                <Launch fontSize="small" htmlColor="white" />
+              </Box>
+              {hover === index && (
+                <Box sx={{ display: hover === index ? 'block' : 'none' }}>
+                  <Typography variant="body2" textAlign={'left'} sx={textStyle}>
+                    {item.desc}
+                  </Typography>
+                </Box>
+              )}
+            </Link>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  )
 }
 
 function MyDocuments() {
@@ -216,11 +290,11 @@ function Footer() {
         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={0}>
           <Stack direction="row" spacing={1.5}>
             <div></div>
-            <Link href="https://www.instagram.com/doodlyn_/" target="_blank" color="inherit">
+            {/* <Link href="https://www.instagram.com/doodlyn_/" target="_blank" color="inherit">
               <Tooltip arrow title="Instagram" placement="top" TransitionComponent={Zoom}>
                 <Instagram fontSize="large" />
               </Tooltip>
-            </Link>
+            </Link> */}
             <Link href="https://github.com/ghxstling" target="_blank" color="inherit">
               <Tooltip arrow title="GitHub" placement="top" TransitionComponent={Zoom}>
                 <GitHub fontSize="large" />
@@ -514,25 +588,64 @@ function Transcript() {
 }
 
 function App() {
+  const [open, setOpen] = useState(true)
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: '#373a42',
+    boxShadow: 24,
+    p: 4,
+  }
+
   return (
     <Container>
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 300,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={modalStyle}>
+            <Typography variant="overline" fontSize={'1.5rem'} id="modal-title">
+              Hi there!
+            </Typography>
+            <Typography variant="body2" fontSize={'1.25rem'} id="modal-description">
+              Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>,
+              so some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
+            </Typography>
+            <Box sx={{ pt: 2 }}>
+              <Button
+                variant="contained"
+                onClick={() => setOpen(false)}
+                sx={{
+                  bgcolor: 'white',
+                  color: 'black',
+                  '&:hover': {
+                    bgcolor: 'gray',
+                    color: 'white',
+                  },
+                }}
+              >
+                close
+              </Button>
+            </Box>
+          </Box>
+        </Fade>
+      </Modal>
       <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
         <Header />
-        <Grid>
-          {/* showcase projects here */}
-          <Stack direction="row" spacing={1}>
-            <Item>
-              <Paper sx={{ padding: 5 }}>1</Paper>
-            </Item>
-            <Item>
-              <Paper sx={{ padding: 5 }}>2</Paper>
-            </Item>
-            <Item>
-              <Paper sx={{ padding: 5 }}>3</Paper>
-            </Item>
-          </Stack>
-          <Box></Box>
-        </Grid>
+        <Projects />
         <Footer />
       </Grid>
     </Container>
