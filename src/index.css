@@ -18,6 +18,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  background-color: #525765;
   background-color: #373a42;
   min-height: 100vh;
   display: flex;
