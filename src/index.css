@@ -57,3 +57,10 @@ code {
   font-size: 0.6rem;
   color: black;
 }
+
+#projectImg {
+  object-fit: cover;
+  object-position: center center;
+  width: 15rem;
+  height: 13rem;
+}
