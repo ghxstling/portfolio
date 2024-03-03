@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import avatar from './assets/avatar.jpg'
 import cs101 from './assets/cs101.jpg'
@@ -9,6 +9,7 @@ import transcript_p2 from './assets/transcript_p2.jpg'
 import transcript_p3 from './assets/transcript_p3.jpg'
 import project1 from './assets/project1.jpg'
 import project2 from './assets/project2.jpg'
+import test from './assets/placeholder.jpg'
 
 import {
   Avatar,
@@ -32,10 +33,11 @@ import {
   List,
   ListItem,
   Button,
+  Collapse,
 } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 
-import { Instagram, GitHub, LinkedIn, Description, Launch } from '@mui/icons-material/'
+import { GitHub, LinkedIn, Description, Launch, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material/'
 
 function Header() {
   const fontSize = {
@@ -65,7 +67,7 @@ function Header() {
           <code>Hey, I'm Dylan.</code>
         </Grid>
         <Grid sx={fontSize}>
-          <Typography>An aspiring Computer Science / Information Systems Student</Typography>
+          <Typography>An aspiring Software Engineer who is studying Computer Science / Information Systems</Typography>
         </Grid>
       </Box>
     </>
@@ -78,13 +80,19 @@ function Projects() {
       img: project1,
       title: 'Markit-UOA',
       desc: 'A web platform for organising student markers',
-      link: 'https://www.markituoa.xyz',
+      link: 'https://markituoa.ghxstling.info/',
     },
     {
       img: project2,
       title: 'Calculator',
       desc: 'An online Calculator tool',
-      link: 'https://calculator-lake-eight.vercel.app/',
+      link: 'https://calculator.ghxstling.info/',
+    },
+    {
+      img: test,
+      title: 'Placeholder',
+      desc: 'Placeholder',
+      link: '',
     },
   ]
 
@@ -92,14 +100,28 @@ function Projects() {
     p: 1,
     bgcolor: '#525765',
   }
-  const imgDivStyle = {
-    overflow: 'hidden',
-    width: '20rem',
-  }
+
   const textStyle = {
     color: 'white',
     fontSize: '0.8rem',
-    pt: 1,
+  }
+
+  const buttonPosition = '3rem'
+  const buttonBoxStyle = {
+    justifyContent: 'center',
+    position: 'relative',
+    top: '-1rem',
+  }
+  const buttonIconStyle = {
+    position: 'absolute',
+    bgcolor: 'white',
+    color: 'black',
+    '&:hover': {
+      bgcolor: 'gray',
+      color: 'white',
+    },
+    width: '2.5rem',
+    height: '2.5rem',
   }
 
   const [hover, setHover] = useState<number>(-1)
@@ -108,12 +130,24 @@ function Projects() {
     <Grid
       container
       direction={'row'}
-      spacing={5}
+      spacing={3}
       sx={{
-        mt: '8rem',
+        mt: '10rem',
         mb: '2rem',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
+      <Box sx={buttonBoxStyle}>
+        <IconButton
+          sx={{
+            ...buttonIconStyle,
+            right: buttonPosition,
+          }}
+        >
+          <KeyboardArrowLeft fontSize="large" />
+        </IconButton>
+      </Box>
       {projectData.map((item, index) => (
         <Grid>
           <Paper
@@ -123,8 +157,8 @@ function Projects() {
             elevation={20}
             sx={paperStyle}
           >
-            <ImageListItem key={item.img} sx={imgDivStyle}>
-              <img src={item.img} alt={item.title} loading="eager" />
+            <ImageListItem key={item.img}>
+              <img id="projectImg" src={item.img} alt={item.title} loading="eager" />
             </ImageListItem>
             <Link href={item.link} target="_blank" color="inherit" underline="none">
               <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -133,17 +167,27 @@ function Projects() {
                 </Typography>
                 <Launch fontSize="small" htmlColor="white" />
               </Box>
-              {hover === index && (
-                <Box sx={{ display: hover === index ? 'block' : 'none' }}>
+              <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '15rem' }}>
+                <Collapse in={hover === index}>
                   <Typography variant="body2" textAlign={'left'} sx={textStyle}>
                     {item.desc}
                   </Typography>
-                </Box>
-              )}
+                </Collapse>
+              </Box>
             </Link>
           </Paper>
         </Grid>
       ))}
+      <Box sx={buttonBoxStyle}>
+        <IconButton
+          sx={{
+            ...buttonIconStyle,
+            left: buttonPosition,
+          }}
+        >
+          <KeyboardArrowRight fontSize="large" />
+        </IconButton>
+      </Box>
     </Grid>
   )
 }
@@ -290,11 +334,6 @@ function Footer() {
         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={0}>
           <Stack direction="row" spacing={1.5}>
             <div></div>
-            {/* <Link href="https://www.instagram.com/doodlyn_/" target="_blank" color="inherit">
-              <Tooltip arrow title="Instagram" placement="top" TransitionComponent={Zoom}>
-                <Instagram fontSize="large" />
-              </Tooltip>
-            </Link> */}
             <Link href="https://github.com/ghxstling" target="_blank" color="inherit">
               <Tooltip arrow title="GitHub" placement="top" TransitionComponent={Zoom}>
                 <GitHub fontSize="large" />
@@ -587,8 +626,19 @@ function Transcript() {
   )
 }
 
-function App() {
-  const [open, setOpen] = useState(true)
+function WIPModal() {
+  const [open, setOpen] = useState(false)
+
+  const handleOpen = () => {
+    const timer = setTimeout(() => {
+      setOpen(true)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }
+
+  useEffect(() => {
+    handleOpen()
+  }, [])
 
   const modalStyle = {
     position: 'absolute',
@@ -601,48 +651,54 @@ function App() {
   }
 
   return (
-    <Container>
-      <Modal
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        closeAfterTransition
-        slots={{ backdrop: Backdrop }}
-        slotProps={{
-          backdrop: {
-            timeout: 300,
-          },
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={modalStyle}>
-            <Typography variant="overline" fontSize={'1.5rem'} id="modal-title">
-              Hi there!
-            </Typography>
-            <Typography variant="body2" fontSize={'1.25rem'} id="modal-description">
-              Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>,
-              so some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
-            </Typography>
-            <Box sx={{ pt: 2 }}>
-              <Button
-                variant="contained"
-                onClick={() => setOpen(false)}
-                sx={{
-                  bgcolor: 'white',
-                  color: 'black',
-                  '&:hover': {
-                    bgcolor: 'gray',
-                    color: 'white',
-                  },
-                }}
-              >
-                close
-              </Button>
-            </Box>
+    <Modal
+      open={open}
+      onClose={() => setOpen(false)}
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
+      closeAfterTransition
+      slots={{ backdrop: Backdrop }}
+      slotProps={{
+        backdrop: {
+          timeout: 300,
+        },
+      }}
+    >
+      <Fade in={open}>
+        <Box sx={modalStyle}>
+          <Typography variant="h1" fontWeight={600} fontSize={'2rem'} id="modal-title" sx={{ mb: 1 }}>
+            Hi there!
+          </Typography>
+          <Typography variant="body1" fontSize={'1.25rem'} id="modal-description">
+            Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>, so
+            some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
+          </Typography>
+          <Box sx={{ pt: 2 }}>
+            <Button
+              variant="contained"
+              onClick={() => setOpen(false)}
+              sx={{
+                bgcolor: 'white',
+                color: 'black',
+                '&:hover': {
+                  bgcolor: 'gray',
+                  color: 'white',
+                },
+              }}
+            >
+              close
+            </Button>
           </Box>
-        </Fade>
-      </Modal>
+        </Box>
+      </Fade>
+    </Modal>
+  )
+}
+
+function App() {
+  return (
+    <Container>
+      <WIPModal />
       <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
         <Header />
         <Projects />
