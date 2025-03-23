@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 
-// import avatar from './assets/avatar.jpg'
-// import cs101 from './assets/cs101.jpg'
-// import cs399 from './assets/cs399.jpg'
-// import cs335 from './assets/cs335.jpg'
-// import project1 from './assets/project1.jpg'
-// import project2 from './assets/project2.jpg'
-// import test from './assets/placeholder.jpg'
-
 import {
   Avatar,
   Box,
@@ -33,7 +25,7 @@ import {
 import Grid from '@mui/material/Unstable_Grid2'
 
 import { GitHub, LinkedIn, Description, Launch, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material/'
-import { FaGithub } from 'react-icons/fa'
+import { FaGithub, FaLinkedin } from 'react-icons/fa6'
 
 function Header() {
   const fontSize = {
@@ -152,7 +144,7 @@ function Projects() {
         >
           <KeyboardArrowLeft fontSize="large" />
         </IconButton>
-        {projectData.map((item, index) => (
+        {/* {projectData.map((item, index) => (
           <Grid>
             <Paper
               onMouseEnter={() => setHover(index)}
@@ -181,7 +173,7 @@ function Projects() {
               </Link>
             </Paper>
           </Grid>
-        ))}
+        ))} */}
         <IconButton
           sx={{
             ...buttonIconStyle,
@@ -341,7 +333,7 @@ function Footer() {
             </Link>
             <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank" color="inherit">
               <Tooltip arrow title="LinkedIn" placement="top" TransitionComponent={Zoom}>
-                <LinkedIn fontSize="large" />
+                <FaLinkedin />
               </Tooltip>
             </Link>
             <MyDocuments />
