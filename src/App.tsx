@@ -19,42 +19,22 @@ import {
 } from '@mui/material'
 import { createTheme, useColorScheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-
 import { GitHub, LinkedIn, Description, Instagram, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
+import { theme } from './theme'
+
+const HEADER_HEIGHT = 3.5
+const HEADER_MARGIN = 1.5
 
 const ICON_SIZE = 'large'
-const DEFAULT_FONT_SIZE = 16
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-  typography: {
-    fontFamily: ['"Ubuntu"', 'sans-serif'].join(','),
-    fontSize: DEFAULT_FONT_SIZE,
-    h1: {
-      fontSize: '3rem',
-      fontWeight: 700,
-    },
-    h2: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
-    },
-    body1: {
-      fontSize: '1.25rem',
-    },
-  },
-})
 
 export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Stack
-        direction="column"
-        justifyContent={'center'}
+        id="home"
         sx={{
-          backgroundColor: 'darkblue',
+          maxWidth: '95vw',
         }}
       >
         <Header />
@@ -66,69 +46,73 @@ export default function App() {
   )
 }
 function Header() {
+  const buttons = ['Home', 'About', 'Projects', 'Contact']
+
   return (
-    <Box component="header">
-      <Card
-        sx={{
-          minHeight: '3rem',
-          m: 2,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Grid2 container spacing={4}>
-          <Button>Home</Button>
-          <Button>About</Button>
-          <Button>Projects</Button>
-          <Button>Contact</Button>
-        </Grid2>
-      </Card>
-    </Box>
+    <Paper
+      component="header"
+      elevation={5}
+      sx={{
+        position: 'sticky',
+        zIndex: 100,
+        inset: 0,
+        height: HEADER_HEIGHT + 'rem',
+        my: HEADER_MARGIN + 'rem',
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
+      <Grid2 container spacing={2}>
+        {buttons.map((button) => (
+          <Button key={button} href={'#' + button.toLowerCase()} sx={{ px: '1.5rem' }}>
+            {button}
+          </Button>
+        ))}
+      </Grid2>
+    </Paper>
   )
 }
 
 function AvatarCard() {
-  const AVATAR_SIZE = '20rem'
+  const AVATAR_SIZE = '15rem'
   const FONT_SIZE = '2.5rem'
 
   return (
-    <Box component="section">
-      <Grid2
-        container
+    <Grid2
+      component="section"
+      id="home"
+      container
+      sx={{
+        backgroundColor: 'green',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: FONT_SIZE,
+      }}
+    >
+      <Avatar
+        alt="Dylan Choy"
+        src="./assets/avatar.jpg"
         sx={{
-          py: '3rem',
-          backgroundColor: 'green',
-          justifyContent: 'center',
-          alignItems: 'center',
-          fontSize: FONT_SIZE,
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE,
         }}
-      >
-        <Avatar
-          alt="Dylan Choy"
-          src="./assets/avatar.jpg"
-          sx={{
-            width: AVATAR_SIZE,
-            height: AVATAR_SIZE,
-          }}
-        />
+      />
 
-        <Box
-          sx={{
-            textAlign: 'left',
-            width: '50%',
-            ml: '3rem',
-            typography: 'body1',
-            fontSize: FONT_SIZE,
-          }}
-        >
-          <Typography variant="h1">
-            <code>Hey, I'm Dylan.</code>
-          </Typography>
-          <Typography>An aspiring Software Engineer who is studying Computer Science / Information Systems</Typography>
-        </Box>
-      </Grid2>
-    </Box>
+      <Stack
+        sx={{
+          textAlign: 'left',
+          width: '50%',
+          ml: '3rem',
+          backgroundColor: 'red',
+        }}
+        gap={2}
+      >
+        <Typography variant="h1">
+          <code>Hey, I'm Dylan.</code>
+        </Typography>
+        <Typography>An aspiring Software Engineer who is studying Computer Science / Information Systems</Typography>
+      </Stack>
+    </Grid2>
   )
 }
 
@@ -426,8 +410,8 @@ function Footer() {
     <Box
       component="footer"
       sx={{
-        padding: '1rem',
-        w: '100%',
+        p: '1.5rem',
+        backgroundColor: 'black',
       }}
     >
       <Grid2 container direction="column" justifyContent="center" alignItems="center" spacing={0}>
@@ -450,8 +434,8 @@ function Footer() {
           <MyDocuments />
         </Stack>
         <Grid2>
-          <Typography color="neutral">
-            {'Copyright ©'}
+          <Typography variant="body2">
+            {'Copyright © '}
             {new Date().getFullYear()}
             {' Dylan Choy'}
           </Typography>
