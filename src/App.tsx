@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import './App.css'
 
-import avatar from './assets/avatar.jpg'
-import cs101 from './assets/cs101.jpg'
-import cs399 from './assets/cs399.jpg'
-import cs335 from './assets/cs335.jpg'
-import transcript_p1 from './assets/transcript_p1.jpg'
-import transcript_p2 from './assets/transcript_p2.jpg'
-import transcript_p3 from './assets/transcript_p3.jpg'
-import project1 from './assets/project1.jpg'
-import project2 from './assets/project2.jpg'
-import test from './assets/placeholder.jpg'
+// import avatar from './assets/avatar.jpg'
+// import cs101 from './assets/cs101.jpg'
+// import cs399 from './assets/cs399.jpg'
+// import cs335 from './assets/cs335.jpg'
+// import project1 from './assets/project1.jpg'
+// import project2 from './assets/project2.jpg'
+// import test from './assets/placeholder.jpg'
 
 import {
   Avatar,
@@ -35,6 +33,7 @@ import {
 import Grid from '@mui/material/Unstable_Grid2'
 
 import { GitHub, LinkedIn, Description, Launch, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material/'
+import { FaGithub } from 'react-icons/fa'
 
 function Header() {
   const fontSize = {
@@ -53,7 +52,7 @@ function Header() {
         <Grid container direction="column" justifyContent="center" alignItems="center">
           <Avatar
             alt="Dylan Choy"
-            src={avatar}
+            // src={avatar}
             sx={{
               width: {
                 sm: '25vw',
@@ -81,24 +80,24 @@ function Header() {
 
 function Projects() {
   const projectData = [
-    {
-      img: project1,
-      title: 'Markit-UOA',
-      desc: 'A web platform for organising student markers',
-      link: 'https://markituoa.ghxstling.info/',
-    },
-    {
-      img: project2,
-      title: 'Calculator',
-      desc: 'An online Calculator tool',
-      link: 'https://calculator.ghxstling.info/',
-    },
-    {
-      img: test,
-      title: 'Placeholder',
-      desc: 'Placeholder',
-      link: '',
-    },
+    // {
+    //   img: project1,
+    //   title: 'Markit-UOA',
+    //   desc: 'A web platform for organising student markers',
+    //   link: 'https://markituoa.ghxstling.info/',
+    // },
+    // {
+    //   img: project2,
+    //   title: 'Calculator',
+    //   desc: 'An online Calculator tool',
+    //   link: 'https://calculator.ghxstling.info/',
+    // },
+    // {
+    //   img: test,
+    //   title: 'Placeholder',
+    //   desc: 'Placeholder',
+    //   link: '',
+    // },
   ]
 
   const paperStyle = {
@@ -306,7 +305,7 @@ function MyDocuments() {
                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                   My Academic Transcript
                 </Typography>
-                <Transcript />
+                {/* <Transcript /> */}
               </Box>
             ) : modal === 'awards' ? (
               <Box sx={{ ...modalStyle }}>
@@ -335,10 +334,9 @@ function Footer() {
       >
         <Grid container direction="column" justifyContent="center" alignItems="center" spacing={0}>
           <Stack direction="row" spacing={1.5}>
-            <div></div>
             <Link href="https://github.com/ghxstling" target="_blank" color="inherit">
               <Tooltip arrow title="GitHub" placement="top" TransitionComponent={Zoom}>
-                <GitHub fontSize="large" />
+                <FaGithub />
               </Tooltip>
             </Link>
             <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank" color="inherit">
@@ -350,7 +348,7 @@ function Footer() {
           </Stack>
           <Grid>
             <Typography variant="body2" color="white">
-              {'Copyright © '}
+              {'Copyright ©'}
               {new Date().getFullYear()}
               {' Dylan Choy'}
             </Typography>
@@ -363,9 +361,10 @@ function Footer() {
 
 function Awards() {
   const imgData = [
-    { img: cs101, title: 'COMPSCI 101' },
-    { img: cs335, title: 'COMPSCI 335' },
-    { img: cs399, title: 'COMPSCI 399' },
+    // { img: cs101, title: 'COMPSCI 101' },
+    // { img: cs335, title: 'COMPSCI 335' },
+    // { img: cs399, title: 'COMPSCI 399' },
+    { img: 'test', title: 'COMPSCI 399' },
   ]
 
   return (
@@ -384,28 +383,28 @@ function Awards() {
   )
 }
 
-function Transcript() {
-  const imgData = [
-    { img: transcript_p1, title: 'Transcript Page 1' },
-    { img: transcript_p2, title: 'Transcript Page 2' },
-    { img: transcript_p3, title: 'Transcript Page 3' },
-  ]
+// function Transcript() {
+//   const imgData = [
+//     { img: transcript_p1, title: 'Transcript Page 1' },
+//     { img: transcript_p2, title: 'Transcript Page 2' },
+//     { img: transcript_p3, title: 'Transcript Page 3' },
+//   ]
 
-  return (
-    <ImageList cols={3} gap={10}>
-      {imgData.map((item) => (
-        <ImageListItem
-          key={item.img}
-          sx={{
-            width: '25rem',
-          }}
-        >
-          <img src={item.img} alt={item.title} loading="eager" />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  )
-}
+//   return (
+//     <ImageList cols={3} gap={10}>
+//       {imgData.map((item) => (
+//         <ImageListItem
+//           key={item.img}
+//           sx={{
+//             width: '25rem',
+//           }}
+//         >
+//           <img src={item.img} alt={item.title} loading="eager" />
+//         </ImageListItem>
+//       ))}
+//     </ImageList>
+//   )
+// }
 
 function WIPModal() {
   const [open, setOpen] = useState(false)
