@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import './App.css'
 
 import {
   Avatar,
@@ -14,59 +13,122 @@ import {
   Menu,
   MenuItem,
   Modal,
-  ImageList,
-  ImageListItem,
-  Backdrop,
   Button,
-  Collapse,
-  Zoom,
-  Fade,
+  Grid2,
+  Card,
 } from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import { createTheme, useColorScheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
-import { GitHub, LinkedIn, Description, Launch, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material/'
-import { FaGithub, FaLinkedin } from 'react-icons/fa6'
+import { GitHub, LinkedIn, Description, Instagram, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material'
 
+const ICON_SIZE = 'large'
+const DEFAULT_FONT_SIZE = 16
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+  typography: {
+    fontFamily: ['"Ubuntu"', 'sans-serif'].join(','),
+    fontSize: DEFAULT_FONT_SIZE,
+    h1: {
+      fontSize: '3rem',
+      fontWeight: 700,
+    },
+    h2: {
+      fontSize: '2.5rem',
+      fontWeight: 500,
+    },
+    body1: {
+      fontSize: '1.25rem',
+    },
+  },
+})
+
+export default function App() {
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Stack
+        direction="column"
+        justifyContent={'center'}
+        sx={{
+          backgroundColor: 'darkblue',
+        }}
+      >
+        <Header />
+        <AvatarCard />
+        <Projects />
+        <Footer />
+      </Stack>
+    </ThemeProvider>
+  )
+}
 function Header() {
-  const fontSize = {
-    fontSize: '1.25vw',
-  }
+  return (
+    <Box component="header">
+      <Card
+        sx={{
+          minHeight: '3rem',
+          m: 2,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Grid2 container spacing={4}>
+          <Button>Home</Button>
+          <Button>About</Button>
+          <Button>Projects</Button>
+          <Button>Contact</Button>
+        </Grid2>
+      </Card>
+    </Box>
+  )
+}
+
+function AvatarCard() {
+  const AVATAR_SIZE = '20rem'
+  const FONT_SIZE = '2.5rem'
 
   return (
-    <>
-      <Box
+    <Box component="section">
+      <Grid2
+        container
         sx={{
-          position: 'fixed',
-          top: '3%',
+          py: '3rem',
+          backgroundColor: 'green',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: FONT_SIZE,
         }}
-        component="header"
       >
-        <Grid container direction="column" justifyContent="center" alignItems="center">
-          <Avatar
-            alt="Dylan Choy"
-            // src={avatar}
-            sx={{
-              width: {
-                sm: '25vw',
-                md: '10vw',
-              },
-              height: {
-                sm: '25vw',
-                md: '10vw',
-              },
-            }}
-          />
-        </Grid>
-        <Grid sx={fontSize}>
-          <Typography>
+        <Avatar
+          alt="Dylan Choy"
+          src="./assets/avatar.jpg"
+          sx={{
+            width: AVATAR_SIZE,
+            height: AVATAR_SIZE,
+          }}
+        />
+
+        <Box
+          sx={{
+            textAlign: 'left',
+            width: '50%',
+            ml: '3rem',
+            typography: 'body1',
+            fontSize: FONT_SIZE,
+          }}
+        >
+          <Typography variant="h1">
             <code>Hey, I'm Dylan.</code>
           </Typography>
-          <br />
           <Typography>An aspiring Software Engineer who is studying Computer Science / Information Systems</Typography>
-        </Grid>
-        <Grid sx={fontSize}></Grid>
-      </Box>
-    </>
+        </Box>
+      </Grid2>
+    </Box>
   )
 }
 
@@ -121,11 +183,12 @@ function Projects() {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        minHeight: '20rem',
         alignItems: 'center',
+        backgroundColor: 'lightblue',
       }}
     >
-      <Grid
+      {/* <Grid2
         container
         direction={'row'}
         spacing={3}
@@ -142,11 +205,11 @@ function Projects() {
             right: buttonPosition,
           }}
         >
-          <KeyboardArrowLeft fontSize="large" />
+          <FaAngleLeft />
         </IconButton>
         {/* {projectData.map((item, index) => (
-          <Grid>
-            <Paper
+          <Grid2>
+            <Sheet
               onMouseEnter={() => setHover(index)}
               onMouseLeave={() => setHover(-1)}
               square={false}
@@ -171,18 +234,18 @@ function Projects() {
                   </Collapse>
                 </Box>
               </Link>
-            </Paper>
-          </Grid>
-        ))} */}
+            </Sheet>
+          </Grid2>
+        ))}
         <IconButton
           sx={{
             ...buttonIconStyle,
             left: buttonPosition,
           }}
         >
-          <KeyboardArrowRight fontSize="large" />
+          <FaAngleRight />
         </IconButton>
-      </Grid>
+      </Grid2> */}
     </Box>
   )
 }
@@ -209,11 +272,7 @@ function MyDocuments() {
     <>
       <IconButton
         id="menu-button"
-        color="inherit"
         size="small"
-        disableRipple
-        disableFocusRipple
-        edge="end"
         aria-controls={Boolean(menuAnchor) ? 'menu' : undefined}
         aria-haspopup="true"
         aria-expanded={Boolean(menuAnchor) ? 'true' : undefined}
@@ -224,26 +283,16 @@ function MyDocuments() {
           paddingBottom: 1,
         }}
       >
-        <Tooltip arrow title="My Documents" placement="top" TransitionComponent={Zoom}>
-          <Description fontSize="large" />
+        <Tooltip arrow title="My Documents" placement="top">
+          <Description fontSize={ICON_SIZE} />
         </Tooltip>
       </IconButton>
       <Menu
         id="menu"
+        component="ul"
         anchorEl={menuAnchor}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
         open={Boolean(menuAnchor)}
         onClose={handleMenuClose}
-        MenuListProps={{
-          'aria-labelledby': 'menu-button',
-        }}
         sx={{
           padding: 0,
           margin: 0,
@@ -274,208 +323,140 @@ function MyDocuments() {
           Awards
         </MenuItem>
       </Menu>
-
-      <div>
-        <Modal
-          open={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 300,
-            },
-          }}
-        >
-          <Fade in={open}>
-            {modal === 'cv' ? (
-              <Box sx={{ ...modalStyle, width: '40rem' }}></Box>
-            ) : modal === 'transcript' ? (
-              <Box sx={{ ...modalStyle }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                  My Academic Transcript
-                </Typography>
-                {/* <Transcript /> */}
-              </Box>
-            ) : modal === 'awards' ? (
-              <Box sx={{ ...modalStyle }}>
-                <Awards />
-              </Box>
-            ) : (
-              <></>
-            )}
-          </Fade>
-        </Modal>
-      </div>
     </>
+    // <div>
+    //   <Modal
+    //     open={open}
+    //     onClose={() => setOpen(false)}
+    //     aria-labelledby="modal-title"
+    //     aria-describedby="modal-description"
+    //     closeAfterTransition
+    //     slots={{ backdrop: Backdrop }}
+    //     slotProps={{
+    //       backdrop: {
+    //         timeout: 300,
+    //       },
+    //     }}
+    //   >
+    //     <Fade in={open}>
+    //       {modal === 'cv' ? (
+    //         <Box sx={{ ...modalStyle, width: '40rem' }}></Box>
+    //       ) : modal === 'transcript' ? (
+    //         <Box sx={{ ...modalStyle }}>
+    //           <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+    //             My Academic Transcript
+    //           </Typography>
+    //           {/* <Transcript /> */}
+    //         </Box>
+    //       ) : modal === 'awards' ? (
+    //         <Box sx={{ ...modalStyle }}>
+    //           <Awards />
+    //         </Box>
+    //       ) : (
+    //         <></>
+    //       )}
+    //     </Fade>
+    //   </Modal>
+    // </div>
   )
 }
 
-function Footer() {
-  return (
-    <>
-      <Box
-        sx={{
-          padding: '1rem',
-          position: 'fixed',
-          bottom: 0,
-        }}
-        component="footer"
-      >
-        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={0}>
-          <Stack direction="row" spacing={1.5}>
-            <Link href="https://github.com/ghxstling" target="_blank" color="inherit">
-              <Tooltip arrow title="GitHub" placement="top" TransitionComponent={Zoom}>
-                <FaGithub />
-              </Tooltip>
-            </Link>
-            <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank" color="inherit">
-              <Tooltip arrow title="LinkedIn" placement="top" TransitionComponent={Zoom}>
-                <FaLinkedin />
-              </Tooltip>
-            </Link>
-            <MyDocuments />
-          </Stack>
-          <Grid>
-            <Typography variant="body2" color="white">
-              {'Copyright ©'}
-              {new Date().getFullYear()}
-              {' Dylan Choy'}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
-  )
-}
+// function Footer() {
+//   const styles = {
+//     icon: 'size-8',
+//     toggleDarkMode: 'text-white size-8 transition-all',
+//   }
 
-function Awards() {
-  const imgData = [
-    // { img: cs101, title: 'COMPSCI 101' },
-    // { img: cs335, title: 'COMPSCI 335' },
-    // { img: cs399, title: 'COMPSCI 399' },
-    { img: 'test', title: 'COMPSCI 399' },
-  ]
+//   const [loaded, setLoaded] = React.useState(false)
+//   const { setTheme, theme, resolvedTheme } = useTheme()
 
-  return (
-    <ImageList cols={3} gap={10}>
-      {imgData.map((item) => (
-        <ImageListItem
-          key={item.img}
-          sx={{
-            width: '25rem',
-          }}
-        >
-          <img src={item.img} alt={item.title} loading="eager" />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  )
-}
+//   React.useEffect(() => {
+//     setLoaded(true)
+//     setTheme(resolvedTheme === 'light' ? 'light' : 'dark')
+//   }, [setTheme, resolvedTheme])
 
-// function Transcript() {
-//   const imgData = [
-//     { img: transcript_p1, title: 'Transcript Page 1' },
-//     { img: transcript_p2, title: 'Transcript Page 2' },
-//     { img: transcript_p3, title: 'Transcript Page 3' },
-//   ]
+//   const toggleTheme = () => {
+//     setTheme(resolvedTheme === 'light' ? 'dark' : 'light')
+//   }
 
 //   return (
-//     <ImageList cols={3} gap={10}>
-//       {imgData.map((item) => (
-//         <ImageListItem
-//           key={item.img}
-//           sx={{
-//             width: '25rem',
-//           }}
+//     <footer className="w-full h-[7.5rem] max-h-[10vh] bg-indigo-900 text-white">
+//       <div className="flex flex-col items-center justify-center h-full gap-2">
+//         <div className="Grid2 Grid2-flow-col gap-4">
+//           <a href="https://github.com/ghxstling/" target="_blank" rel="noopener noreferrer">
+//             <FaGithub className={styles.icon} />
+//           </a>
+//           <a href="https://www.linkedin.com/in/dylan-choy/" target="_blank" rel="noopener noreferrer">
+//             <FaLinkedin className={styles.icon} />
+//           </a>
+//           <a href="https://www.instagram.com/doodlyn_/" target="_blank" rel="noopener noreferrer">
+//             <FaInstagram className={styles.icon} />
+//           </a>
+//           {loaded && (
+//             <div className="absolute flex right-0 mr-4 items-center">
+//               <Button
+//                 onClick={() => toggleTheme()}
+//                 variant="solid"
+//                 className={`size-10 bg-transparent hover:bg-indigo-700 rounded-[100%] cursor-pointer`}
+//               >
+//                 {theme === 'light' ? (
+//                   <FaMoon className={styles.toggleDarkMode + ' text-white'} />
+//                 ) : (
+//                   <FaSun className={styles.toggleDarkMode} />
+//                 )}
+//               </Button>
+//             </div>
+//           )}
+//         </div>
+//         <a
+//           className="hover:underline hover:underline-offset-2"
+//           href="https://www.ghxstling.dev/"
+//           target="_blank"
+//           rel="noopener noreferrer"
 //         >
-//           <img src={item.img} alt={item.title} loading="eager" />
-//         </ImageListItem>
-//       ))}
-//     </ImageList>
+//           Copyright © 2025 Dylan Choy
+//         </a>
+//       </div>
+//     </footer>
 //   )
 // }
 
-function WIPModal() {
-  const [open, setOpen] = useState(false)
-
-  const handleOpen = () => {
-    const timer = setTimeout(() => {
-      setOpen(true)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }
-
-  useEffect(() => {
-    handleOpen()
-  }, [])
-
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: '#373a42',
-    boxShadow: 24,
-    p: 4,
-  }
-
+function Footer() {
   return (
-    <Modal
-      open={open}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 300,
-        },
+    <Box
+      component="footer"
+      sx={{
+        padding: '1rem',
+        w: '100%',
       }}
     >
-      <Box sx={modalStyle}>
-        <Typography variant="h1" fontWeight={600} fontSize={'2rem'} id="modal-title" sx={{ mb: 1 }}>
-          Hi there!
-        </Typography>
-        <Typography variant="body1" fontSize={'1.25rem'} id="modal-description">
-          Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>, so
-          some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
-        </Typography>
-        <Box sx={{ pt: 2 }}>
-          <Button
-            variant="contained"
-            onClick={() => setOpen(false)}
-            sx={{
-              bgcolor: 'white',
-              color: 'black',
-              '&:hover': {
-                bgcolor: 'gray',
-                color: 'white',
-              },
-            }}
-          >
-            close
-          </Button>
-        </Box>
-      </Box>
-    </Modal>
+      <Grid2 container direction="column" justifyContent="center" alignItems="center" spacing={0}>
+        <Stack direction="row" spacing={1.5}>
+          <Link href="https://github.com/ghxstling" target="_blank">
+            <Tooltip arrow title="GitHub" placement="top">
+              <GitHub fontSize={ICON_SIZE} />
+            </Tooltip>
+          </Link>
+          <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank">
+            <Tooltip arrow title="LinkedIn" placement="top">
+              <LinkedIn fontSize={ICON_SIZE} />
+            </Tooltip>
+          </Link>
+          <Link href="https://www.instagram.com/doodlyn_" target="_blank">
+            <Tooltip arrow title="LinkedIn" placement="top">
+              <Instagram fontSize={ICON_SIZE} />
+            </Tooltip>
+          </Link>
+          <MyDocuments />
+        </Stack>
+        <Grid2>
+          <Typography color="neutral">
+            {'Copyright ©'}
+            {new Date().getFullYear()}
+            {' Dylan Choy'}
+          </Typography>
+        </Grid2>
+      </Grid2>
+    </Box>
   )
 }
-
-function App() {
-  return (
-    <Container>
-      <WIPModal />
-      <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-        <Header />
-        <Projects />
-        <Footer />
-      </Grid>
-    </Container>
-  )
-}
-
-export default App
