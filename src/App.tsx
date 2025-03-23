@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import avatar from './assets/avatar.jpg'
 import cs101 from './assets/cs101.jpg'
@@ -21,19 +21,16 @@ import {
   Stack,
   Tooltip,
   Typography,
-  Zoom,
   Menu,
   MenuItem,
   Modal,
   ImageList,
   ImageListItem,
   Backdrop,
-  Fade,
-  Divider,
-  List,
-  ListItem,
   Button,
   Collapse,
+  Zoom,
+  Fade,
 } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2'
 
@@ -58,17 +55,25 @@ function Header() {
             alt="Dylan Choy"
             src={avatar}
             sx={{
-              width: '10vw',
-              height: '10vw',
+              width: {
+                sm: '25vw',
+                md: '10vw',
+              },
+              height: {
+                sm: '25vw',
+                md: '10vw',
+              },
             }}
           />
         </Grid>
         <Grid sx={fontSize}>
-          <code>Hey, I'm Dylan.</code>
-        </Grid>
-        <Grid sx={fontSize}>
+          <Typography>
+            <code>Hey, I'm Dylan.</code>
+          </Typography>
+          <br />
           <Typography>An aspiring Software Engineer who is studying Computer Science / Information Systems</Typography>
         </Grid>
+        <Grid sx={fontSize}></Grid>
       </Box>
     </>
   )
@@ -107,15 +112,9 @@ function Projects() {
   }
 
   const buttonPosition = '3rem'
-  const buttonBoxStyle = {
-    justifyContent: 'center',
-    position: 'relative',
-    top: '-1rem',
-  }
   const buttonIconStyle = {
-    position: 'absolute',
-    bgcolor: 'white',
-    color: 'black',
+    bgcolor: '#525765',
+    color: 'white',
     '&:hover': {
       bgcolor: 'gray',
       color: 'white',
@@ -127,18 +126,25 @@ function Projects() {
   const [hover, setHover] = useState<number>(-1)
 
   return (
-    <Grid
-      container
-      direction={'row'}
-      spacing={3}
+    <Box
       sx={{
-        mt: '10rem',
-        mb: '2rem',
-        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
         alignItems: 'center',
       }}
     >
-      <Box sx={buttonBoxStyle}>
+      <Grid
+        container
+        direction={'row'}
+        spacing={3}
+        sx={{
+          mt: '10rem',
+          mb: '2rem',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <IconButton
           sx={{
             ...buttonIconStyle,
@@ -147,38 +153,36 @@ function Projects() {
         >
           <KeyboardArrowLeft fontSize="large" />
         </IconButton>
-      </Box>
-      {projectData.map((item, index) => (
-        <Grid>
-          <Paper
-            onMouseEnter={() => setHover(index)}
-            onMouseLeave={() => setHover(-1)}
-            square={false}
-            elevation={20}
-            sx={paperStyle}
-          >
-            <ImageListItem key={item.img}>
-              <img id="projectImg" src={item.img} alt={item.title} loading="eager" />
-            </ImageListItem>
-            <Link href={item.link} target="_blank" color="inherit" underline="none">
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="overline" textAlign={'left'} sx={textStyle}>
-                  {item.title}
-                </Typography>
-                <Launch fontSize="small" htmlColor="white" />
-              </Box>
-              <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '15rem' }}>
-                <Collapse in={hover === index}>
-                  <Typography variant="body2" textAlign={'left'} sx={textStyle}>
-                    {item.desc}
+        {projectData.map((item, index) => (
+          <Grid>
+            <Paper
+              onMouseEnter={() => setHover(index)}
+              onMouseLeave={() => setHover(-1)}
+              square={false}
+              elevation={15}
+              sx={paperStyle}
+            >
+              <ImageListItem key={item.img}>
+                <img id="projectImg" src={item.img} alt={item.title} loading="eager" />
+              </ImageListItem>
+              <Link href={item.link} target="_blank" color="inherit" underline="none">
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="overline" textAlign={'left'} sx={textStyle}>
+                    {item.title}
                   </Typography>
-                </Collapse>
-              </Box>
-            </Link>
-          </Paper>
-        </Grid>
-      ))}
-      <Box sx={buttonBoxStyle}>
+                  <Launch fontSize="small" htmlColor="white" />
+                </Box>
+                <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '15rem' }}>
+                  <Collapse in={hover === index}>
+                    <Typography variant="body2" textAlign={'left'} sx={textStyle}>
+                      {item.desc}
+                    </Typography>
+                  </Collapse>
+                </Box>
+              </Link>
+            </Paper>
+          </Grid>
+        ))}
         <IconButton
           sx={{
             ...buttonIconStyle,
@@ -187,8 +191,8 @@ function Projects() {
         >
           <KeyboardArrowRight fontSize="large" />
         </IconButton>
-      </Box>
-    </Grid>
+      </Grid>
+    </Box>
   )
 }
 
@@ -237,7 +241,7 @@ function MyDocuments() {
         id="menu"
         anchorEl={menuAnchor}
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'right',
         }}
         transformOrigin={{
@@ -296,9 +300,7 @@ function MyDocuments() {
         >
           <Fade in={open}>
             {modal === 'cv' ? (
-              <Box sx={{ ...modalStyle, width: '40rem' }}>
-                <CV />
-              </Box>
+              <Box sx={{ ...modalStyle, width: '40rem' }}></Box>
             ) : modal === 'transcript' ? (
               <Box sx={{ ...modalStyle }}>
                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
@@ -356,227 +358,6 @@ function Footer() {
         </Grid>
       </Box>
     </>
-  )
-}
-
-function CV() {
-  const alignLeft = {
-    ml: 2,
-    textAlign: 'left',
-  }
-  const divider = {
-    mt: 1,
-    mb: 1,
-  }
-
-  return (
-    <Container>
-      <Paper sx={{ p: 2 }}>
-        {/* Name */}
-        <Grid>
-          <Typography id="cvName" sx={alignLeft}>
-            Dylan Choy
-          </Typography>
-          <Box sx={divider}>
-            <Divider variant="middle" />
-          </Box>
-        </Grid>
-        {/* Summary and Contact */}
-        <Grid container direction={'row'} spacing={1} sx={alignLeft}>
-          <Grid xs={7}>
-            <Typography id="cvHeading1">Summary</Typography>
-            <Typography id="cvText">
-              Highly motivated and dynamic person with a diligent attitude in a workspace environment and strive to
-              learn new experiences and improve my excellent skills. I aspire to pursue a career in Software Development
-              as a Software Engineer.
-            </Typography>
-          </Grid>
-          <Grid xs={5}>
-            <Typography id="cvHeading1">Contact</Typography>
-            <Typography id="cvText">
-              dylan.choy21@gmail.com
-              <br />
-              https://www.linkedin.com/in/dylan-choy/
-              <br />
-              022 439 2298
-              <br />
-              Mount Eden, Auckland
-            </Typography>
-          </Grid>
-        </Grid>
-        <Box sx={divider}>
-          <Divider variant="middle" />
-        </Box>
-        {/* Body */}
-        <Grid container direction={'row'} spacing={1} sx={alignLeft}>
-          {/* Education */}
-          <Grid xs={4}>
-            <Typography id="cvHeading1">Education</Typography>
-            <Typography id="cvHeading2">AUCKALND GRAMMAR SCHOOL</Typography>
-            <Typography id="cvText">
-              CIE NZ
-              <br />
-              2016 - 2020
-              <br />
-              Average Grade: A
-            </Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">UNIVERSITY OF AUCKLAND</Typography>
-            <Typography id="cvText">
-              BCom / BSci
-              <br />
-              Computer Science & Information Systems
-              <br />
-              2021 - 2025
-              <br />
-              Cumulative GPA: 6.5
-            </Typography>
-            <Box sx={{ ...divider, ml: -2 }}>
-              <Divider variant="middle" />
-            </Box>
-            {/* Skills */}
-            <Typography id="cvHeading1">Skills</Typography>
-            <Typography id="cvHeading2">Programming Languages</Typography>
-            <Typography id="cvText">Python, Java, C#, Typescript, NodeJS</Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">Web Technologies</Typography>
-            <Typography id="cvText">Next.JS, RESTful, HTML5, CSS, git</Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">Tools & Technologies</Typography>
-            <Typography id="cvText">Word, PowerPoint, Excel, AWS</Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">Other Skills</Typography>
-            <Typography id="cvText">
-              Communication, Teamwork, Problem-solving, Adaptability, Working under Pressure
-            </Typography>
-            <Box sx={{ ...divider, ml: -2 }}>
-              <Divider variant="middle" />
-            </Box>
-            {/* References */}
-            <Typography id="cvHeading1">References</Typography>
-            <Typography id="cvText">Available upon request.</Typography>
-          </Grid>
-          {/* Work Experience */}
-          <Grid xs={8}>
-            <Typography id="cvHeading1">Experience</Typography>
-            <Typography id="cvHeading2">BACKEND DEVELOPER</Typography>
-            <Typography id="cvText">
-              UNIVERSITY OF AUCKLAND CAPSTONE PROJECT <br />
-              Jul 2023 - Oct 2023
-              <List disablePadding sx={{ ml: 1, listStyleType: 'disc' }}>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Project URL: https://www.markituoa.xyz/
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Worked with a team of 6 people to develop a Next.js Web Application called Markit-UOA for organising
-                    student markers to various courses
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Developed a feature-rich API specifically tailored to the project, with functions like personalised
-                    email sender, CSV writer, and persistent file storing
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Learned & utilised new technologies quickly, like TypeScript, AWS, and NodeJS, during project
-                    development
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Adopted good software development practices like Agile-driven development and Feature Branch
-                    Workflow
-                  </Typography>
-                </ListItem>
-              </List>
-            </Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">SHOP ASSISTANT</Typography>
-            <Typography id="cvText">
-              PB TECH ST LUKE'S
-              <br />
-              Apr 2022 - Present
-              <List disablePadding sx={{ ml: 1, listStyleType: 'disc' }}>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Delivered excellent customer service with a positive attitude
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Provided customers with product recommendations tailored to their requirements
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Maintained a high level of attention to detail with every task
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Worked in a fast-paced work environment
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    As a Cashier:
-                  </Typography>
-                  <List disablePadding sx={{ ml: 2, listStyleType: 'disc' }}>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Prepared daily cash/bank reconciliation reports
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Identified and fixed any accounting errors with credits/invoices
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Processed payments/credits at checkout for customers
-                      </Typography>
-                    </ListItem>
-                  </List>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    As a Service Technician:
-                  </Typography>
-                  <List disablePadding sx={{ ml: 2, listStyleType: 'disc' }}>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Booked in service/repair jobs with participating service agents on behalf of customers
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Handled customer complaints calmly & professionally
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Performed diagnostics and on-site repairs for desktop PCs and laptops
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Assisted customers in resolving issues regarding their purchases
-                      </Typography>
-                    </ListItem>
-                  </List>
-                </ListItem>
-              </List>
-            </Typography>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Container>
   )
 }
 
@@ -664,33 +445,31 @@ function WIPModal() {
         },
       }}
     >
-      <Fade in={open}>
-        <Box sx={modalStyle}>
-          <Typography variant="h1" fontWeight={600} fontSize={'2rem'} id="modal-title" sx={{ mb: 1 }}>
-            Hi there!
-          </Typography>
-          <Typography variant="body1" fontSize={'1.25rem'} id="modal-description">
-            Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>, so
-            some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
-          </Typography>
-          <Box sx={{ pt: 2 }}>
-            <Button
-              variant="contained"
-              onClick={() => setOpen(false)}
-              sx={{
-                bgcolor: 'white',
-                color: 'black',
-                '&:hover': {
-                  bgcolor: 'gray',
-                  color: 'white',
-                },
-              }}
-            >
-              close
-            </Button>
-          </Box>
+      <Box sx={modalStyle}>
+        <Typography variant="h1" fontWeight={600} fontSize={'2rem'} id="modal-title" sx={{ mb: 1 }}>
+          Hi there!
+        </Typography>
+        <Typography variant="body1" fontSize={'1.25rem'} id="modal-description">
+          Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>, so
+          some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
+        </Typography>
+        <Box sx={{ pt: 2 }}>
+          <Button
+            variant="contained"
+            onClick={() => setOpen(false)}
+            sx={{
+              bgcolor: 'white',
+              color: 'black',
+              '&:hover': {
+                bgcolor: 'gray',
+                color: 'white',
+              },
+            }}
+          >
+            close
+          </Button>
         </Box>
-      </Fade>
+      </Box>
     </Modal>
   )
 }
