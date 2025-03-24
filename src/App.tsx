@@ -100,11 +100,11 @@ function AvatarCard() {
 }
 
 // TODO: Implement Projects component
-type ProjectData = {
-  name: string
-  description: string
-  html_url: string
-}
+// type ProjectData = {
+//   name: string
+//   description: string
+//   html_url: string
+// }
 
 function Projects() {
   const [projects, setProjects] = React.useState<any[]>([])
@@ -141,14 +141,18 @@ function Projects() {
     <Container
       id="projects"
       sx={{
-        bgcolor: 'skyblue',
+        bgcolor: 'darkblue',
         height: '30rem',
         py: '1.5rem',
         textAlign: 'center',
       }}
     >
       <Typography variant="h2">Projects</Typography>
-      <Stack spacing={2}></Stack>
+      <Stack spacing={2}>
+        {projects.map((project) => (
+          <Typography key={project.id}>{project.name}</Typography>
+        ))}
+      </Stack>
     </Container>
   )
 }
