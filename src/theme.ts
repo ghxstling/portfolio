@@ -8,15 +8,16 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ['"Ubuntu"', 'sans-serif'].join(','),
+    fontFamily: ['"Poppins"', 'sans-serif'].join(','),
     fontSize: 16,
     h1: {
-      fontSize: '3rem',
+      fontSize: '2.5rem',
       fontWeight: 700,
     },
     h2: {
-      fontSize: '2.5rem',
-      fontWeight: 500,
+      fontSize: '2rem',
+      fontWeight: 600,
+      paddingBottom: '1rem',
     },
     body1: {
       fontSize: '1.25rem',
