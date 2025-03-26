@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Avatar, Box, Link, Paper, Stack, Tooltip, Typography, Button, Grid2, Container } from '@mui/material'
+import { Avatar, Link, Paper, Stack, Tooltip, Typography, Button, Grid2, Container } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { GitHub, LinkedIn, Instagram } from '@mui/icons-material'
