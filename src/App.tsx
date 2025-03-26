@@ -22,12 +22,14 @@ export default function App() {
       >
         <Header />
         <AvatarCard />
+        <About />
         <Projects />
         <Footer />
       </Stack>
     </ThemeProvider>
   )
 }
+
 function Header() {
   const buttons = ['Home', 'About', 'Projects', 'Contact']
 
@@ -99,6 +101,21 @@ function AvatarCard() {
   )
 }
 
+function About() {
+  return (<Container
+    id="projects"
+    sx={{
+      bgcolor: 'orange',
+      height: '20rem',
+      py: '1.5rem',
+      textAlign: 'center',
+    }}
+  >
+    <Typography variant="h2">About</Typography>
+    <Typography variant="body1">sadadasdasdasdadsadasdassadasdsadasdasdas</Typography>
+  </Container>)
+}
+
 // TODO: Implement Projects component
 // type ProjectData = {
 //   name: string
@@ -159,14 +176,14 @@ function Projects() {
 
 function Footer() {
   return (
-    <Box
+    <Container
       component="footer"
       sx={{
         p: '1.5rem',
         backgroundColor: 'black',
+        justifyItems: 'center',
       }}
     >
-      <Grid2 container direction="column" justifyContent="center" alignItems="center" spacing={0}>
         <Stack direction="row" spacing={1.5}>
           <Link href="https://github.com/ghxstling" target="_blank">
             <Tooltip arrow title="GitHub" placement="top">
@@ -179,11 +196,10 @@ function Footer() {
             </Tooltip>
           </Link>
           <Link href="https://www.instagram.com/doodlyn_" target="_blank">
-            <Tooltip arrow title="LinkedIn" placement="top">
+            <Tooltip arrow title="Instagram" placement="top">
               <Instagram fontSize={ICON_SIZE} />
             </Tooltip>
           </Link>
-          {/* <MyDocuments /> */}
         </Stack>
         <Grid2>
           <Typography variant="body2">
@@ -192,7 +208,6 @@ function Footer() {
             {' Dylan Choy'}
           </Typography>
         </Grid2>
-      </Grid2>
-    </Box>
+    </Container>
   )
 }
