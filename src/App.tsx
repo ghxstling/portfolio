@@ -22,6 +22,8 @@ const HEADER_MARGIN = 1.5
 
 const ICON_SIZE = 'large'
 
+const GITHUB_USERNAME = 'ghxstling'
+
 export default function App() {
   const [loaded, setLoaded] = React.useState(false)
 
@@ -34,43 +36,43 @@ export default function App() {
       <CssBaseline />
       {loaded && (
         <Container component={'main'}>
-            <Header />
-            <AvatarCard />
-            <Stack spacing={5}>
-              <About />
-              <Projects />
-              <Contact />
-              <Footer />
-            </Stack>
+          <Header />
+          <AvatarCard />
+          <Stack spacing={5}>
+            <About />
+            <Projects />
+            <Contact />
+            <Footer />
+          </Stack>
         </Container>
       )}
     </ThemeProvider>
   )
 }
 
+const handleScrollTo = (id: string) => {
+  const element = document.getElementById(id)
+  if (element) {
+    const rect = element.getBoundingClientRect()
+    let yPos
+    if (element.id === 'home') {
+      yPos = 0
+    } else {
+      yPos = rect.top + window.scrollY - (HEADER_HEIGHT + HEADER_MARGIN) * 16
+    }
+    window.scrollTo({ top: yPos, behavior: 'smooth' })
+  }
+}
+
 function Header() {
   const buttons = ['Home', 'About', 'Projects', 'Contact']
-
-  const handleScrollTo = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      const rect = element.getBoundingClientRect()
-      let yPos
-      if (element.id === 'home') {
-        yPos = 0
-      } else {
-        yPos = rect.top + window.scrollY - (HEADER_HEIGHT + HEADER_MARGIN) * 16
-      }
-      window.scrollTo({ top: yPos, behavior: 'smooth' })
-    }
-  }
 
   return (
     <Box
       sx={{
         position: 'sticky',
         top: HEADER_MARGIN + 'rem',
-        zIndex: 100,  
+        zIndex: 100,
         width: '100%',
       }}
     >
@@ -132,10 +134,12 @@ function AvatarCard() {
         alt="Background"
         style={{
           position: 'fixed',
+          inset: '0 50% 0 50%',
           zIndex: -1,
           height: '100vh',
           filter: 'blur(3px) saturate(0)',
-          opacity: 0.25,
+          opacity: 0.3,
+          justifySelf: 'center',
           maskMode: 'alpha',
           maskImage: IMG_LINEAR_GRADIENT,
           WebkitMaskImage: IMG_LINEAR_GRADIENT,
@@ -168,13 +172,13 @@ function AvatarCard() {
         >
           Empowering businesses of tomorrow with innovative software solutions 🚀
         </Typography>
-        <Grid2 container gap={2}>
-          <Link href="#contact">
-            <Button variant="contained">Projects</Button>
-          </Link>
-          <Link href="#contact">
-            <Button variant="contained">Get in Touch</Button>
-          </Link>
+        <Grid2 container gap={2} mt={1}>
+          <Button variant="contained" onClick={() => handleScrollTo('projects')}>
+            Projects
+          </Button>
+          <Button variant="contained" onClick={() => handleScrollTo('contact')}>
+            Get in Touch
+          </Button>
         </Grid2>
       </Stack>
     </Grid2>
@@ -213,8 +217,7 @@ function Projects() {
     async function fetchProjects() {
       try {
         const token = import.meta.env.VITE_GITHUB_ACCESS_TOKEN
-        const username = import.meta.env.VITE_GITHUB_USERNAME
-        const response = await fetch(`https://api.github.com/users/${username}/repos`, {
+        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'X-GitHub-Api-Version': '2022-11-28',
