@@ -113,6 +113,7 @@ function Header() {
 function AvatarCard() {
   const AVATAR_SIZE = '20rem'
   const FONT_SIZE = '2.5rem'
+  const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
 
   return (
     <Grid2
@@ -133,10 +134,11 @@ function AvatarCard() {
           position: 'absolute',
           zIndex: -1,
           width: '60rem',
-          height: '35rem',
           filter: 'blur(2.5px) saturate(0)',
           opacity: 0.25,
-          boxShadow: '0 0 200px 100px rgb(70, 70, 70)',
+          maskMode: 'alpha',
+          maskImage: IMG_LINEAR_GRADIENT,
+          WebkitMaskImage: IMG_LINEAR_GRADIENT,
         }}
       />
       <Avatar
