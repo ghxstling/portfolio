@@ -1,11 +1,12 @@
 import { createTheme } from '@mui/material/styles'
+import * as colours from '@mui/material/colors'
+
+const PAPER_PADDING_Y = '2rem'
 
 export const theme = createTheme({
   palette: {
     mode: 'dark',
-    primary: {
-      main: '#FFFFFF',
-    },
+    primary: colours.pink,
   },
   typography: {
     fontFamily: ['"Poppins"', 'sans-serif'].join(','),
@@ -25,6 +26,21 @@ export const theme = createTheme({
     body2: {
       fontSize: '1rem',
       fontWeight: 400,
+    },
+  },
+  components: {
+    MuiPaper: {
+      defaultProps: {
+        elevation: 5,
+      },
+      styleOverrides: {
+        root: {
+          textAlign: 'center',
+          paddingTop: PAPER_PADDING_Y,
+          paddingBottom: PAPER_PADDING_Y,
+          borderRadius: '1rem',
+        },
+      },
     },
   },
 })
