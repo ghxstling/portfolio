@@ -33,11 +33,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {loaded && (
-        <Container component="main">
-          <Box sx={{ my: HEADER_MARGIN * 2 + HEADER_HEIGHT + 'rem' }}>
-            <Header />
-          </Box>
+        <Container component={'main'}>
           <Stack spacing={5}>
+            <Header />
             <AvatarCard />
             <About />
             <Projects />
@@ -68,37 +66,47 @@ function Header() {
   }
 
   return (
-    <Paper
-      id="home"
-      component="header"
-      elevation={5}
+    <Box
       sx={{
-        position: 'fixed',
-        inset: HEADER_MARGIN + 'rem 0 0 50%',
-        transform: 'translate(-50%, -50%)',
-        my: HEADER_MARGIN + 'rem',
+        position: 'relative',
+        inset: HEADER_MARGIN + 'rem 0 0 auto 0',
         zIndex: 100,
-        height: HEADER_HEIGHT + 'rem',
-        maxWidth: '80rem',
         width: '100%',
-        minWidth: 'fit-content',
-        display: 'flex',
-        justifyContent: 'center',
-        borderRadius: 2,
       }}
     >
-      <Grid2 container spacing={3}>
-        {buttons.map((button) => (
-          <Button
-            key={button}
-            onClick={() => handleScrollTo(button.toLowerCase())}
-            sx={{ px: '1rem', fontSize: '1.25rem' }}
-          >
-            {button}
-          </Button>
-        ))}
-      </Grid2>
-    </Paper>
+      <Paper
+        id="home"
+        component="header"
+        elevation={5}
+        sx={{
+          maxWidth: '80rem',
+          my: HEADER_MARGIN + 'rem',
+          height: HEADER_HEIGHT + 'rem',
+          borderRadius: 2,
+          py: 0,
+        }}
+      >
+        <Grid2
+          container
+          spacing={3}
+          sx={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+          }}
+        >
+          {buttons.map((button) => (
+            <Button
+              key={button}
+              onClick={() => handleScrollTo(button.toLowerCase())}
+              sx={{ px: '1rem', fontSize: '1.25rem' }}
+            >
+              {button}
+            </Button>
+          ))}
+        </Grid2>
+      </Paper>
+    </Box>
   )
 }
 
@@ -114,7 +122,7 @@ function AvatarCard() {
       sx={{
         justifyContent: 'center',
         alignItems: 'center',
-        py: '5rem',
+        py: '3rem',
         fontSize: FONT_SIZE,
       }}
     >
@@ -125,8 +133,10 @@ function AvatarCard() {
           position: 'absolute',
           zIndex: -1,
           width: '60rem',
-          filter: 'blur(2.5px)',
+          height: '35rem',
+          filter: 'blur(2.5px) saturate(0)',
           opacity: 0.25,
+          boxShadow: '0 0 200px 100px rgb(70, 70, 70)',
         }}
       />
       <Avatar
@@ -146,7 +156,7 @@ function AvatarCard() {
         }}
       >
         <Typography variant="h1" mb={1.5}>
-          <code>Hey, I'm Dylan.</code>
+          <code>Hey, I'm Dylan</code>
         </Typography>
         <Typography
           fontSize={'1.25rem'}
@@ -154,7 +164,7 @@ function AvatarCard() {
             textWrap: 'wrap',
           }}
         >
-          Empowering businesses of tomorrow with software solutions
+          Empowering businesses of tomorrow with innovative software solutions 🚀
         </Typography>
         <Grid2 container gap={2}>
           <Link href="#contact">
@@ -171,17 +181,16 @@ function AvatarCard() {
 
 function About() {
   return (
-    <Container
+    <Paper
+      component={Container}
       id="about"
       sx={{
-        bgcolor: 'orange',
         height: '20rem',
-        textAlign: 'center',
       }}
     >
       <Typography variant="h2">About</Typography>
       <Typography variant="body1">sadadasdasdasdadsadasdassadasdsadasdasdas</Typography>
-    </Container>
+    </Paper>
   )
 }
 
@@ -225,13 +234,7 @@ function Projects() {
   }, [])
 
   return (
-    <Container
-      id="projects"
-      sx={{
-        bgcolor: 'darkblue',
-        textAlign: 'center',
-      }}
-    >
+    <Paper id="projects">
       <Typography variant="h2">Projects</Typography>
       <Grid2 container spacing={2} justifyContent={'center'}>
         {projects.map((project) => (
@@ -241,13 +244,14 @@ function Projects() {
             sx={{
               width: CARD_SIZE,
               height: CARD_SIZE,
+              borderRadius: '0.5rem',
             }}
           >
             <Typography key={project.id}>{project.name}</Typography>
           </Card>
         ))}
       </Grid2>
-    </Container>
+    </Paper>
   )
 }
 
@@ -267,12 +271,14 @@ function Contact() {
 
 function Footer() {
   return (
-    <Container
+    <Paper
       component="footer"
+      elevation={5}
       sx={{
         bgcolor: 'black',
-        backgroundColor: 'black',
         justifyItems: 'center',
+        textAlign: 'center',
+        py: 2,
       }}
     >
       <Stack direction="row" spacing={1.5}>
@@ -292,13 +298,11 @@ function Footer() {
           </Tooltip>
         </Link>
       </Stack>
-      <Grid2>
-        <Typography variant="body2">
-          {'Copyright © '}
-          {new Date().getFullYear()}
-          {' Dylan Choy'}
-        </Typography>
-      </Grid2>
-    </Container>
+      <Typography variant="body2">
+        {'Copyright © '}
+        {new Date().getFullYear()}
+        {' Dylan Choy'}
+      </Typography>
+    </Paper>
   )
 }
