@@ -196,15 +196,16 @@ function About() {
   )
 }
 
-// TODO: Implement Projects component
-// type ProjectData = {
-//   name: string
-//   description: string
-//   html_url: string
-// }
+// TODO: add more ProjectData fields
+type ProjectData = {
+  id: number
+  name: string
+  description: string
+  html_url: string
+}
 
 function Projects() {
-  const [projects, setProjects] = React.useState<any[]>([])
+  const [projects, setProjects] = React.useState<ProjectData[]>([])
 
   const CARD_SIZE = '20rem'
 
