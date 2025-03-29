@@ -34,14 +34,14 @@ export default function App() {
       <CssBaseline />
       {loaded && (
         <Container component={'main'}>
-          <Stack spacing={5}>
             <Header />
             <AvatarCard />
-            <About />
-            <Projects />
-            <Contact />
-            <Footer />
-          </Stack>
+            <Stack spacing={5}>
+              <About />
+              <Projects />
+              <Contact />
+              <Footer />
+            </Stack>
         </Container>
       )}
     </ThemeProvider>
@@ -68,9 +68,9 @@ function Header() {
   return (
     <Box
       sx={{
-        position: 'relative',
-        inset: HEADER_MARGIN + 'rem 0 0 auto 0',
-        zIndex: 100,
+        position: 'sticky',
+        top: HEADER_MARGIN + 'rem',
+        zIndex: 100,  
         width: '100%',
       }}
     >
@@ -80,7 +80,6 @@ function Header() {
         elevation={5}
         sx={{
           maxWidth: '80rem',
-          my: HEADER_MARGIN + 'rem',
           height: HEADER_HEIGHT + 'rem',
           borderRadius: 2,
           py: 0,
@@ -124,6 +123,7 @@ function AvatarCard() {
         justifyContent: 'center',
         alignItems: 'center',
         py: '3rem',
+        pt: 3 + HEADER_MARGIN + 'rem',
         fontSize: FONT_SIZE,
       }}
     >
@@ -131,10 +131,10 @@ function AvatarCard() {
         src="./assets/code.jpg"
         alt="Background"
         style={{
-          position: 'absolute',
+          position: 'fixed',
           zIndex: -1,
-          width: '60rem',
-          filter: 'blur(2.5px) saturate(0)',
+          height: '100vh',
+          filter: 'blur(3px) saturate(0)',
           opacity: 0.25,
           maskMode: 'alpha',
           maskImage: IMG_LINEAR_GRADIENT,
