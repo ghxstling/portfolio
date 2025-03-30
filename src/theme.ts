@@ -19,6 +19,8 @@ export const theme = createTheme({
       fontSize: '2rem',
       fontWeight: 600,
       paddingBottom: '1rem',
+      textDecoration: 'underline',
+      textUnderlineOffset: '0.25rem',
     },
     body1: {
       fontSize: '1.25rem',
