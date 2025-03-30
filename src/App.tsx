@@ -12,6 +12,7 @@ import {
   Container,
   CssBaseline,
   Card,
+  TextField,
 } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { GitHub, LinkedIn, Instagram } from '@mui/icons-material'
@@ -209,9 +210,15 @@ type ProjectData = {
 }
 
 function Projects() {
-  const [projects, setProjects] = React.useState<ProjectData[]>([])
+  const [projects, setProjects] = React.useState<ProjectData[] | string>('')
+  const projectsToDisplay = {
+    'markit-uoa': 'Markit-UOA',
+    learnquest: 'LearnQuest',
+    'pc-part-hunter': 'PC Part Hunter',
+    'shortr-url': 'Shortr URL',
+  }
 
-  const CARD_SIZE = '20rem'
+  const CARD_SIZE = { lg: '30rem', md: '40rem', sm: '35rem', xs: '30rem' }
 
   React.useEffect(() => {
     async function fetchProjects() {
@@ -232,7 +239,7 @@ function Projects() {
         setProjects(repositories)
       } catch (error) {
         console.error('Error fetching repositories:', error)
-        setProjects([])
+        setProjects('GitHub API Error')
       }
     }
 
@@ -242,42 +249,122 @@ function Projects() {
   return (
     <Paper id="projects">
       <Typography variant="h2">Projects</Typography>
-      <Grid2 container spacing={2} justifyContent={'center'}>
-        {projects.map((project) => (
-          <Card
-            key={project.id}
-            variant="outlined"
-            sx={{
-              width: CARD_SIZE,
-              height: CARD_SIZE,
-              borderRadius: '0.5rem',
-            }}
-          >
-            <Typography key={project.id}>{project.name}</Typography>
-          </Card>
-        ))}
+      <Grid2 container spacing={{ lg: 3, md: 3, sm: 3, xs: 1 }} justifyContent={'center'}>
+        {Array.isArray(projects) ? (
+          projects.map((project) => {
+            if (!Object.prototype.hasOwnProperty.call(projectsToDisplay, project.name)) return null
+            const projectName = projectsToDisplay[project.name as keyof typeof projectsToDisplay]
+            return (
+              <Card
+                key={project.id}
+                variant="outlined"
+                sx={{
+                  width: CARD_SIZE,
+                  height: CARD_SIZE,
+                  borderRadius: '0.5rem',
+                }}
+              >
+                <Typography key={project.id}>{projectName}</Typography>
+              </Card>
+            )
+          })
+        ) : (
+          <Typography variant="body1" color="primary.main">
+            {projects}
+          </Typography>
+        )}
       </Grid2>
     </Paper>
   )
 }
 
 function Contact() {
+  const [fullName, setFullName] = React.useState('')
+  const [email, setEmail] = React.useState('')
+  const [phone, setPhone] = React.useState('')
+  const [subject, setSubject] = React.useState('')
+  const [body, setBody] = React.useState('')
+  const [message, setMessage] = React.useState('')
+
+  const TEXTFIELD_WIDTH = 'calc(50% - 0.5rem)'
+
+  // // TODO: add email sending functionality
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   const formData = {
+  //     fullName,
+  //     email,
+  //     phone,
+  //     subject,
+  //     body,
+  //   }
+  // }
+
   return (
-    <Paper
-      id="contact"
-      sx={{
-        height: '15rem',
-      }}
-    >
+    <Paper id="contact">
       <Typography variant="h2">Let's Work Together</Typography>
       <Typography variant="body1">
         Got ideas for your website or interested in working with me? Get in touch!
       </Typography>
-      <Card>
-        <Button variant="contained" sx={{ mt: '2rem' }}>
-          Contact Me
-        </Button>
-      </Card>
+      <Box component="form" autoComplete="off">
+        <Grid2
+          container
+          spacing={2}
+          component={Card}
+          sx={{
+            mt: '1rem',
+            width: '50rem',
+            p: '1.5rem',
+            justifyContent: 'center',
+            justifySelf: 'center',
+          }}
+        >
+          <TextField
+            id="form-fullname"
+            label="Full Name"
+            required
+            fullWidth
+            onChange={(e) => setFullName(e.target.value)}
+          />
+          <TextField
+            id="form-email"
+            label="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+            sx={{ width: TEXTFIELD_WIDTH }}
+          />
+          <TextField
+            id="form-phone"
+            label="Phone Number"
+            onChange={(e) => setPhone(e.target.value)}
+            sx={{ width: TEXTFIELD_WIDTH }}
+          />
+          <TextField
+            id="form-subject"
+            label="Subject"
+            required
+            fullWidth
+            onChange={(e) => setSubject(e.target.value)}
+          />
+          <TextField
+            id="form-content"
+            label="Body"
+            required
+            multiline
+            rows={6}
+            fullWidth
+            onChange={(e) => setBody(e.target.value)}
+          />
+          <Button variant="contained" sx={{ py: '1rem', mt: '0.5rem', width: '100%' }}>
+            Contact Me
+          </Button>
+          {message && (
+            <Typography variant="body2" color="primary.main" mt={1}>
+              {message}
+            </Typography>
+          )}
+        </Grid2>
+      </Box>
     </Paper>
   )
 }
