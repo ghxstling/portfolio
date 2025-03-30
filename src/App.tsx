@@ -79,12 +79,13 @@ function Header() {
       <Paper
         id="home"
         component="header"
-        elevation={5}
+        elevation={10}
         sx={{
           maxWidth: '80rem',
           height: HEADER_HEIGHT + 'rem',
           borderRadius: 2,
           py: 0,
+          boxShadow: '0 0 1.5rem rgb(10, 10, 10)',
         }}
       >
         <Grid2
@@ -172,7 +173,7 @@ function AvatarCard() {
         >
           Empowering businesses of tomorrow with innovative software solutions 🚀
         </Typography>
-        <Grid2 container gap={2} mt={1}>
+        <Grid2 container gap={2} mt={2}>
           <Button variant="contained" onClick={() => handleScrollTo('projects')}>
             Projects
           </Button>
@@ -188,7 +189,6 @@ function AvatarCard() {
 function About() {
   return (
     <Paper
-      component={Container}
       id="about"
       sx={{
         height: '20rem',
@@ -263,31 +263,29 @@ function Projects() {
 
 function Contact() {
   return (
-    <Container
+    <Paper
       id="contact"
       sx={{
-        bgcolor: 'purple',
-        textAlign: 'center',
+        height: '15rem',
       }}
     >
-      <Typography variant="h2">Get in Touch</Typography>
-    </Container>
+      <Typography variant="h2">Let's Work Together</Typography>
+      <Typography variant="body1">
+        Got ideas for your website or interested in working with me? Get in touch!
+      </Typography>
+      <Card>
+        <Button variant="contained" sx={{ mt: '2rem' }}>
+          Contact Me
+        </Button>
+      </Card>
+    </Paper>
   )
 }
 
 function Footer() {
   return (
-    <Paper
-      component="footer"
-      elevation={5}
-      sx={{
-        bgcolor: 'black',
-        justifyItems: 'center',
-        textAlign: 'center',
-        py: 2,
-      }}
-    >
-      <Stack direction="row" spacing={1.5}>
+    <Box component="footer" pb={5}>
+      <Stack direction="row" spacing={1.5} justifyContent={'center'}>
         <Link href="https://github.com/ghxstling" target="_blank">
           <Tooltip arrow title="GitHub" placement="top">
             <GitHub fontSize={ICON_SIZE} />
@@ -304,11 +302,11 @@ function Footer() {
           </Tooltip>
         </Link>
       </Stack>
-      <Typography variant="body2">
+      <Typography variant="body2" textAlign={'center'}>
         {'Copyright © '}
         {new Date().getFullYear()}
         {' Dylan Choy'}
       </Typography>
-    </Paper>
+    </Box>
   )
 }
