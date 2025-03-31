@@ -17,7 +17,7 @@ import {
 import { ThemeProvider } from '@mui/material/styles'
 import { GitHub, LinkedIn, Instagram } from '@mui/icons-material'
 import { theme } from './css/theme'
-import nodemailer from 'nodemailer'
+// import nodemailer from 'nodemailer'
 
 const HEADER_HEIGHT = 3.5
 const HEADER_MARGIN = 1.5
@@ -294,27 +294,35 @@ function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    try {
-      // const transporter = nodemailer.createTransport({
-      //   service: 'gmail',
-      //   auth: {
-      //     user: 'dylan.choy21@gmail.com',
-      //     pass: process.env.GOOGLE_APP_PASSWORD,
-      //   },
-      // })
-      // const mailOptions = {
-      //   from: fullName + email,
-      //   to: 'dylan.choy21@gmail.com',
-      //   subject: subject,
-      //   text: body,
-      //   html: `<p>${body}</p><br/><p>From: ${fullName}</p><p>Email: ${email}</p><p>Phone: ${phone}</p><br/><p>Sent from ghxstling.dev</p>`,
-      // }
-      // const info = await transporter.sendMail(mailOptions)
-    } catch (error) {
-      console.error('Error sending email:', error)
-      setMessage('Failed to send message. Please try again later.')
-      return
+    const formData = {
+      fullName: fullName,
+      email: email,
+      phone: phone,
+      subject: subject,
+      body: body,
     }
+    setMessage(JSON.stringify(formData))
+    // try {
+    //   const transporter = nodemailer.createTransport({
+    //     service: 'gmail',
+    //     auth: {
+    //       user: 'dylan.choy21@gmail.com',
+    //       pass: process.env.GOOGLE_APP_PASSWORD,
+    //     },
+    //   })
+    //   const mailOptions = {
+    //     from: fullName + email,
+    //     to: 'dylan.choy21@gmail.com',
+    //     subject: subject,
+    //     text: body,
+    //     html: `<p>${body}</p><br/><p>From: ${fullName}</p><p>Email: ${email}</p><p>Phone: ${phone}</p><br/><p>Sent from ghxstling.dev</p>`,
+    //   }
+    //   const info = await transporter.sendMail(mailOptions)
+    // } catch (error) {
+    //   console.error('Error sending email:', error)
+    //   setMessage('Failed to send message. Please try again later.')
+    //   return
+    // }
   }
 
   return (
@@ -323,7 +331,7 @@ function Contact() {
       <Typography variant="body1">
         Got ideas for your website or interested in working with me? Get in touch!
       </Typography>
-      <Box component="form" autoComplete="off">
+      <Box component="form" onSubmit={(e) => handleSubmit(e)} autoComplete="off">
         <Grid2
           container
           spacing={2}
