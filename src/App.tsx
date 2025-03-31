@@ -16,7 +16,8 @@ import {
 } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { GitHub, LinkedIn, Instagram } from '@mui/icons-material'
-import { theme } from './theme'
+import { theme } from './css/theme'
+import nodemailer from 'nodemailer'
 
 const HEADER_HEIGHT = 3.5
 const HEADER_MARGIN = 1.5
@@ -27,6 +28,7 @@ const GITHUB_USERNAME = 'ghxstling'
 
 export default function App() {
   const [loaded, setLoaded] = React.useState(false)
+  const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
 
   React.useEffect(() => {
     setLoaded(true)
@@ -35,6 +37,24 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <Box
+        component={'img'}
+        src="./assets/code.jpg"
+        alt="Background"
+        style={{
+          position: 'fixed',
+          inset: '0 50% 0 50%',
+          zIndex: -1,
+          height: '100vh',
+          width: 'fit-content',
+          filter: 'blur(3px) saturate(0)',
+          opacity: 0.3,
+          justifySelf: 'center',
+          maskMode: 'alpha',
+          maskImage: IMG_LINEAR_GRADIENT,
+          WebkitMaskImage: IMG_LINEAR_GRADIENT,
+        }}
+      />
       {loaded && (
         <Container component={'main'}>
           <Header />
@@ -116,8 +136,6 @@ function Header() {
 function AvatarCard() {
   const AVATAR_SIZE = '20rem'
   const FONT_SIZE = '2.5rem'
-  const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
-
   return (
     <Grid2
       component="section"
@@ -131,22 +149,6 @@ function AvatarCard() {
         fontSize: FONT_SIZE,
       }}
     >
-      <img
-        src="./assets/code.jpg"
-        alt="Background"
-        style={{
-          position: 'fixed',
-          inset: '0 50% 0 50%',
-          zIndex: -1,
-          height: '100vh',
-          filter: 'blur(3px) saturate(0)',
-          opacity: 0.3,
-          justifySelf: 'center',
-          maskMode: 'alpha',
-          maskImage: IMG_LINEAR_GRADIENT,
-          WebkitMaskImage: IMG_LINEAR_GRADIENT,
-        }}
-      />
       <Avatar
         alt="Dylan Choy"
         src="./assets/avatar.jpg"
@@ -288,17 +290,32 @@ function Contact() {
 
   const TEXTFIELD_WIDTH = 'calc(50% - 0.5rem)'
 
-  // // TODO: add email sending functionality
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   const formData = {
-  //     fullName,
-  //     email,
-  //     phone,
-  //     subject,
-  //     body,
-  //   }
-  // }
+  // TODO: add email sending functionality
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      // const transporter = nodemailer.createTransport({
+      //   service: 'gmail',
+      //   auth: {
+      //     user: 'dylan.choy21@gmail.com',
+      //     pass: process.env.GOOGLE_APP_PASSWORD,
+      //   },
+      // })
+      // const mailOptions = {
+      //   from: fullName + email,
+      //   to: 'dylan.choy21@gmail.com',
+      //   subject: subject,
+      //   text: body,
+      //   html: `<p>${body}</p><br/><p>From: ${fullName}</p><p>Email: ${email}</p><p>Phone: ${phone}</p><br/><p>Sent from ghxstling.dev</p>`,
+      // }
+      // const info = await transporter.sendMail(mailOptions)
+    } catch (error) {
+      console.error('Error sending email:', error)
+      setMessage('Failed to send message. Please try again later.')
+      return
+    }
+  }
 
   return (
     <Paper id="contact">
