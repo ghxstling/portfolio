@@ -18,7 +18,7 @@ export const theme = createTheme({
     h2: {
       fontSize: '2rem',
       fontWeight: 600,
-      paddingBottom: '1rem',
+      paddingBottom: '1.5rem',
       textDecoration: 'underline',
       textUnderlineOffset: '0.25rem',
     },
