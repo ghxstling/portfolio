@@ -13,6 +13,8 @@ import {
   CssBaseline,
   Card,
   TextField,
+  FormControl,
+  FormHelperText,
 } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import { GitHub, LinkedIn, Instagram } from '@mui/icons-material'
@@ -169,7 +171,6 @@ function AvatarCard() {
           <code>Hey, I'm Dylan</code>
         </Typography>
         <Typography
-          fontSize={'1.25rem'}
           sx={{
             textWrap: 'wrap',
           }}
@@ -281,27 +282,45 @@ function Projects() {
 }
 
 function Contact() {
-  const [fullName, setFullName] = React.useState('')
-  const [email, setEmail] = React.useState('')
-  const [phone, setPhone] = React.useState('')
-  const [subject, setSubject] = React.useState('')
-  const [body, setBody] = React.useState('')
-  const [message, setMessage] = React.useState('')
+  const [fullName, setFullName] = React.useState<string | undefined>(undefined)
+  const [email, setEmail] = React.useState<string | undefined>(undefined)
+  const [phone, setPhone] = React.useState<string | undefined>(undefined)
+  const [subject, setSubject] = React.useState<string | undefined>(undefined)
+  const [body, setBody] = React.useState<string | undefined>(undefined)
+  const [message, setMessage] = React.useState<string | undefined>(undefined)
+  const [touched, setTouched] = React.useState({
+    fullName: false,
+    email: false,
+    phone: false,
+    subject: false,
+    body: false,
+  })
 
   const TEXTFIELD_WIDTH = 'calc(50% - 0.5rem)'
+
+  const handleBlur = (field: keyof typeof touched) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+  }
 
   // TODO: add email sending functionality
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const formData = {
-      fullName: fullName,
-      email: email,
-      phone: phone,
-      subject: subject,
-      body: body,
+    setTouched({
+      fullName: true,
+      email: true,
+      phone: true,
+      subject: true,
+      body: true,
+    })
+
+    if (!fullName || !email || !subject || !body) {
+      setMessage('Please fill out all required fields.')
+      return
     }
-    setMessage(JSON.stringify(formData))
+
+    const formData = { fullName, email, phone, subject, body }
+    setMessage(`Success! \n${JSON.stringify(formData)}`)
     // try {
     //   const transporter = nodemailer.createTransport({
     //     service: 'gmail',
@@ -331,60 +350,93 @@ function Contact() {
       <Typography variant="body1">
         Got ideas for your website or interested in working with me? Get in touch!
       </Typography>
-      <Box component="form" onSubmit={(e) => handleSubmit(e)} autoComplete="off">
+      <Box component="form" autoComplete="off" onSubmit={handleSubmit} noValidate>
         <Grid2
+          component={Card}
           container
           spacing={2}
-          component={Card}
           sx={{
             mt: '1rem',
             width: '50rem',
             p: '1.5rem',
-            justifyContent: 'center',
             justifySelf: 'center',
           }}
         >
-          <TextField
-            id="form-fullname"
-            label="Full Name"
-            required
-            fullWidth
-            onChange={(e) => setFullName(e.target.value)}
-          />
-          <TextField
-            id="form-email"
-            label="Email"
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            sx={{ width: TEXTFIELD_WIDTH }}
-          />
-          <TextField
-            id="form-phone"
-            label="Phone Number"
-            onChange={(e) => setPhone(e.target.value)}
-            sx={{ width: TEXTFIELD_WIDTH }}
-          />
-          <TextField
-            id="form-subject"
-            label="Subject"
-            required
-            fullWidth
-            onChange={(e) => setSubject(e.target.value)}
-          />
-          <TextField
-            id="form-content"
-            label="Body"
-            required
-            multiline
-            rows={6}
-            fullWidth
-            onChange={(e) => setBody(e.target.value)}
-          />
-          <Button variant="contained" sx={{ py: '1rem', mt: '0.5rem', width: '100%' }}>
+          <FormControl error={!fullName} fullWidth>
+            <TextField
+              id="form-fullname"
+              label="Full Name"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              onBlur={() => handleBlur('fullName')}
+            />
+            {touched.fullName && !fullName && <FormHelperText>Full Name is required.</FormHelperText>}
+          </FormControl>
+          <Grid2 container spacing={2} sx={{ width: '100%' }}>
+            <FormControl error={!email || !/\S+@\S+\.\S+/.test(email)} sx={{ width: TEXTFIELD_WIDTH }}>
+              <TextField
+                id="form-email"
+                type="email"
+                label="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => handleBlur('email')}
+              />
+              {touched.email && (!email || !/\S+@\S+\.\S+/.test(email)) && (
+                <FormHelperText>Invalid Email address.</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl error={!phone || !/^[0-9]{9,10}$/.test(phone)} sx={{ width: TEXTFIELD_WIDTH }}>
+              <TextField
+                id="form-phone"
+                label="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                onBlur={() => handleBlur('phone')}
+              />
+              {touched.phone && phone != '' && phone != null && !/^[0-9]{9,10}$/.test(phone) && (
+                <FormHelperText>Please enter a valid phone number (9-10 digits).</FormHelperText>
+              )}
+            </FormControl>
+          </Grid2>
+          <FormControl error={!subject} fullWidth>
+            <TextField
+              id="form-subject"
+              label="Subject"
+              required
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              onBlur={() => handleBlur('subject')}
+            />
+            {touched.subject && !subject && <FormHelperText>Subject is required.</FormHelperText>}
+          </FormControl>
+          <FormControl error={!body} fullWidth>
+            <TextField
+              id="form-content"
+              label="Body"
+              required
+              multiline
+              rows={6}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              onBlur={() => handleBlur('body')}
+            />
+            {touched.body && !body && <FormHelperText>Message body is required.</FormHelperText>}
+          </FormControl>
+          <Button type="submit" variant="contained" sx={{ py: '1rem', mt: '0.5rem', width: '100%' }}>
             Contact Me
           </Button>
           {message && (
-            <Typography variant="body2" color="primary.main" mt={1}>
+            <Typography
+              variant="body2"
+              color="primary.main"
+              sx={{
+                maxWidth: '100%',
+                wordWrap: 'break-word',
+              }}
+            >
               {message}
             </Typography>
           )}
