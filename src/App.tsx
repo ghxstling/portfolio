@@ -244,12 +244,12 @@ function About() {
             <Section>
               <VideogameAsset sx={ICON_STYLE} />
               <Typography textAlign={'left'}>
-                When I am not spending hours fixing my broken code, I enjoy <Bold>playing video games</Bold> with my
-                friends to unwind. I also have a keen interest in <Bold>all things technology</Bold>, particularly{' '}
-                computer hardware and mobile phones. I am a <Bold>gym enthusiast</Bold>, regularly working out and
-                focusing on fitness through cooking high-protein meals and experimenting with new recipes. I also enjoy{' '}
-                <Bold>exploring new technologies</Bold> and <Bold>experimenting with coding projects</Bold> in my free
-                time.
+                When I am not coding, I enjoy <Bold>playing video games</Bold> with my friends to unwind. I also have a
+                keen interest in <Bold>all things technology</Bold>, particularly computer hardware and mobile phones. I
+                am a <Bold>gym enthusiast</Bold>, regularly working out and focusing on fitness through cooking
+                high-protein meals and experimenting with new recipes. I also love <Bold>looking at cars</Bold> I cannot
+                afford online. I enjoy <Bold>exploring new technologies</Bold> and{' '}
+                <Bold>experimenting with coding projects</Bold> in my free time.
               </Typography>
             </Section>
           </Grid2>
