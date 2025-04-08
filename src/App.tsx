@@ -658,12 +658,14 @@ function Contact() {
   const [fullName, setFullName] = React.useState<Field>(undefined)
   const [email, setEmail] = React.useState<Field>(undefined)
   const [phone, setPhone] = React.useState<Field>(undefined)
+  const [subject, setSubject] = React.useState<Field>(undefined)
   const [body, setBody] = React.useState<Field>(undefined)
   const [message, setMessage] = React.useState<Field>(undefined)
   const [touched, setTouched] = React.useState({
     fullName: false,
     email: false,
     phone: false,
+    subject: false,
     body: false,
   })
 
@@ -681,10 +683,11 @@ function Contact() {
       fullName: true,
       email: true,
       phone: true,
+      subject: true,
       body: true,
     })
 
-    if (!fullName || !email || !body) {
+    if (!fullName || !email || !subject || !body) {
       setMessage('Please fill out all required fields.')
       return
     }
@@ -693,6 +696,7 @@ function Contact() {
       fullName,
       email,
       phone: phone ? phone : 'N/A',
+      subject,
       body,
     }
     const url = `${import.meta.env.VITE_EXPRESS_JS_API_URL}`
@@ -707,7 +711,7 @@ function Contact() {
       }).then((res) => res.json())
       setMessage("Email sent successfully! I'll get back to you as soon as possible.")
     } catch (error) {
-      console.log('Error sending email:', error)
+      console.error('Error sending email:', error)
       setMessage('Failed to send email. Please try again later.')
     }
   }
@@ -772,13 +776,24 @@ function Contact() {
               )}
             </FormControl>
           </Grid2>
+          <FormControl error={!subject} fullWidth>
+            <TextField
+              id="form-subject"
+              label="Subject"
+              required
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              onBlur={() => handleBlur('subject')}
+            />
+            {touched.subject && !subject && <FormHelperText>Subject is required.</FormHelperText>}
+          </FormControl>
           <FormControl error={!body} fullWidth>
             <TextField
               id="form-content"
               label="Body"
               required
               multiline
-              rows={10}
+              rows={8}
               value={body}
               onChange={(e) => setBody(e.target.value)}
               onBlur={() => handleBlur('body')}

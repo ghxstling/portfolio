@@ -12,7 +12,13 @@ import dotenv from 'dotenv'
 dotenv.config({ path: './.env.local' })
 
 const app = express()
-const port = 3000
+let port
+if (process.env.NODE_ENV === 'production') {
+  port = 3000
+} else {
+  port = 8000
+}
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 app.use(express.json())
@@ -28,7 +34,7 @@ app.use(
 
 app.post('/send-email', (req, res) => {
   try {
-    const { fullName, email, body, phone } = req.body
+    const { fullName, email, subject, body, phone } = req.body
 
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -51,17 +57,18 @@ app.post('/send-email', (req, res) => {
     const mailOptions = {
       from: `${fullName} <${email}>`,
       to: 'dylan.choy21@gmail.com',
-      subject: `Message from ${fullName} - ghxstling.dev`,
+      subject: `Message from ${fullName} | ghxstling.dev`,
       text: body,
       html: `
-    <p><strong>You have a new message from ${fullName}:</strong></p>
-    <br/>
-    <p>${body.replace(/\n/g, '<br />')}</p>
-    <br/>
-    <p>Email: ${email}</p>
-    <p>Phone: ${phone}</p>
-    <br/>
-    <p><strong>Sent from ghxstling.dev</strong></p>`,
+        <p>Name: ${fullName}</p>
+        <p>Email: ${email}</p>
+        <p>Phone: ${phone}</p>
+        <p>Subject: ${subject}</p>
+        <br />
+        <p>${body.replace(/\n/g, '<br />')}</p>
+        <br />
+        <p>Sent from ghxstling.dev</p>
+      `,
     }
 
     transporter.sendMail(mailOptions, (error, info) => {
