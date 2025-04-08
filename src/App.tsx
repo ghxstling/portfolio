@@ -1,711 +1,849 @@
-import React, { useEffect, useState } from 'react'
-
-import avatar from './assets/avatar.jpg'
-import cs101 from './assets/cs101.jpg'
-import cs399 from './assets/cs399.jpg'
-import cs335 from './assets/cs335.jpg'
-import transcript_p1 from './assets/transcript_p1.jpg'
-import transcript_p2 from './assets/transcript_p2.jpg'
-import transcript_p3 from './assets/transcript_p3.jpg'
-import project1 from './assets/project1.jpg'
-import project2 from './assets/project2.jpg'
-import test from './assets/placeholder.jpg'
+import * as React from 'react'
 
 import {
   Avatar,
   Box,
-  Container,
-  IconButton,
   Link,
   Paper,
   Stack,
   Tooltip,
   Typography,
-  Zoom,
-  Menu,
-  MenuItem,
-  Modal,
-  ImageList,
-  ImageListItem,
-  Backdrop,
-  Fade,
-  Divider,
-  List,
-  ListItem,
   Button,
-  Collapse,
+  Grid2,
+  Container,
+  CssBaseline,
+  Card,
+  TextField,
+  FormControl,
+  FormHelperText,
+  Modal,
+  List,
+  useMediaQuery,
 } from '@mui/material'
-import Grid from '@mui/material/Unstable_Grid2'
+import {
+  GitHub,
+  LinkedIn,
+  Instagram,
+  DataObject,
+  VideogameAsset,
+  School,
+  Description,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  SkipNext,
+  SkipPrevious,
+  FileDownload,
+  Link as LinkIcon,
+  OpenInNew,
+} from '@mui/icons-material'
 
-import { GitHub, LinkedIn, Description, Launch, KeyboardArrowLeft, KeyboardArrowRight } from '@mui/icons-material/'
+import { ThemeProvider, useTheme } from '@mui/material/styles'
+import { theme } from './css/theme'
+
+import { Document, Page, pdfjs } from 'react-pdf'
+import 'react-pdf/dist/Page/TextLayer.css'
+import 'react-pdf/dist/Page/AnnotationLayer.css'
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString()
+
+const HEADER_HEIGHT = 3.5
+const HEADER_MARGIN = 1.5
+
+const ICON_SIZE = 'large'
+
+const GITHUB_USERNAME = 'ghxstling'
+
+export default function App() {
+  const [loaded, setLoaded] = React.useState(false)
+  const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
+
+  React.useEffect(() => {
+    setLoaded(true)
+  }, [setLoaded])
+
+  const image = {
+    position: 'fixed',
+    inset: '0 50% 0 50%',
+    zIndex: -1,
+    height: '100vh',
+    width: 'fit-content',
+    filter: 'blur(3px) saturate(0)',
+    opacity: 0.3,
+    justifySelf: 'center',
+    maskMode: 'alpha',
+    maskImage: IMG_LINEAR_GRADIENT,
+    WebkitMaskImage: IMG_LINEAR_GRADIENT,
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box component={'img'} src="./assets/code.jpg" alt="Background" sx={image} />
+      {loaded && (
+        <Container component={'main'}>
+          <Header />
+          <AvatarCard />
+          <Stack spacing={{ md: 5, sm: 2.5 }}>
+            <About />
+            <Projects />
+            <Contact />
+            <Footer />
+          </Stack>
+        </Container>
+      )}
+    </ThemeProvider>
+  )
+}
+
+const handleScrollTo = (id: string) => {
+  const element = document.getElementById(id)
+  if (element) {
+    const rect = element.getBoundingClientRect()
+    let yPos
+    if (element.id === 'home') {
+      yPos = 0
+    } else {
+      yPos = rect.top + window.scrollY - (HEADER_HEIGHT + HEADER_MARGIN) * 16
+    }
+    window.scrollTo({ top: yPos, behavior: 'smooth' })
+  }
+}
 
 function Header() {
-  const fontSize = {
-    fontSize: '1.25vw',
-  }
+  const buttons = ['Home', 'About', 'Projects', 'Contact']
 
   return (
-    <>
-      <Box
-        sx={{
-          position: 'fixed',
-          top: '3%',
-        }}
-        component="header"
-      >
-        <Grid container direction="column" justifyContent="center" alignItems="center">
-          <Avatar
-            alt="Dylan Choy"
-            src={avatar}
-            sx={{
-              width: '10vw',
-              height: '10vw',
-            }}
-          />
-        </Grid>
-        <Grid sx={fontSize}>
-          <code>Hey, I'm Dylan.</code>
-        </Grid>
-        <Grid sx={fontSize}>
-          <Typography>An aspiring Software Engineer who is studying Computer Science / Information Systems</Typography>
-        </Grid>
-      </Box>
-    </>
-  )
-}
-
-function Projects() {
-  const projectData = [
-    {
-      img: project1,
-      title: 'Markit-UOA',
-      desc: 'A web platform for organising student markers',
-      link: 'https://markituoa.ghxstling.info/',
-    },
-    {
-      img: project2,
-      title: 'Calculator',
-      desc: 'An online Calculator tool',
-      link: 'https://calculator.ghxstling.info/',
-    },
-    {
-      img: test,
-      title: 'Placeholder',
-      desc: 'Placeholder',
-      link: '',
-    },
-  ]
-
-  const paperStyle = {
-    p: 1,
-    bgcolor: '#525765',
-  }
-
-  const textStyle = {
-    color: 'white',
-    fontSize: '0.8rem',
-  }
-
-  const buttonPosition = '3rem'
-  const buttonBoxStyle = {
-    justifyContent: 'center',
-    position: 'relative',
-    top: '-1rem',
-  }
-  const buttonIconStyle = {
-    position: 'absolute',
-    bgcolor: 'white',
-    color: 'black',
-    '&:hover': {
-      bgcolor: 'gray',
-      color: 'white',
-    },
-    width: '2.5rem',
-    height: '2.5rem',
-  }
-
-  const [hover, setHover] = useState<number>(-1)
-
-  return (
-    <Grid
-      container
-      direction={'row'}
-      spacing={3}
+    <Box
       sx={{
-        mt: '10rem',
-        mb: '2rem',
-        justifyContent: 'center',
-        alignItems: 'center',
+        position: 'sticky',
+        top: HEADER_MARGIN + 'rem',
+        zIndex: 100,
+        width: '100%',
       }}
     >
-      <Box sx={buttonBoxStyle}>
-        <IconButton
+      <Paper
+        id="home"
+        component="header"
+        elevation={10}
+        sx={{
+          maxWidth: '80rem',
+          height: HEADER_HEIGHT + 'rem',
+          borderRadius: 2,
+          py: 0,
+          boxShadow: '0 0 1.5rem rgb(10, 10, 10)',
+        }}
+      >
+        <Grid2
+          container
+          spacing={3}
           sx={{
-            ...buttonIconStyle,
-            right: buttonPosition,
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
           }}
         >
-          <KeyboardArrowLeft fontSize="large" />
-        </IconButton>
-      </Box>
-      {projectData.map((item, index) => (
-        <Grid>
-          <Paper
-            onMouseEnter={() => setHover(index)}
-            onMouseLeave={() => setHover(-1)}
-            square={false}
-            elevation={20}
-            sx={paperStyle}
-          >
-            <ImageListItem key={item.img}>
-              <img id="projectImg" src={item.img} alt={item.title} loading="eager" />
-            </ImageListItem>
-            <Link href={item.link} target="_blank" color="inherit" underline="none">
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="overline" textAlign={'left'} sx={textStyle}>
-                  {item.title}
-                </Typography>
-                <Launch fontSize="small" htmlColor="white" />
-              </Box>
-              <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', width: '15rem' }}>
-                <Collapse in={hover === index}>
-                  <Typography variant="body2" textAlign={'left'} sx={textStyle}>
-                    {item.desc}
-                  </Typography>
-                </Collapse>
-              </Box>
-            </Link>
-          </Paper>
-        </Grid>
-      ))}
-      <Box sx={buttonBoxStyle}>
-        <IconButton
-          sx={{
-            ...buttonIconStyle,
-            left: buttonPosition,
-          }}
-        >
-          <KeyboardArrowRight fontSize="large" />
-        </IconButton>
-      </Box>
-    </Grid>
-  )
-}
-
-function MyDocuments() {
-  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
-  const [modal, setModal] = useState<string>('')
-  const [open, setOpen] = useState(false)
-
-  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => setMenuAnchor(event.currentTarget)
-  const handleMenuClose = () => setMenuAnchor(null)
-
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: '#373a42',
-    boxShadow: 24,
-    p: 4,
-  }
-
-  return (
-    <>
-      <IconButton
-        id="menu-button"
-        color="inherit"
-        size="small"
-        disableRipple
-        disableFocusRipple
-        edge="end"
-        aria-controls={Boolean(menuAnchor) ? 'menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={Boolean(menuAnchor) ? 'true' : undefined}
-        onClick={handleMenuOpen}
-        sx={{
-          padding: 0,
-          margin: 0,
-          paddingBottom: 1,
-        }}
-      >
-        <Tooltip arrow title="My Documents" placement="top" TransitionComponent={Zoom}>
-          <Description fontSize="large" />
-        </Tooltip>
-      </IconButton>
-      <Menu
-        id="menu"
-        anchorEl={menuAnchor}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-        open={Boolean(menuAnchor)}
-        onClose={handleMenuClose}
-        MenuListProps={{
-          'aria-labelledby': 'menu-button',
-        }}
-        sx={{
-          padding: 0,
-          margin: 0,
-        }}
-      >
-        <MenuItem
-          onClick={() => {
-            setOpen(true)
-            setModal('cv')
-          }}
-        >
-          CV
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setOpen(true)
-            setModal('transcript')
-          }}
-        >
-          Academic Transcript
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setOpen(true)
-            setModal('awards')
-          }}
-        >
-          Awards
-        </MenuItem>
-      </Menu>
-
-      <div>
-        <Modal
-          open={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="modal-title"
-          aria-describedby="modal-description"
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 300,
-            },
-          }}
-        >
-          <Fade in={open}>
-            {modal === 'cv' ? (
-              <Box sx={{ ...modalStyle, width: '40rem' }}>
-                <CV />
-              </Box>
-            ) : modal === 'transcript' ? (
-              <Box sx={{ ...modalStyle }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                  My Academic Transcript
-                </Typography>
-                <Transcript />
-              </Box>
-            ) : modal === 'awards' ? (
-              <Box sx={{ ...modalStyle }}>
-                <Awards />
-              </Box>
-            ) : (
-              <></>
-            )}
-          </Fade>
-        </Modal>
-      </div>
-    </>
-  )
-}
-
-function Footer() {
-  return (
-    <>
-      <Box
-        sx={{
-          padding: '1rem',
-          position: 'fixed',
-          bottom: 0,
-        }}
-        component="footer"
-      >
-        <Grid container direction="column" justifyContent="center" alignItems="center" spacing={0}>
-          <Stack direction="row" spacing={1.5}>
-            <div></div>
-            <Link href="https://github.com/ghxstling" target="_blank" color="inherit">
-              <Tooltip arrow title="GitHub" placement="top" TransitionComponent={Zoom}>
-                <GitHub fontSize="large" />
-              </Tooltip>
-            </Link>
-            <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank" color="inherit">
-              <Tooltip arrow title="LinkedIn" placement="top" TransitionComponent={Zoom}>
-                <LinkedIn fontSize="large" />
-              </Tooltip>
-            </Link>
-            <MyDocuments />
-          </Stack>
-          <Grid>
-            <Typography variant="body2" color="white">
-              {'Copyright © '}
-              {new Date().getFullYear()}
-              {' Dylan Choy'}
-            </Typography>
-          </Grid>
-        </Grid>
-      </Box>
-    </>
-  )
-}
-
-function CV() {
-  const alignLeft = {
-    ml: 2,
-    textAlign: 'left',
-  }
-  const divider = {
-    mt: 1,
-    mb: 1,
-  }
-
-  return (
-    <Container>
-      <Paper sx={{ p: 2 }}>
-        {/* Name */}
-        <Grid>
-          <Typography id="cvName" sx={alignLeft}>
-            Dylan Choy
-          </Typography>
-          <Box sx={divider}>
-            <Divider variant="middle" />
-          </Box>
-        </Grid>
-        {/* Summary and Contact */}
-        <Grid container direction={'row'} spacing={1} sx={alignLeft}>
-          <Grid xs={7}>
-            <Typography id="cvHeading1">Summary</Typography>
-            <Typography id="cvText">
-              Highly motivated and dynamic person with a diligent attitude in a workspace environment and strive to
-              learn new experiences and improve my excellent skills. I aspire to pursue a career in Software Development
-              as a Software Engineer.
-            </Typography>
-          </Grid>
-          <Grid xs={5}>
-            <Typography id="cvHeading1">Contact</Typography>
-            <Typography id="cvText">
-              dylan.choy21@gmail.com
-              <br />
-              https://www.linkedin.com/in/dylan-choy/
-              <br />
-              022 439 2298
-              <br />
-              Mount Eden, Auckland
-            </Typography>
-          </Grid>
-        </Grid>
-        <Box sx={divider}>
-          <Divider variant="middle" />
-        </Box>
-        {/* Body */}
-        <Grid container direction={'row'} spacing={1} sx={alignLeft}>
-          {/* Education */}
-          <Grid xs={4}>
-            <Typography id="cvHeading1">Education</Typography>
-            <Typography id="cvHeading2">AUCKALND GRAMMAR SCHOOL</Typography>
-            <Typography id="cvText">
-              CIE NZ
-              <br />
-              2016 - 2020
-              <br />
-              Average Grade: A
-            </Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">UNIVERSITY OF AUCKLAND</Typography>
-            <Typography id="cvText">
-              BCom / BSci
-              <br />
-              Computer Science & Information Systems
-              <br />
-              2021 - 2025
-              <br />
-              Cumulative GPA: 6.5
-            </Typography>
-            <Box sx={{ ...divider, ml: -2 }}>
-              <Divider variant="middle" />
-            </Box>
-            {/* Skills */}
-            <Typography id="cvHeading1">Skills</Typography>
-            <Typography id="cvHeading2">Programming Languages</Typography>
-            <Typography id="cvText">Python, Java, C#, Typescript, NodeJS</Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">Web Technologies</Typography>
-            <Typography id="cvText">Next.JS, RESTful, HTML5, CSS, git</Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">Tools & Technologies</Typography>
-            <Typography id="cvText">Word, PowerPoint, Excel, AWS</Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">Other Skills</Typography>
-            <Typography id="cvText">
-              Communication, Teamwork, Problem-solving, Adaptability, Working under Pressure
-            </Typography>
-            <Box sx={{ ...divider, ml: -2 }}>
-              <Divider variant="middle" />
-            </Box>
-            {/* References */}
-            <Typography id="cvHeading1">References</Typography>
-            <Typography id="cvText">Available upon request.</Typography>
-          </Grid>
-          {/* Work Experience */}
-          <Grid xs={8}>
-            <Typography id="cvHeading1">Experience</Typography>
-            <Typography id="cvHeading2">BACKEND DEVELOPER</Typography>
-            <Typography id="cvText">
-              UNIVERSITY OF AUCKLAND CAPSTONE PROJECT <br />
-              Jul 2023 - Oct 2023
-              <List disablePadding sx={{ ml: 1, listStyleType: 'disc' }}>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Project URL: https://www.markituoa.xyz/
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Worked with a team of 6 people to develop a Next.js Web Application called Markit-UOA for organising
-                    student markers to various courses
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Developed a feature-rich API specifically tailored to the project, with functions like personalised
-                    email sender, CSV writer, and persistent file storing
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Learned & utilised new technologies quickly, like TypeScript, AWS, and NodeJS, during project
-                    development
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Adopted good software development practices like Agile-driven development and Feature Branch
-                    Workflow
-                  </Typography>
-                </ListItem>
-              </List>
-            </Typography>
-            <Box sx={{ pb: 1 }} />
-            <Typography id="cvHeading2">SHOP ASSISTANT</Typography>
-            <Typography id="cvText">
-              PB TECH ST LUKE'S
-              <br />
-              Apr 2022 - Present
-              <List disablePadding sx={{ ml: 1, listStyleType: 'disc' }}>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Delivered excellent customer service with a positive attitude
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Provided customers with product recommendations tailored to their requirements
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Maintained a high level of attention to detail with every task
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    Worked in a fast-paced work environment
-                  </Typography>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    As a Cashier:
-                  </Typography>
-                  <List disablePadding sx={{ ml: 2, listStyleType: 'disc' }}>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Prepared daily cash/bank reconciliation reports
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Identified and fixed any accounting errors with credits/invoices
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Processed payments/credits at checkout for customers
-                      </Typography>
-                    </ListItem>
-                  </List>
-                </ListItem>
-                <ListItem disablePadding sx={{ display: 'list-item' }}>
-                  <Typography id="cvText" sx={{ ml: 1 }}>
-                    As a Service Technician:
-                  </Typography>
-                  <List disablePadding sx={{ ml: 2, listStyleType: 'disc' }}>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Booked in service/repair jobs with participating service agents on behalf of customers
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Handled customer complaints calmly & professionally
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Performed diagnostics and on-site repairs for desktop PCs and laptops
-                      </Typography>
-                    </ListItem>
-                    <ListItem disablePadding sx={{ display: 'list-item' }}>
-                      <Typography id="cvText" sx={{ ml: 1 }}>
-                        Assisted customers in resolving issues regarding their purchases
-                      </Typography>
-                    </ListItem>
-                  </List>
-                </ListItem>
-              </List>
-            </Typography>
-          </Grid>
-        </Grid>
+          {buttons.map((button) => (
+            <Button
+              key={button}
+              onClick={() => handleScrollTo(button.toLowerCase())}
+              sx={{ height: '100%', px: '1rem', fontSize: '1.25rem', color: 'primary.light' }}
+            >
+              {button}
+            </Button>
+          ))}
+        </Grid2>
       </Paper>
-    </Container>
+    </Box>
   )
 }
 
-function Awards() {
-  const imgData = [
-    { img: cs101, title: 'COMPSCI 101' },
-    { img: cs335, title: 'COMPSCI 335' },
-    { img: cs399, title: 'COMPSCI 399' },
-  ]
+function AvatarCard() {
+  const [open, setOpen] = React.useState(false)
+
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
+  const AVATAR_SIZE = '20rem'
+  const FONT_SIZE = '2.5rem'
 
   return (
-    <ImageList cols={3} gap={10}>
-      {imgData.map((item) => (
-        <ImageListItem
-          key={item.img}
-          sx={{
-            width: '25rem',
-          }}
-        >
-          <img src={item.img} alt={item.title} loading="eager" />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  )
-}
-
-function Transcript() {
-  const imgData = [
-    { img: transcript_p1, title: 'Transcript Page 1' },
-    { img: transcript_p2, title: 'Transcript Page 2' },
-    { img: transcript_p3, title: 'Transcript Page 3' },
-  ]
-
-  return (
-    <ImageList cols={3} gap={10}>
-      {imgData.map((item) => (
-        <ImageListItem
-          key={item.img}
-          sx={{
-            width: '25rem',
-          }}
-        >
-          <img src={item.img} alt={item.title} loading="eager" />
-        </ImageListItem>
-      ))}
-    </ImageList>
-  )
-}
-
-function WIPModal() {
-  const [open, setOpen] = useState(false)
-
-  const handleOpen = () => {
-    const timer = setTimeout(() => {
-      setOpen(true)
-    }, 1000)
-    return () => clearTimeout(timer)
-  }
-
-  useEffect(() => {
-    handleOpen()
-  }, [])
-
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    bgcolor: '#373a42',
-    boxShadow: 24,
-    p: 4,
-  }
-
-  return (
-    <Modal
-      open={open}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 300,
+    <Grid2
+      component="section"
+      id="home"
+      container
+      sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        py: '3rem',
+        pt: 3 + HEADER_MARGIN + 'rem',
+        fontSize: FONT_SIZE,
+        gap: {
+          sm: 5,
+          md: 0,
         },
       }}
     >
-      <Fade in={open}>
-        <Box sx={modalStyle}>
-          <Typography variant="h1" fontWeight={600} fontSize={'2rem'} id="modal-title" sx={{ mb: 1 }}>
-            Hi there!
+      <Avatar
+        alt="Dylan Choy"
+        src="./assets/avatar.jpg"
+        sx={{
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE,
+        }}
+      />
+
+      <Stack
+        sx={{
+          textAlign: 'left',
+          ml: '5rem',
+          maxWidth: '25rem',
+        }}
+      >
+        <Typography variant="h1" mb={1.5}>
+          <code>Hey, I'm Dylan</code>
+        </Typography>
+        <Typography
+          sx={{
+            textWrap: 'wrap',
+          }}
+        >
+          Empowering businesses of tomorrow with innovative software solutions 🚀
+        </Typography>
+        <Grid2 container gap={2} mt={2}>
+          <Button variant="contained" onClick={() => handleScrollTo('projects')}>
+            Projects
+          </Button>
+          <Button variant="contained" onClick={() => handleScrollTo('contact')}>
+            Get in Touch
+          </Button>
+          <Button variant="contained" onClick={handleOpen}>
+            <Description />
+          </Button>
+          <PDFModal open={open} onClose={handleClose} />
+        </Grid2>
+      </Stack>
+    </Grid2>
+  )
+}
+
+function PDFModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [file, setFile] = React.useState<string>('cv.pdf')
+  const [numPages, setNumPages] = React.useState<number>()
+  const [pageNumber, setPageNumber] = React.useState<number>(1)
+
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md')) // Matches screens smaller than 'sm'
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('md', 'xl')) // Matches 'sm' to 'md'
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl')) // Matches screens larger than 'lg'
+
+  const files = ['cv.pdf', 'transcript.pdf']
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    setNumPages(numPages)
+    setPageNumber(1)
+  }
+
+  function changePage(offset: number) {
+    setPageNumber((prevPageNumber) => prevPageNumber + offset)
+  }
+
+  function changeFile() {
+    const currentIndex = files.indexOf(file)
+    const nextIndex = (currentIndex + 1) % files.length
+    setFile(files[nextIndex])
+    setPageNumber(1)
+  }
+
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Paper
+        elevation={3}
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          boxShadow: 24,
+          px: 4,
+        }}
+      >
+        <Stack
+          direction={'row'}
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Button disabled={files.indexOf(file) <= 0} onClick={() => changeFile()} sx={{ color: 'white' }}>
+            <SkipPrevious fontSize="large" />
+          </Button>
+          <Typography variant="h2" mt={2}>
+            {file === 'cv.pdf' ? 'Resume' : 'Academic Transcript'}
           </Typography>
-          <Typography variant="body1" fontSize={'1.25rem'} id="modal-description">
-            Thanks for dropping by my portfolio. Please keep in mind that it is currently a <b>work in progress</b>, so
-            some features may either be missing or incomplete. In the meantime, feel free to have a look around! :)
-          </Typography>
-          <Box sx={{ pt: 2 }}>
-            <Button
-              variant="contained"
-              onClick={() => setOpen(false)}
-              sx={{
-                bgcolor: 'white',
-                color: 'black',
-                '&:hover': {
-                  bgcolor: 'gray',
-                  color: 'white',
-                },
-              }}
-            >
-              close
-            </Button>
-          </Box>
+          <Button
+            disabled={files.indexOf(file) >= files.length - 1}
+            onClick={() => changeFile()}
+            sx={{ width: 'fit-content', color: 'white' }}
+          >
+            <SkipNext fontSize="large" />
+          </Button>
+        </Stack>
+        <Box sx={{ mb: 2 }}>
+          <Document
+            file={`./assets/${file}`}
+            error={<Typography color="primary.main">Failed to load PDF.</Typography>}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
+            <Page
+              pageNumber={pageNumber}
+              scale={isSmallScreen ? 0.3 : isMediumScreen ? 0.6 : isLargeScreen ? 0.9 : 1}
+            />
+          </Document>
         </Box>
-      </Fade>
+        <Stack direction={'row'} sx={{ position: 'relative', justifyContent: 'center', alignItems: 'center' }}>
+          <Button disabled={pageNumber <= 1} onClick={() => changePage(-1)} sx={{ color: 'white' }}>
+            <KeyboardArrowLeft fontSize="large" />
+          </Button>
+          <Typography variant="body1" width={'30%'} textAlign={'center'}>
+            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+          </Typography>
+          <Button disabled={pageNumber >= numPages!} onClick={() => changePage(1)} sx={{ color: 'white' }}>
+            <KeyboardArrowRight fontSize="large" />
+          </Button>
+          <Button
+            component="a"
+            href={`./assets/${file}`}
+            download
+            variant="contained"
+            sx={{
+              position: 'absolute',
+              bottom: '0',
+              right: '0',
+            }}
+          >
+            <FileDownload fontSize="large" />
+          </Button>
+        </Stack>
+      </Paper>
     </Modal>
   )
 }
 
-function App() {
+function About() {
+  const ICON_STYLE = { fontSize: '5rem', color: 'primary.main' }
+
+  function Section({ children }: { children: React.ReactNode }) {
+    return (
+      <Stack direction={'row'} spacing={5} alignItems={'center'}>
+        {children}
+      </Stack>
+    )
+  }
+
+  function Bold({ children }: { children: string }) {
+    return (
+      <Typography component="span" sx={{ color: 'primary.light', fontWeight: 'bold' }}>
+        {children}
+      </Typography>
+    )
+  }
+
   return (
-    <Container>
-      <WIPModal />
-      <Grid container direction="column" justifyContent="center" alignItems="center" spacing={3}>
-        <Header />
-        <Projects />
-        <Footer />
-      </Grid>
-    </Container>
+    <Paper
+      id="about"
+      sx={{
+        height: 'fit-content',
+        px: '3rem',
+      }}
+    >
+      <Stack spacing={5}>
+        <Box>
+          <Typography variant="h2">About</Typography>
+          <Grid2 container spacing={3}>
+            <Section>
+              <DataObject sx={ICON_STYLE} />
+              <Typography textAlign={'left'}>
+                An aspiring Software Developer with a focus on <Bold>backend web development</Bold>. My passion in
+                technology and programming began at a young age, building my first <Bold>Snake</Bold> game using Python
+                in 2018. Since then, I am fueled by a <Bold>desire to understand</Bold> the intricacies of software and
+                its potential to provide <Bold>effective solutions</Bold>. I am committed to placing people at the heart
+                of every project, ensuring that my software makes a <Bold>real difference</Bold> in their lives.
+              </Typography>
+            </Section>
+            <Section>
+              <School sx={ICON_STYLE} />
+              <Typography textAlign={'left'}>
+                During my studies at the <Bold>University of Auckland</Bold>, I gained a strong foundation in web
+                development, utilising technologies like <Bold>Python, TypeScript, and React</Bold>. I am a
+                self-motivated learner with proven <Bold>problem-solving skills</Bold> in debugging and optimizing web
+                applications, and I <Bold>quickly adapt</Bold> to new technologies (e.g., AWS, SendGrid). I also excel
+                in <Bold>collaborative settings</Bold>, demonstrating strong communication and teamwork abilities.
+              </Typography>
+            </Section>
+            <Section>
+              <VideogameAsset sx={ICON_STYLE} />
+              <Typography textAlign={'left'}>
+                When I am not coding, I enjoy <Bold>playing video games</Bold> with my friends to unwind. I also have a
+                keen interest in <Bold>all things technology</Bold>, particularly computer hardware and mobile phones. I
+                am a <Bold>gym enthusiast</Bold>, regularly working out and focusing on fitness through cooking
+                high-protein meals and experimenting with new recipes. I also love <Bold>looking at cars</Bold> I cannot
+                afford online. I enjoy <Bold>exploring new technologies</Bold> and{' '}
+                <Bold>experimenting with coding projects</Bold> in my free time.
+              </Typography>
+            </Section>
+          </Grid2>
+        </Box>
+        {/* TODO: add Work and Skills section */}
+        {/* <Box>
+          <Typography variant="h2">Work</Typography>
+          <Grid2 container spacing={2}>
+            <Typography>(display work and experience as a timeline)</Typography>
+          </Grid2>
+        </Box>
+        <Box>
+          <Typography variant="h2">Skills</Typography>
+          <Grid2 container spacing={2}>
+            <Typography>(display skills icon as a sliding carousel)</Typography>
+          </Grid2>
+        </Box> */}
+      </Stack>
+    </Paper>
   )
 }
 
-export default App
+function Projects() {
+  type ProjectData = {
+    id: number
+    name: string
+    html_url: string
+    homepage: string
+    pushed_at: string
+  }
+
+  const [projects, setProjects] = React.useState<ProjectData[] | string>('')
+
+  React.useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const token = import.meta.env.VITE_GITHUB_ACCESS_TOKEN
+        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'X-GitHub-Api-Version': '2022-11-28',
+          },
+        })
+
+        if (!response.ok) {
+          throw new Error(`GitHub API error: ${response.status}`)
+        }
+
+        const repositories = await response.json()
+        setProjects(repositories)
+      } catch (error) {
+        console.error('Error fetching repositories:', error)
+        setProjects('GitHub API Error')
+      }
+    }
+
+    fetchProjects()
+  }, [])
+
+  const ProjectsList = React.useMemo(() => {
+    const CARD_WIDTH = { lg: '32.5rem', md: '55rem', sm: '45rem' }
+
+    function Bold({ children }: { children: string }) {
+      return (
+        <Typography variant="body2" component="span" sx={{ color: 'primary.light', fontWeight: 'bold' }}>
+          {children}
+        </Typography>
+      )
+    }
+
+    const projectsToDisplay = {
+      'markit-uoa': {
+        displayName: 'Markit-UOA',
+        description:
+          'A Next.js web application that simplifies the marker application process for students and coordinators. Developed in a team of 6 people for a client in UoA as part of CS399 Capstone.',
+        features: [
+          <>
+            Developed a <Bold>RESTful API</Bold> with Next.js equipped with <Bold>role-based authentication</Bold>,
+            authorisation using <Bold>OAuth2</Bold> and <Bold>Zod</Bold> for data validation{' '}
+            <Link
+              href="https://github.com/ghxstling/markit-uoa/blob/master/docs/API_DOCS.md"
+              underline="hover"
+              color="primary.main"
+            >
+              (full docs)
+            </Link>
+          </>,
+          <>
+            Utilised <Bold>Amazon S3</Bold> for storing and serving user-uploaded files, including CVs and transcripts
+          </>,
+          <>
+            Implemented <Bold>SendGrid</Bold> for personalised email notifications to users
+          </>,
+          <>
+            Created a <Bold>custom CSV generator</Bold> for offline access to marker applications
+          </>,
+        ],
+      },
+      learnquest: {
+        displayName: 'LearnQuest',
+        description:
+          'A minimal LMS application built with Next.js that allows for easy online learning and classroom management. This project showcases my frontend skills and ability to create a user-friendly interface.',
+        features: [
+          <>
+            Utilised <Bold>Tailwind CSS</Bold> and <Bold>ShadCN UI</Bold> to create a minimal and responsive UI
+          </>,
+          <>
+            Integrated <Bold>Convex</Bold> with <Bold>Next.js</Bold> for real-time data fetching and state management
+          </>,
+          <>
+            Applied <Bold>good software practices</Bold> by writing clean & maintainable code
+          </>,
+        ],
+      },
+      'pc-part-hunter': {
+        displayName: 'PC Part Hunter (WIP)',
+        description:
+          'An e-commerce/web-scraping Next.js web platform that allows users to search for pricing and stock availability of popular PC parts among NZ retailers. This project demonstrates my full-stack development skills.',
+        features: [
+          <>
+            Utilised <Bold>Playwright</Bold> for web scraping and <Bold>Next.js</Bold> for responsive server-side
+            rendering
+          </>,
+          <>
+            Leveraged <Bold>Tailwind CSS</Bold> and <Bold>ShadCN UI</Bold> for a responsive and modern UI
+          </>,
+          <>
+            Implemented <Bold>dark theme toggling</Bold> with <Bold>Next Themes</Bold> for improved user experience
+          </>,
+        ],
+      },
+      'shortr-url': {
+        displayName: 'Shortr URL (WIP)',
+        description: (
+          <>
+            A simple URL shortener built with Vite and Material UI that utilises the{' '}
+            <Link href="https://github.com/spoo-me/url-shortener" target="_blank" underline="hover">
+              spoo.me
+            </Link>{' '}
+            API. This project showcases my understanding of RESTful APIs.
+          </>
+        ),
+        features: [
+          <>
+            Built with <Bold>Vite</Bold> for fast development & deployment
+          </>,
+          <>
+            Utilised <Bold>REST API</Bold> and <Bold>Fetch API</Bold> to shorten URLs and retrieve original URLs
+          </>,
+          <>
+            (WIP) Implemented <Bold>URL options</Bold> such as custom aliases and password protection
+          </>,
+        ],
+      },
+    }
+
+    return Array.isArray(projects) ? (
+      projects.map((project: ProjectData) => {
+        if (!Object.prototype.hasOwnProperty.call(projectsToDisplay, project.name)) return null
+        const projectData = projectsToDisplay[project.name as keyof typeof projectsToDisplay]
+        return (
+          <Card
+            variant="outlined"
+            key={project.id}
+            sx={{
+              width: CARD_WIDTH,
+              height: 'auto',
+              borderRadius: '1rem',
+              position: 'relative',
+              p: '1.5rem',
+              pb: '7rem',
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+              '&:hover': {
+                transform: 'scale(1.025)',
+                boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+              },
+            }}
+          >
+            <Stack
+              spacing={2}
+              sx={{
+                textAlign: 'left',
+              }}
+            >
+              <Link href={project.homepage} target="_blank" underline="hover" color="inherit">
+                <Stack direction={'row'} spacing={1} alignItems={'center'} justifyContent={'center'}>
+                  <Typography variant="h3">{projectData.displayName}</Typography>
+                  <OpenInNew fontSize="medium" />
+                </Stack>
+              </Link>
+              <Box
+                component={'img'}
+                src={`./assets/${project.name}.png`}
+                sx={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '0.5rem',
+                }}
+              />
+              <Typography variant="body1">{projectData.description}</Typography>
+              <List disablePadding sx={{ listStyleType: 'disc', pl: 3 }}>
+                {projectData.features.map((feature, i) => (
+                  <li key={i}>
+                    <Typography variant="body2" textAlign={'left'}>
+                      {feature}
+                    </Typography>
+                  </li>
+                ))}
+              </List>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: '1.5rem',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  width: {
+                    lg: '90%',
+                    md: '95%',
+                    sm: '90%',
+                  },
+                }}
+              >
+                <Typography variant="body2" textAlign={'left'} pb={1}>
+                  <Bold>Last Updated:</Bold>{' '}
+                  {new Date(project.pushed_at).toLocaleDateString('en-NZ', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                  })}
+                </Typography>
+                <Link href={project.html_url} target="_blank">
+                  <Button variant="contained" fullWidth>
+                    <Stack direction={'row'} spacing={1}>
+                      <LinkIcon fontSize="medium" />
+                      <Typography>View Project</Typography>
+                    </Stack>
+                  </Button>
+                </Link>
+              </Box>
+            </Stack>
+          </Card>
+        )
+      })
+    ) : (
+      <Typography variant="body1" color="primary.main">
+        {projects}
+      </Typography>
+    )
+  }, [projects])
+
+  return (
+    <Paper id="projects">
+      <Typography variant="h2">Projects</Typography>
+      <Grid2 container spacing={3} justifyContent={'center'} sx={{ mx: '1rem' }}>
+        {ProjectsList}
+      </Grid2>
+    </Paper>
+  )
+}
+
+function Contact() {
+  type Field = string | undefined
+
+  const [fullName, setFullName] = React.useState<Field>(undefined)
+  const [email, setEmail] = React.useState<Field>(undefined)
+  const [phone, setPhone] = React.useState<Field>(undefined)
+  const [body, setBody] = React.useState<Field>(undefined)
+  const [message, setMessage] = React.useState<Field>(undefined)
+  const [touched, setTouched] = React.useState({
+    fullName: false,
+    email: false,
+    phone: false,
+    body: false,
+  })
+
+  const TEXTFIELD_WIDTH = 'calc(50% - 0.5rem)'
+
+  const handleBlur = (field: keyof typeof touched) => {
+    setTouched((prev) => ({ ...prev, [field]: true }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    setMessage('Submitting...')
+    setTouched({
+      fullName: true,
+      email: true,
+      phone: true,
+      body: true,
+    })
+
+    if (!fullName || !email || !body) {
+      setMessage('Please fill out all required fields.')
+      return
+    }
+
+    const formData = {
+      fullName,
+      email,
+      phone: phone ? phone : 'N/A',
+      body,
+    }
+    const url = `${import.meta.env.VITE_EXPRESS_JS_API_URL}${import.meta.env.VITE_EXPRESS_JS_API_PORT}`
+
+    try {
+      await fetch(`${url}/send-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).then((res) => res.json())
+      setMessage("Email sent successfully! I'll get back to you as soon as possible.")
+    } catch (error) {
+      console.log('Error sending email:', error)
+      setMessage('Failed to send email. Please try again later.')
+    }
+  }
+
+  return (
+    <Paper id="contact">
+      <Box maxWidth={'95%'} sx={{ mx: '1rem', textAlign: 'center' }}>
+        <Typography variant="h2">Let's Work Together</Typography>
+        <Typography variant="body1">
+          Got ideas for your website or interested in working with me? Get in touch!
+        </Typography>
+      </Box>
+      <Box component="form" onSubmit={handleSubmit} method="POST" autoComplete="off" noValidate>
+        <Grid2
+          component={Card}
+          container
+          spacing={2}
+          sx={{
+            mt: '1rem',
+            maxWidth: '50rem',
+            p: '1.5rem',
+            mx: '1rem',
+            justifySelf: 'center',
+          }}
+        >
+          <FormControl error={!fullName} fullWidth>
+            <TextField
+              id="form-fullname"
+              label="Full Name"
+              required
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              onBlur={() => handleBlur('fullName')}
+            />
+            {touched.fullName && !fullName && <FormHelperText>Full Name is required.</FormHelperText>}
+          </FormControl>
+          <Grid2 container spacing={2} sx={{ width: '100%' }}>
+            <FormControl error={!email || !/\S+@\S+\.\S+/.test(email)} sx={{ width: TEXTFIELD_WIDTH }}>
+              <TextField
+                id="form-email"
+                type="email"
+                label="Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => handleBlur('email')}
+              />
+              {touched.email && (!email || !/\S+@\S+\.\S+/.test(email)) && (
+                <FormHelperText>Invalid Email address.</FormHelperText>
+              )}
+            </FormControl>
+            <FormControl error={!phone || !/^[0-9]{9,10}$/.test(phone)} sx={{ width: TEXTFIELD_WIDTH }}>
+              <TextField
+                id="form-phone"
+                label="Phone Number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                onBlur={() => handleBlur('phone')}
+              />
+              {touched.phone && phone != '' && phone != null && !/^[0-9]{9,10}$/.test(phone) && (
+                <FormHelperText>Please enter a valid phone number (9-10 digits).</FormHelperText>
+              )}
+            </FormControl>
+          </Grid2>
+          <FormControl error={!body} fullWidth>
+            <TextField
+              id="form-content"
+              label="Body"
+              required
+              multiline
+              rows={10}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              onBlur={() => handleBlur('body')}
+            />
+            {touched.body && !body && <FormHelperText>Message body is required.</FormHelperText>}
+          </FormControl>
+          <Button type="submit" variant="contained" sx={{ py: '1rem', mt: '0.5rem', width: '100%' }}>
+            Contact Me
+          </Button>
+          {message && (
+            <Typography
+              variant="body2"
+              color="primary.main"
+              sx={{
+                maxWidth: '100%',
+                wordWrap: 'break-word',
+              }}
+            >
+              {message}
+            </Typography>
+          )}
+        </Grid2>
+      </Box>
+    </Paper>
+  )
+}
+
+function Footer() {
+  const offset = {
+    popper: {
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, -10],
+          },
+        },
+      ],
+    },
+  }
+
+  return (
+    <Box component="footer" pb={5}>
+      <Stack direction="row" spacing={1.5} justifyContent={'center'}>
+        <Link href="https://github.com/ghxstling" target="_blank">
+          <Tooltip title="GitHub" placement="top" slotProps={offset}>
+            <GitHub fontSize={ICON_SIZE} />
+          </Tooltip>
+        </Link>
+        <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank">
+          <Tooltip title="LinkedIn" placement="top" slotProps={offset}>
+            <LinkedIn fontSize={ICON_SIZE} />
+          </Tooltip>
+        </Link>
+        <Link href="https://www.instagram.com/doodlyn_" target="_blank">
+          <Tooltip title="Instagram" placement="top" slotProps={offset}>
+            <Instagram fontSize={ICON_SIZE} />
+          </Tooltip>
+        </Link>
+      </Stack>
+      <Typography variant="body2" textAlign={'center'}>
+        {'Copyright © '}
+        {new Date().getFullYear()}
+        {' Dylan Choy'}
+      </Typography>
+    </Box>
+  )
+}
