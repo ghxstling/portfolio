@@ -695,7 +695,7 @@ function Contact() {
       phone: phone ? phone : 'N/A',
       body,
     }
-    const url = `${import.meta.env.VITE_EXPRESS_JS_API_URL}${import.meta.env.VITE_EXPRESS_JS_API_PORT}`
+    const url = `${import.meta.env.VITE_EXPRESS_JS_API_URL}`
 
     try {
       await fetch(`${url}/send-email`, {
