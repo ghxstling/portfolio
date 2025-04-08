@@ -12,7 +12,7 @@ import dotenv from 'dotenv'
 dotenv.config({ path: './.env.local' })
 
 const app = express()
-const port = 8000
+const port = 3000
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 app.use(express.json())
