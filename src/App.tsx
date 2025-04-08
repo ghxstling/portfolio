@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import {
   Avatar,
   Box,
@@ -18,7 +19,6 @@ import {
   Modal,
   List,
 } from '@mui/material'
-import { ThemeProvider } from '@mui/material/styles'
 import {
   GitHub,
   LinkedIn,
@@ -36,8 +36,7 @@ import {
   OpenInNew,
 } from '@mui/icons-material'
 
-// import nodemailer from 'nodemailer'
-
+import { ThemeProvider } from '@mui/material/styles'
 import { theme } from './css/theme'
 
 import { Document, Page, pdfjs } from 'react-pdf'
@@ -645,17 +644,17 @@ function Projects() {
 }
 
 function Contact() {
-  const [fullName, setFullName] = React.useState<string | undefined>(undefined)
-  const [email, setEmail] = React.useState<string | undefined>(undefined)
-  const [phone, setPhone] = React.useState<string | undefined>(undefined)
-  const [subject, setSubject] = React.useState<string | undefined>(undefined)
-  const [body, setBody] = React.useState<string | undefined>(undefined)
-  const [message, setMessage] = React.useState<string | undefined>(undefined)
+  type Field = string | undefined
+
+  const [fullName, setFullName] = React.useState<Field>(undefined)
+  const [email, setEmail] = React.useState<Field>(undefined)
+  const [phone, setPhone] = React.useState<Field>(undefined)
+  const [body, setBody] = React.useState<Field>(undefined)
+  const [message, setMessage] = React.useState<Field>(undefined)
   const [touched, setTouched] = React.useState({
     fullName: false,
     email: false,
     phone: false,
-    subject: false,
     body: false,
   })
 
@@ -665,46 +664,43 @@ function Contact() {
     setTouched((prev) => ({ ...prev, [field]: true }))
   }
 
-  // TODO: add email sending functionality using nodemailer and Express
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    setMessage('Submitting...')
     setTouched({
       fullName: true,
       email: true,
       phone: true,
-      subject: true,
       body: true,
     })
 
-    if (!fullName || !email || !subject || !body) {
+    if (!fullName || !email || !body) {
       setMessage('Please fill out all required fields.')
       return
     }
 
-    const formData = { fullName, email, phone, subject, body }
-    setMessage(`Success! \n${JSON.stringify(formData)}`)
-    // try {
-    //   const transporter = nodemailer.createTransport({
-    //     service: 'gmail',
-    //     auth: {
-    //       user: 'dylan.choy21@gmail.com',
-    //       pass: process.env.GOOGLE_APP_PASSWORD,
-    //     },
-    //   })
-    //   const mailOptions = {
-    //     from: fullName + email,
-    //     to: 'dylan.choy21@gmail.com',
-    //     subject: subject,
-    //     text: body,
-    //     html: `<p>${body}</p><br/><p>From: ${fullName}</p><p>Email: ${email}</p><p>Phone: ${phone}</p><br/><p>Sent from ghxstling.dev</p>`,
-    //   }
-    //   const info = await transporter.sendMail(mailOptions)
-    // } catch (error) {
-    //   console.error('Error sending email:', error)
-    //   setMessage('Failed to send message. Please try again later.')
-    //   return
-    // }
+    const formData = {
+      fullName,
+      email,
+      phone: phone ? phone : 'N/A',
+      body,
+    }
+    const url = `${import.meta.env.VITE_EXPRESS_JS_API_URL}${import.meta.env.VITE_EXPRESS_JS_API_PORT}`
+
+    try {
+      await fetch(`${url}/send-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).then((res) => res.json())
+      setMessage("Email sent successfully! I'll get back to you as soon as possible.")
+    } catch (error) {
+      console.log('Error sending email:', error)
+      setMessage('Failed to send email. Please try again later.')
+    }
   }
 
   return (
@@ -715,7 +711,7 @@ function Contact() {
           Got ideas for your website or interested in working with me? Get in touch!
         </Typography>
       </Box>
-      <Box component="form" autoComplete="off" onSubmit={handleSubmit} noValidate>
+      <Box component="form" onSubmit={handleSubmit} method="POST" autoComplete="off" noValidate>
         <Grid2
           component={Card}
           container
@@ -767,24 +763,13 @@ function Contact() {
               )}
             </FormControl>
           </Grid2>
-          <FormControl error={!subject} fullWidth>
-            <TextField
-              id="form-subject"
-              label="Subject"
-              required
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-              onBlur={() => handleBlur('subject')}
-            />
-            {touched.subject && !subject && <FormHelperText>Subject is required.</FormHelperText>}
-          </FormControl>
           <FormControl error={!body} fullWidth>
             <TextField
               id="form-content"
               label="Body"
               required
               multiline
-              rows={6}
+              rows={10}
               value={body}
               onChange={(e) => setBody(e.target.value)}
               onBlur={() => handleBlur('body')}
