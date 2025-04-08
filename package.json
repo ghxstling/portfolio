@@ -1,11 +1,11 @@
 {
-  "name": "portfolio-vite",
+  "name": "portfolio",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run server\"",
-    "server": "node server.js",
+    "server": "node api/server.js",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -16,6 +16,8 @@
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
     "@wojtekmaj/react-hooks": "^1.22.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "nodemailer": "^6.10.0",
     "react": "^19.0.0",
