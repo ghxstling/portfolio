@@ -61,32 +61,29 @@ export default function App() {
     setLoaded(true)
   }, [setLoaded])
 
+  const image = {
+    position: 'fixed',
+    inset: '0 50% 0 50%',
+    zIndex: -1,
+    height: '100vh',
+    width: 'fit-content',
+    filter: 'blur(3px) saturate(0)',
+    opacity: 0.3,
+    justifySelf: 'center',
+    maskMode: 'alpha',
+    maskImage: IMG_LINEAR_GRADIENT,
+    WebkitMaskImage: IMG_LINEAR_GRADIENT,
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        component={'img'}
-        src="./assets/code.jpg"
-        alt="Background"
-        style={{
-          position: 'fixed',
-          inset: '0 50% 0 50%',
-          zIndex: -1,
-          height: '100vh',
-          width: 'fit-content',
-          filter: 'blur(3px) saturate(0)',
-          opacity: 0.3,
-          justifySelf: 'center',
-          maskMode: 'alpha',
-          maskImage: IMG_LINEAR_GRADIENT,
-          WebkitMaskImage: IMG_LINEAR_GRADIENT,
-        }}
-      />
+      <Box component={'img'} src="./assets/code.jpg" alt="Background" sx={image} />
       {loaded && (
         <Container component={'main'}>
           <Header />
           <AvatarCard />
-          <Stack spacing={5}>
+          <Stack spacing={{ md: 5, sm: 2.5 }}>
             <About />
             <Projects />
             <Contact />
@@ -149,7 +146,7 @@ function Header() {
             <Button
               key={button}
               onClick={() => handleScrollTo(button.toLowerCase())}
-              sx={{ px: '1rem', fontSize: '1.25rem' }}
+              sx={{ height: '100%', px: '1rem', fontSize: '1.25rem', color: 'primary.light' }}
             >
               {button}
             </Button>
@@ -180,6 +177,10 @@ function AvatarCard() {
         py: '3rem',
         pt: 3 + HEADER_MARGIN + 'rem',
         fontSize: FONT_SIZE,
+        gap: {
+          sm: 5,
+          md: 0,
+        },
       }}
     >
       <Avatar
@@ -512,7 +513,7 @@ function Projects() {
         ],
       },
       'shortr-url': {
-        displayName: 'Shortr URL',
+        displayName: 'Shortr URL (WIP)',
         description: (
           <>
             A simple URL shortener built with Vite and Material UI that utilises the{' '}
@@ -527,7 +528,10 @@ function Projects() {
             Built with <Bold>Vite</Bold> for fast development & deployment
           </>,
           <>
-            Utilised <Bold>REST API</Bold> and <Bold>fetch() API</Bold> to shorten URLs and retrieve original URLs
+            Utilised <Bold>REST API</Bold> and <Bold>Fetch API</Bold> to shorten URLs and retrieve original URLs
+          </>,
+          <>
+            (WIP) Implemented <Bold>URL options</Bold> such as custom aliases and password protection
           </>,
         ],
       },
@@ -592,7 +596,11 @@ function Projects() {
                   bottom: '1.5rem',
                   left: '50%',
                   transform: 'translateX(-50%)',
-                  width: '90%',
+                  width: {
+                    lg: '90%',
+                    md: '95%',
+                    sm: '90%',
+                  },
                 }}
               >
                 <Typography variant="body2" textAlign={'left'} pb={1}>
@@ -629,7 +637,7 @@ function Projects() {
   return (
     <Paper id="projects">
       <Typography variant="h2">Projects</Typography>
-      <Grid2 container spacing={3} justifyContent={'center'}>
+      <Grid2 container spacing={3} justifyContent={'center'} sx={{ mx: '1rem' }}>
         {ProjectsList}
       </Grid2>
     </Paper>
@@ -701,10 +709,12 @@ function Contact() {
 
   return (
     <Paper id="contact">
-      <Typography variant="h2">Let's Work Together</Typography>
-      <Typography variant="body1">
-        Got ideas for your website or interested in working with me? Get in touch!
-      </Typography>
+      <Box maxWidth={'95%'} sx={{ mx: '1rem', textAlign: 'center' }}>
+        <Typography variant="h2">Let's Work Together</Typography>
+        <Typography variant="body1">
+          Got ideas for your website or interested in working with me? Get in touch!
+        </Typography>
+      </Box>
       <Box component="form" autoComplete="off" onSubmit={handleSubmit} noValidate>
         <Grid2
           component={Card}
@@ -712,8 +722,9 @@ function Contact() {
           spacing={2}
           sx={{
             mt: '1rem',
-            width: '50rem',
+            maxWidth: '50rem',
             p: '1.5rem',
+            mx: '1rem',
             justifySelf: 'center',
           }}
         >
@@ -802,21 +813,34 @@ function Contact() {
 }
 
 function Footer() {
+  const offset = {
+    popper: {
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, -10],
+          },
+        },
+      ],
+    },
+  }
+
   return (
     <Box component="footer" pb={5}>
       <Stack direction="row" spacing={1.5} justifyContent={'center'}>
         <Link href="https://github.com/ghxstling" target="_blank">
-          <Tooltip arrow title="GitHub" placement="top">
+          <Tooltip title="GitHub" placement="top" slotProps={offset}>
             <GitHub fontSize={ICON_SIZE} />
           </Tooltip>
         </Link>
         <Link href="https://www.linkedin.com/in/dylan-choy/" target="_blank">
-          <Tooltip arrow title="LinkedIn" placement="top">
+          <Tooltip title="LinkedIn" placement="top" slotProps={offset}>
             <LinkedIn fontSize={ICON_SIZE} />
           </Tooltip>
         </Link>
         <Link href="https://www.instagram.com/doodlyn_" target="_blank">
-          <Tooltip arrow title="Instagram" placement="top">
+          <Tooltip title="Instagram" placement="top" slotProps={offset}>
             <Instagram fontSize={ICON_SIZE} />
           </Tooltip>
         </Link>
