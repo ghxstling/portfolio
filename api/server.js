@@ -1,19 +1,24 @@
 import express from 'express'
 import ViteExpress from 'vite-express'
 import nodemailer from 'nodemailer'
+
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
+
 import cors from 'cors'
+import compression from 'compression'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: './.env.local' })
 
 const app = express()
-const port = process.env.VITE_EXPRESS_JS_API_PORT || 8000
+const port = 8000
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 app.use(express.json())
-app.use(express.static('public'))
+app.use(express.static('public', { maxAge: '1y' }))
+app.use(express.static(join(__dirname, '../dist'), { maxAge: '1y' }))
+app.use(compression())
 app.use(
   cors({
     origin: ['http://localhost:5173', 'https://ghxstling.dev'],
@@ -92,7 +97,13 @@ app.post('/send-email', (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, '../index.html'))
+  res.sendFile(join(__dirname, '../dist/index.html'))
 })
 
-ViteExpress.listen(app, port, () => console.log(`SERVER: Express.js server is listening on port ${port} ...`))
+if (process.env.NODE_ENV === 'production') {
+  app.listen(port, () => console.log(`SERVER: Express.js is listening on port ${port} ...`))
+} else {
+  ViteExpress.listen(app, port, () => {
+    console.log(`SERVER: ViteExpress is running on port ${port} ...`)
+  })
+}
