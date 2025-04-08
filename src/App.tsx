@@ -18,6 +18,7 @@ import {
   FormHelperText,
   Modal,
   List,
+  useMediaQuery,
 } from '@mui/material'
 import {
   GitHub,
@@ -36,7 +37,7 @@ import {
   OpenInNew,
 } from '@mui/icons-material'
 
-import { ThemeProvider } from '@mui/material/styles'
+import { ThemeProvider, useTheme } from '@mui/material/styles'
 import { theme } from './css/theme'
 
 import { Document, Page, pdfjs } from 'react-pdf'
@@ -230,6 +231,11 @@ function PDFModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [numPages, setNumPages] = React.useState<number>()
   const [pageNumber, setPageNumber] = React.useState<number>(1)
 
+  const theme = useTheme()
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md')) // Matches screens smaller than 'sm'
+  const isMediumScreen = useMediaQuery(theme.breakpoints.between('md', 'xl')) // Matches 'sm' to 'md'
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up('xl')) // Matches screens larger than 'lg'
+
   const files = ['cv.pdf', 'transcript.pdf']
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
@@ -282,13 +288,16 @@ function PDFModal({ open, onClose }: { open: boolean; onClose: () => void }) {
             <SkipNext fontSize="large" />
           </Button>
         </Stack>
-        <Box sx={{ my: 3 }}>
+        <Box sx={{ mb: 2 }}>
           <Document
             file={`./assets/${file}`}
             error={<Typography color="primary.main">Failed to load PDF.</Typography>}
             onLoadSuccess={onDocumentLoadSuccess}
           >
-            <Page pageNumber={pageNumber} scale={1.25} />
+            <Page
+              pageNumber={pageNumber}
+              scale={isSmallScreen ? 0.3 : isMediumScreen ? 0.6 : isLargeScreen ? 0.9 : 1}
+            />
           </Document>
         </Box>
         <Stack direction={'row'} sx={{ position: 'relative', justifyContent: 'center', alignItems: 'center' }}>
