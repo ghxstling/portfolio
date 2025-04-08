@@ -15,11 +15,31 @@ import {
   TextField,
   FormControl,
   FormHelperText,
+  Modal,
 } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
-import { GitHub, LinkedIn, Instagram, DataObject, VideogameAsset, School } from '@mui/icons-material'
+import {
+  GitHub,
+  LinkedIn,
+  Instagram,
+  DataObject,
+  VideogameAsset,
+  School,
+  Description,
+  KeyboardArrowLeft,
+  KeyboardArrowRight,
+  SkipNext,
+  SkipPrevious,
+  FileDownload,
+} from '@mui/icons-material'
 import { theme } from './css/theme'
 // import nodemailer from 'nodemailer'
+
+import { Document, Page, pdfjs } from 'react-pdf'
+import 'react-pdf/dist/Page/TextLayer.css'
+import 'react-pdf/dist/Page/AnnotationLayer.css'
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString()
 
 const HEADER_HEIGHT = 3.5
 const HEADER_MARGIN = 1.5
@@ -136,8 +156,14 @@ function Header() {
 }
 
 function AvatarCard() {
+  const [open, setOpen] = React.useState(false)
+
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
   const AVATAR_SIZE = '20rem'
   const FONT_SIZE = '2.5rem'
+
   return (
     <Grid2
       component="section"
@@ -184,9 +210,108 @@ function AvatarCard() {
           <Button variant="contained" onClick={() => handleScrollTo('contact')}>
             Get in Touch
           </Button>
+          <Button variant="contained" onClick={handleOpen}>
+            <Description />
+          </Button>
+          <PDFModal open={open} onClose={handleClose} />
         </Grid2>
       </Stack>
     </Grid2>
+  )
+}
+
+function PDFModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [file, setFile] = React.useState<string>('cv.pdf')
+  const [numPages, setNumPages] = React.useState<number>()
+  const [pageNumber, setPageNumber] = React.useState<number>(1)
+
+  const files = ['cv.pdf', 'transcript.pdf']
+
+  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
+    setNumPages(numPages)
+    setPageNumber(1)
+  }
+
+  function changePage(offset: number) {
+    setPageNumber((prevPageNumber) => prevPageNumber + offset)
+  }
+
+  function changeFile() {
+    const currentIndex = files.indexOf(file)
+    const nextIndex = (currentIndex + 1) % files.length
+    setFile(files[nextIndex])
+    setPageNumber(1)
+  }
+
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Paper
+        elevation={3}
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          boxShadow: 24,
+          px: 4,
+        }}
+      >
+        <Stack
+          direction={'row'}
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Button disabled={files.indexOf(file) <= 0} onClick={() => changeFile()} sx={{ color: 'white' }}>
+            <SkipPrevious fontSize="large" />
+          </Button>
+          <Typography variant="h2" mt={2}>
+            {file === 'cv.pdf' ? 'Resume' : 'Academic Transcript'}
+          </Typography>
+          <Button
+            disabled={files.indexOf(file) >= files.length - 1}
+            onClick={() => changeFile()}
+            sx={{ width: 'fit-content', color: 'white' }}
+          >
+            <SkipNext fontSize="large" />
+          </Button>
+        </Stack>
+        <Box sx={{ my: 3 }}>
+          <Document
+            file={`./assets/${file}`}
+            error={<Typography color="primary.main">Failed to load PDF.</Typography>}
+            onLoadSuccess={onDocumentLoadSuccess}
+          >
+            <Page pageNumber={pageNumber} scale={1.25} />
+          </Document>
+        </Box>
+        <Stack direction={'row'} sx={{ position: 'relative', justifyContent: 'center', alignItems: 'center' }}>
+          <Button disabled={pageNumber <= 1} onClick={() => changePage(-1)} sx={{ color: 'white' }}>
+            <KeyboardArrowLeft fontSize="large" />
+          </Button>
+          <Typography variant="body1" width={'30%'} textAlign={'center'}>
+            Page {pageNumber || (numPages ? 1 : '--')} of {numPages || '--'}
+          </Typography>
+          <Button disabled={pageNumber >= numPages!} onClick={() => changePage(1)} sx={{ color: 'white' }}>
+            <KeyboardArrowRight fontSize="large" />
+          </Button>
+          <Button
+            component="a"
+            href={`./assets/${file}`}
+            download
+            variant="contained"
+            sx={{
+              position: 'absolute',
+              bottom: '0',
+              right: '0',
+            }}
+          >
+            <FileDownload fontSize="large" />
+          </Button>
+        </Stack>
+      </Paper>
+    </Modal>
   )
 }
 
@@ -254,6 +379,7 @@ function About() {
             </Section>
           </Grid2>
         </Box>
+        {/* TODO: add Work and Skills section */}
         {/* <Box>
           <Typography variant="h2">Work</Typography>
           <Grid2 container spacing={2}>
@@ -369,7 +495,7 @@ function Contact() {
     setTouched((prev) => ({ ...prev, [field]: true }))
   }
 
-  // TODO: add email sending functionality
+  // TODO: add email sending functionality using nodemailer and Express
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
