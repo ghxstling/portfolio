@@ -37,9 +37,9 @@ app.post('/send-email', (req, res) => {
 
     transporter.verify((error, success) => {
       if (error) {
-        console.error('Error verifying SMTP server:', error)
+        console.error('SERVER: Error verifying SMTP server - ', error)
       } else if (success) {
-        console.log('SMTP server is verified and ready to send messages')
+        console.log('SERVER: SMTP server is verified and ready to send messages')
       }
     })
 
@@ -51,7 +51,7 @@ app.post('/send-email', (req, res) => {
       html: `
     <p><strong>You have a new message from ${fullName}:</strong></p>
     <br/>
-    <p>${body}</p>
+    <p>${body.replace(/\n/g, '<br />')}</p>
     <br/>
     <p>Email: ${email}</p>
     <p>Phone: ${phone}</p>
@@ -61,14 +61,14 @@ app.post('/send-email', (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.error('Error sending email:', error)
+        console.error('SERVER: Error sending email - ', error)
         res.status(400).send({
           status_code: 400,
           message: 'Error sending email',
           error: error.message,
         })
       } else {
-        console.log('Email sent:', info.response)
+        console.log('SERVER: Email sent - ', info.response)
         res.status(200).send({
           status_code: 200,
           message: 'Email sent successfully: ' + info.response,
@@ -82,7 +82,7 @@ app.post('/send-email', (req, res) => {
       }
     })
   } catch (error) {
-    console.error('Error sending email:', error)
+    console.error('SERVER: Error sending email - ', error)
     res.status(400).send({
       status_code: 400,
       message: 'Error sending email',
@@ -95,4 +95,4 @@ app.get('*', (req, res) => {
   res.sendFile(join(__dirname, '../index.html'))
 })
 
-ViteExpress.listen(app, port, () => console.log(`Express.js server is listening on port ${port} ...`))
+ViteExpress.listen(app, port, () => console.log(`SERVER: Express.js server is listening on port ${port} ...`))
