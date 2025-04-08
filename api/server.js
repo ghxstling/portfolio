@@ -1,0 +1,98 @@
+import express from 'express'
+import ViteExpress from 'vite-express'
+import nodemailer from 'nodemailer'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+import cors from 'cors'
+import dotenv from 'dotenv'
+
+dotenv.config({ path: './.env.local' })
+
+const app = express()
+const port = process.env.VITE_EXPRESS_JS_API_PORT || 8000
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+app.use(express.json())
+app.use(express.static('public'))
+app.use(
+  cors({
+    origin: ['http://localhost:5173', 'https://ghxstling.dev'],
+    methods: ['GET', 'POST'],
+  })
+)
+
+app.post('/send-email', (req, res) => {
+  try {
+    const { fullName, email, body, phone } = req.body
+
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
+      auth: {
+        user: 'dylan.choy21@gmail.com',
+        pass: process.env.GOOGLE_APP_PASSWORD,
+      },
+    })
+
+    transporter.verify((error, success) => {
+      if (error) {
+        console.error('Error verifying SMTP server:', error)
+      } else if (success) {
+        console.log('SMTP server is verified and ready to send messages')
+      }
+    })
+
+    const mailOptions = {
+      from: `${fullName} <${email}>`,
+      to: 'dylan.choy21@gmail.com',
+      subject: `Message from ${fullName} - ghxstling.dev`,
+      text: body,
+      html: `
+    <p><strong>You have a new message from ${fullName}:</strong></p>
+    <br/>
+    <p>${body}</p>
+    <br/>
+    <p>Email: ${email}</p>
+    <p>Phone: ${phone}</p>
+    <br/>
+    <p><strong>Sent from ghxstling.dev</strong></p>`,
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error)
+        res.status(400).send({
+          status_code: 400,
+          message: 'Error sending email',
+          error: error.message,
+        })
+      } else {
+        console.log('Email sent:', info.response)
+        res.status(200).send({
+          status_code: 200,
+          message: 'Email sent successfully: ' + info.response,
+          data: {
+            fullName: fullName,
+            email: email,
+            body: body,
+            phone: phone,
+          },
+        })
+      }
+    })
+  } catch (error) {
+    console.error('Error sending email:', error)
+    res.status(400).send({
+      status_code: 400,
+      message: 'Error sending email',
+      error: error.message,
+    })
+  }
+})
+
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, '../index.html'))
+})
+
+ViteExpress.listen(app, port, () => console.log(`Express.js server is listening on port ${port} ...`))
