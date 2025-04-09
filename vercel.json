@@ -3,5 +3,5 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/send-email", "destination": "/api/send-email" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
 }
