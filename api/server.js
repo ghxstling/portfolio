@@ -32,7 +32,7 @@ app.use(
   })
 )
 
-app.post('/send-email', (req, res) => {
+app.post('/', (req, res) => {
   try {
     const { fullName, email, subject, body, phone } = req.body
 
@@ -55,19 +55,19 @@ app.post('/send-email', (req, res) => {
     })
 
     const mailOptions = {
-      from: `${fullName} <${email}>`,
+      from: `${fullName}`,
       to: 'dylan.choy21@gmail.com',
       subject: `Message from ${fullName} | ghxstling.dev`,
       text: body,
       html: `
-        <p>Name: ${fullName}</p>
-        <p>Email: ${email}</p>
-        <p>Phone: ${phone}</p>
-        <p>Subject: ${subject}</p>
+        <p><strong>Name</strong>: ${fullName}</p>
+        <p><strong>Email</strong>: ${email}</p>
+        <p><strong>Phone</strong>: ${phone}</p>
+        <p><strong>Subject</strong>: ${subject}</p>
         <br />
         <p>${body.replace(/\n/g, '<br />')}</p>
         <br />
-        <p>Sent from ghxstling.dev</p>
+        <p><strong>Sent from ghxstling.dev</strong></p>
       `,
     }
 

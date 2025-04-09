@@ -699,10 +699,10 @@ function Contact() {
       subject,
       body,
     }
-    const url = `${import.meta.env.VITE_EXPRESS_JS_API_URL}`
+    const url = import.meta.env.VITE_API_URL
 
     try {
-      await fetch(`${url}/send-email`, {
+      await fetch(`${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
