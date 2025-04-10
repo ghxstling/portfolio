@@ -66,17 +66,22 @@ export function Contact() {
     }
 
     try {
-      await fetch(`${url}`, {
+      const res = await fetch(`${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      }).then((res) => res.json())
-      setMessage("Email sent successfully! I'll get back to you as soon as possible.")
+      })
+
+      if (res.status === 429) {
+        setMessage('You can only send an email once every 5 minutes.')
+      } else {
+        setMessage("Email sent successfully! I'll get back to you as soon as possible.")
+      }
     } catch (error) {
       console.error('Error sending email:', error)
-      setMessage('Failed to send email. Please try again later.')
+      setMessage('Failed to send email, please try again later.')
     }
   }
 
