@@ -1,12 +1,12 @@
 import { createTheme } from '@mui/material/styles'
-import * as colours from '@mui/material/colors'
+import { pink } from '@mui/material/colors'
 
 const PAPER_PADDING_Y = '2rem'
 
 export const theme = createTheme({
   palette: {
     mode: 'dark',
-    primary: colours.pink,
+    primary: pink,
   },
   typography: {
     fontFamily: ['"Poppins"', 'sans-serif'].join(','),
