@@ -2,7 +2,7 @@ import { useState, FormEvent } from 'react'
 
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
-import Grid2 from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import TextField from '@mui/material/TextField'
 import FormControl from '@mui/material/FormControl'
@@ -83,7 +83,7 @@ export function Contact() {
         </Typography>
       </Box>
       <Box component="form" onSubmit={handleSubmit} method="POST" autoComplete="off" noValidate>
-        <Grid2
+        <Grid
           component={Card}
           container
           spacing={2}
@@ -106,7 +106,7 @@ export function Contact() {
             />
             {touched.fullName && !fullName && <FormHelperText>Full Name is required.</FormHelperText>}
           </FormControl>
-          <Grid2 container spacing={2} sx={{ width: '100%' }}>
+          <Grid container spacing={2} sx={{ width: '100%' }}>
             <FormControl error={!email || !/\S+@\S+\.\S+/.test(email)} sx={{ width: TEXTFIELD_WIDTH }}>
               <TextField
                 id="form-email"
@@ -133,7 +133,7 @@ export function Contact() {
                 <FormHelperText>Please enter a valid phone number (9-10 digits).</FormHelperText>
               )}
             </FormControl>
-          </Grid2>
+          </Grid>
           <FormControl error={!subject} fullWidth>
             <TextField
               id="form-subject"
@@ -173,7 +173,7 @@ export function Contact() {
               {message}
             </Typography>
           )}
-        </Grid2>
+        </Grid>
       </Box>
     </Paper>
   )

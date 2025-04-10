@@ -1,5 +1,5 @@
 import Paper from '@mui/material/Paper'
-import Grid2 from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 
@@ -32,7 +32,7 @@ export function Header() {
           boxShadow: '0 0 1.5rem rgb(10, 10, 10)',
         }}
       >
-        <Grid2
+        <Grid
           container
           spacing={3}
           sx={{
@@ -50,7 +50,7 @@ export function Header() {
               {button}
             </Button>
           ))}
-        </Grid2>
+        </Grid>
       </Paper>
     </Box>
   )

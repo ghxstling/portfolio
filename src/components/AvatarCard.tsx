@@ -4,7 +4,7 @@ import Avatar from '@mui/material/Avatar'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import Grid2 from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid'
 
 import Description from '@mui/icons-material/Description'
 
@@ -31,7 +31,7 @@ export function AvatarCard() {
   }, [open])
 
   return (
-    <Grid2
+    <Grid
       component="section"
       id="home"
       container
@@ -73,7 +73,7 @@ export function AvatarCard() {
         >
           Empowering businesses of tomorrow with innovative software solutions 🚀
         </Typography>
-        <Grid2 container gap={2} mt={2}>
+        <Grid container gap={2} mt={2}>
           <Button variant="contained" onClick={() => handleScrollTo('projects')}>
             Projects
           </Button>
@@ -84,8 +84,8 @@ export function AvatarCard() {
             <Description />
           </Button>
           {open && Modal}
-        </Grid2>
+        </Grid>
       </Stack>
-    </Grid2>
+    </Grid>
   )
 }

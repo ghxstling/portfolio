@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 import Typography from '@mui/material/Typography'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
-import Grid2 from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 
 import DataObject from '@mui/icons-material/DataObject'
@@ -40,7 +40,7 @@ export function About() {
       <Stack spacing={5}>
         <Box>
           <Typography variant="h2">About</Typography>
-          <Grid2 container spacing={3}>
+          <Grid container spacing={3}>
             <Section>
               <DataObject sx={ICON_STYLE} />
               <Typography textAlign={'left'}>
@@ -72,20 +72,20 @@ export function About() {
                 <Bold>experimenting with coding projects</Bold> in my free time.
               </Typography>
             </Section>
-          </Grid2>
+          </Grid>
         </Box>
         {/* TODO: add Work and Skills section */}
         {/* <Box>
           <Typography variant="h2">Work</Typography>
-          <Grid2 container spacing={2}>
+          <Grid container spacing={2}>
             <Typography>(display work and experience as a timeline)</Typography>
-          </Grid2>
+          </Grid>
         </Box>
         <Box>
           <Typography variant="h2">Skills</Typography>
-          <Grid2 container spacing={2}>
+          <Grid container spacing={2}>
             <Typography>(display skills icon as a sliding carousel)</Typography>
-          </Grid2>
+          </Grid>
         </Box> */}
       </Stack>
     </Paper>

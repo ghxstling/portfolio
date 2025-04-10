@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import Paper from '@mui/material/Paper'
-import Grid2 from '@mui/material/Grid2'
+import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -253,9 +253,9 @@ export function Projects() {
   return (
     <Paper id="projects">
       <Typography variant="h2">Projects</Typography>
-      <Grid2 container spacing={3} justifyContent={'center'} sx={{ mx: '1rem' }}>
+      <Grid container spacing={3} justifyContent={'center'} sx={{ mx: '1rem' }}>
         {ProjectsList}
-      </Grid2>
+      </Grid>
     </Paper>
   )
 }
