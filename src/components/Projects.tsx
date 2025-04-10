@@ -157,6 +157,7 @@ export function Projects() {
         const projectData = projectsToDisplay[project.name as keyof typeof projectsToDisplay]
         return (
           <Card
+            key={project.id}
             variant="outlined"
             sx={{
               width: CARD_WIDTH,
@@ -172,7 +173,7 @@ export function Projects() {
               },
             }}
           >
-            <Suspense key={project.id} fallback={<CircularProgress />}>
+            <Suspense fallback={<CircularProgress />}>
               <Stack
                 spacing={2}
                 sx={{
