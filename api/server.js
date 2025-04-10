@@ -29,16 +29,14 @@ app.use(
 )
 
 app.get('/api', (req, res) => {
-  res.send({
+  res.status(200).send({
     message: 'Hello from /api (root)!',
-    status_code: 200,
   })
 })
 
 app.get('/api/email', (req, res) => {
-  res.send({
+  res.status(200).send({
     message: 'Hello from /api/email!',
-    status_code: 200,
   })
 })
 

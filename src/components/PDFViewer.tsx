@@ -20,11 +20,7 @@ import { pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString()
-
+pdfjs.GlobalWorkerOptions.workerSrc = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString()
 const Document = lazy(() => import('react-pdf').then((module) => ({ default: module.Document })))
 const Page = lazy(() => import('react-pdf').then((module) => ({ default: module.Page })))
 
@@ -96,10 +92,12 @@ export function PDFViewer({ open, onClose }: { open: boolean; onClose: () => voi
           sx={{
             mb: 2,
             alignContent: 'center',
+            minWidth: '25vw',
+            minHeight: '20vh',
           }}
         >
           <Document
-            file={`./assets/${file}`}
+            file={`/assets/${file}`}
             loading={<CircularProgress />}
             error={<Typography color="primary.main">Failed to load PDF.</Typography>}
             onLoadSuccess={onDocumentLoadSuccess}

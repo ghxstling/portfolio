@@ -1,4 +1,4 @@
-import { useState, useMemo, Suspense } from 'react'
+import { useState, useMemo } from 'react'
 
 import Avatar from '@mui/material/Avatar'
 import Stack from '@mui/material/Stack'
@@ -23,11 +23,7 @@ export function AvatarCard() {
   const Modal = useMemo(() => {
     const handleClose = () => setOpen(false)
 
-    return (
-      <Suspense>
-        <PDFViewer open={open} onClose={handleClose} />
-      </Suspense>
-    )
+    return <PDFViewer open={open} onClose={handleClose} />
   }, [open])
 
   return (
