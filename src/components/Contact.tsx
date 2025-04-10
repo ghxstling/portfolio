@@ -57,10 +57,16 @@ export function Contact() {
       subject,
       body,
     }
-    const url = import.meta.env.VITE_API_URL
+
+    let url: string
+    if (!import.meta.env.VITE_API_URL) {
+      url = '/api/email'
+    } else {
+      url = import.meta.env.VITE_API_URL + '/api/email'
+    }
 
     try {
-      await fetch(`${url}/api/email`, {
+      await fetch(`${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
