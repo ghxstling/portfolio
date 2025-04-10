@@ -20,7 +20,7 @@ import { pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/TextLayer.css'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 
-pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.min.mjs'
+pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdf.worker.mjs'
 const Document = lazy(() => import('react-pdf').then((module) => ({ default: module.Document })))
 const Page = lazy(() => import('react-pdf').then((module) => ({ default: module.Page })))
 
