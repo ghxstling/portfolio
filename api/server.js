@@ -1,9 +1,9 @@
 import express from 'express'
 import ViteExpress from 'vite-express'
 import nodemailer from 'nodemailer'
+import rateLimiter from 'express-rate-limit'
 
 import path from 'path'
-
 import cors from 'cors'
 import compression from 'compression'
 import dotenv from 'dotenv'
@@ -28,6 +28,15 @@ app.use(
   })
 )
 
+const limiter = rateLimiter({
+  windowMs: 5 * 60000,
+  max: 1,
+  message: {
+    message: 'You can only send an email once every 5 minutes.',
+    status: 429,
+  },
+})
+
 app.get('/api', (req, res) => {
   res.status(200).send({
     message: 'Hello from /api (root)!',
@@ -40,7 +49,7 @@ app.get('/api/email', (req, res) => {
   })
 })
 
-app.post('/api/email', (req, res) => {
+app.post('/api/email', limiter, (req, res) => {
   try {
     const { fullName, email, subject, body, phone } = req.body
 
