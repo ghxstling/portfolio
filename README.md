@@ -1,11 +1,11 @@
 # Dylan Choy's Portfolio
 
 <div align="center">
-<a href="https://ghxstling.dev" target="_blank" width="50%">
-  <img src="/public/assets/avatar.jpg" alt="Dylan's Portfolio" />
+<a href="https://ghxstling.dev" target="_blank" rel="noopener noreferrer">
+  <img src="/public/assets/avatar.jpg" alt="Dylan's Portfolio"  width="300" height="auto"/>
 </a>
 
-<code style="font-size: 5rem; font-weight: bold;">Hey, I'm Dylan</code>
+<code style="font-size: 48px; font-weight: bold;">Hey, I'm Dylan</code>
 
 [![LinkedIn][LinkedIn]][LinkedIn-url] [![Instagram][Instagram]][Instagram-url]
 
@@ -22,12 +22,23 @@ This is my portfolio website, built with React and Vite and deployed on Vercel. 
 
 ## Tech Stack
 
+<div align="center">
+
 |               **Frontend**               |                 **Backend**                 |            **Language & Tools**             |         **Deployment**          |
 | :--------------------------------------: | :-----------------------------------------: | :-----------------------------------------: | :-----------------------------: |
 |     [![React][React.js]][React-url]      |     [![Express][Express]][Express-url]      | [![Typescript][Typescript]][Typescript-url] | [![Vercel][Vercel]][Vercel-url] |
 |        [![Vite][Vite]][Vite-url]         | [![Nodemailer][Nodemailer]][Nodemailer-url] |    [![Prettier][Prettier]][Prettier-url]    |                                 |
 |          [![MUI][MUI]][MUI-url]          |                                             |       [![ESLint][ESLint]][ESLint-url]       |                                 |
 | [![React-pdf][React-pdf]][react-pdf-url] |                                             |                                             |                                 |
+
+</div>
+
+## Roadmap
+
+- [ ] Add responsiveness for smaller screens (mobile and tablet)
+- [ ] Add 'Skills' and 'Experience' sections
+- [ ] Add more projects (and fix existing ones)
+- [ ] Add an 'Activity' section using Discord API
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
@@ -53,10 +64,3 @@ This is my portfolio website, built with React and Vite and deployed on Vercel. 
 [LinkedIn-url]: https://linkedin.com/in/dylan-choy/
 [Instagram]: https://img.shields.io/badge/Instagram-FF0069?style=for-the-badge
 [Instagram-url]: https://instagram.com/doodlyn_
-
-## Roadmap
-
-- [ ] Add responsiveness for smaller screens (mobile and tablet)
-- [ ] Add 'Skills' and 'Experience' sections
-- [ ] Add more projects (and fix existing ones)
-- [ ] Add an 'Activity' section using Discord API
