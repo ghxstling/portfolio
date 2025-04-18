@@ -15,6 +15,7 @@ import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 
 import { theme } from './css/theme'
+import { MobileMsg } from './MobileMsg'
 
 export default function App() {
   const [loaded, setLoaded] = useState(false)
@@ -44,6 +45,7 @@ export default function App() {
       <Box component={'img'} src="./assets/code.jpg" alt="Background" sx={image} />
       {loaded && (
         <Container component={'main'}>
+          <MobileMsg />
           <Header />
           <AvatarCard />
           <Stack spacing={{ md: 5, sm: 2.5 }}>
