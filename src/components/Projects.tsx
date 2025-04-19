@@ -55,7 +55,7 @@ export function Projects() {
   }, [])
 
   const ProjectsList = useMemo(() => {
-    const CARD_WIDTH = { lg: '32.5rem', md: '55rem', sm: '45rem' }
+    const CARD_WIDTH = { lg: '45%', md: '95%', sm: '45rem' }
 
     function Bold({ children }: { children: string }) {
       return (
@@ -253,7 +253,12 @@ export function Projects() {
   return (
     <Paper id="projects">
       <Typography variant="h2">Projects</Typography>
-      <Grid container spacing={3} justifyContent={'center'} sx={{ mx: '1rem' }}>
+      <Grid
+        container
+        spacing={{ lg: 3, sm: 2 }}
+        justifyContent={'center'}
+        sx={{ mx: { lg: '-1rem', md: '0.5rem', sm: '2rem' } }}
+      >
         {ProjectsList}
       </Grid>
     </Paper>
