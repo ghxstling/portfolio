@@ -29,6 +29,7 @@ export function Header() {
           bgcolor: '#212121',
           borderRadius: 2,
           py: 0,
+          mx: '1rem',
           boxShadow: '0 0 1.5rem rgb(10, 10, 10)',
         }}
       >
