@@ -1,4 +1,4 @@
-import Paper from '@mui/material/Paper'
+import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
@@ -20,13 +20,13 @@ export function Header() {
         width: '100%',
       }}
     >
-      <Paper
+      <Card
         id="home"
         component="header"
-        elevation={10}
         sx={{
           maxWidth: '80rem',
           height: HEADER_HEIGHT + 'rem',
+          bgcolor: '#212121',
           borderRadius: 2,
           py: 0,
           boxShadow: '0 0 1.5rem rgb(10, 10, 10)',
@@ -51,7 +51,7 @@ export function Header() {
             </Button>
           ))}
         </Grid>
-      </Paper>
+      </Card>
     </Box>
   )
 }
