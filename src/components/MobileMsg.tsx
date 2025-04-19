@@ -1,7 +1,7 @@
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Modal from '@mui/material/Modal'
 import Paper from '@mui/material/Paper'
-import { theme } from './css/theme'
+import { theme } from '../css/theme'
 import { useEffect, useState } from 'react'
 import { Container } from '@mui/material'
 
