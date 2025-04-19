@@ -15,7 +15,7 @@ import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 
 import { theme } from './css/theme'
-import { MobileMsg } from './MobileMsg'
+import { MobileMsg } from './components/MobileMsg'
 
 export default function App() {
   const [loaded, setLoaded] = useState(false)
