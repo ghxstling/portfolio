@@ -165,7 +165,10 @@ export function Projects() {
               borderRadius: '1rem',
               position: 'relative',
               p: '1.5rem',
-              pb: '7rem',
+              pb: {
+                sm: '7rem',
+                xs: '8.5rem',
+              },
               transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               '&:hover': {
                 transform: 'scale(1.025)',
@@ -180,12 +183,14 @@ export function Projects() {
                   textAlign: 'left',
                 }}
               >
+                {/* Project Display Title */}
                 <Link href={project.homepage} target="_blank" underline="hover" color="inherit">
                   <Stack direction={'row'} spacing={1} alignItems={'center'} justifyContent={'center'}>
                     <Typography variant="h3">{projectData.displayName}</Typography>
                     <OpenInNew fontSize="medium" />
                   </Stack>
                 </Link>
+                {/* Project Image */}
                 <Box
                   component={'img'}
                   src={`./assets/${project.name}.png`}
@@ -195,6 +200,7 @@ export function Projects() {
                     borderRadius: '0.5rem',
                   }}
                 />
+                {/* Project Description */}
                 <Typography variant="body1">{projectData.description}</Typography>
                 <List disablePadding sx={{ listStyleType: 'disc', pl: 3 }}>
                   {projectData.features.map((feature, i) => (
@@ -205,6 +211,7 @@ export function Projects() {
                     </li>
                   ))}
                 </List>
+                {/* Project Footer */}
                 <Box
                   sx={{
                     position: 'absolute',
@@ -215,9 +222,11 @@ export function Projects() {
                       lg: '90%',
                       md: '95%',
                       sm: '90%',
+                      xs: '90%',
                     },
                   }}
                 >
+                  {/* Project Last Updated */}
                   <Typography variant="body2" textAlign={'left'} pb={1}>
                     <Bold>Last Updated:</Bold>{' '}
                     {new Date(project.pushed_at).toLocaleDateString('en-NZ', {
@@ -229,6 +238,7 @@ export function Projects() {
                       hour12: true,
                     })}
                   </Typography>
+                  {/* Project View Project Button */}
                   <Link href={project.html_url} target="_blank">
                     <Button variant="contained" fullWidth>
                       <Stack direction={'row'} spacing={1}>
@@ -255,9 +265,16 @@ export function Projects() {
       <Typography variant="h2">Projects</Typography>
       <Grid
         container
-        spacing={{ lg: 3, sm: 2 }}
+        spacing={{ md: 3, sm: 2, xs: 1 }}
         justifyContent={'center'}
-        sx={{ mx: { lg: '-1rem', md: '0.5rem', sm: '2rem' } }}
+        sx={{
+          mx: {
+            lg: '-1rem',
+            md: '0.5rem',
+            sm: '1rem',
+            xs: '1rem',
+          },
+        }}
       >
         {ProjectsList}
       </Grid>
