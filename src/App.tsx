@@ -14,7 +14,7 @@ import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 
-import { theme } from './css/theme'
+import theme from './css/theme'
 import { MobileMsg } from './components/MobileMsg'
 
 export default function App() {
@@ -48,7 +48,7 @@ export default function App() {
           <MobileMsg />
           <Header />
           <AvatarCard />
-          <Stack spacing={{ md: 5, sm: 2.5 }}>
+          <Stack spacing={{ lg: 5, md: 3, sm: 2 }}>
             <About />
             <Projects />
             <Contact />

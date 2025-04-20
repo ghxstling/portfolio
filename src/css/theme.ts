@@ -1,9 +1,9 @@
-import { createTheme } from '@mui/material/styles'
+import { createTheme, responsiveFontSizes } from '@mui/material/styles'
 import { pink } from '@mui/material/colors'
 
 const PAPER_PADDING_Y = '2rem'
 
-export const theme = createTheme({
+let theme = createTheme({
   palette: {
     mode: 'dark',
     primary: pink,
@@ -55,3 +55,10 @@ export const theme = createTheme({
     },
   },
 })
+
+theme = responsiveFontSizes(theme, {
+  factor: 3,
+  variants: ['h1', 'h2', 'h3', 'body1', 'body2'],
+})
+
+export default theme
