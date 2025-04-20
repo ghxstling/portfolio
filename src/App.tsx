@@ -30,7 +30,6 @@ export default function App() {
     inset: '0 50% 0 50%',
     zIndex: -1,
     height: '100vh',
-    width: '100&',
     filter: 'blur(3px) saturate(0)',
     opacity: 0.3,
     justifySelf: 'center',
