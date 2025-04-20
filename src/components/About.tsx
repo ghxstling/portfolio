@@ -11,11 +11,25 @@ import VideogameAsset from '@mui/icons-material/VideogameAsset'
 import School from '@mui/icons-material/School'
 
 export function About() {
-  const ICON_STYLE = { fontSize: '5rem', color: 'primary.main' }
+  const ICON_STYLE = {
+    fontSize: {
+      xs: '0rem',
+      sm: '3rem',
+      lg: '5rem',
+    },
+    color: 'primary.main',
+  }
 
   function Section({ children }: { children: ReactNode }) {
     return (
-      <Stack direction={'row'} spacing={5} alignItems={'center'}>
+      <Stack
+        direction={'row'}
+        spacing={{
+          sm: 3,
+          lg: 5,
+        }}
+        alignItems={'center'}
+      >
         {children}
       </Stack>
     )
@@ -34,7 +48,12 @@ export function About() {
       id="about"
       sx={{
         height: 'fit-content',
-        px: '3rem',
+        px: {
+          xs: '2rem',
+          sm: '1.5rem',
+          md: '2rem',
+          lg: '3rem',
+        },
       }}
     >
       <Stack spacing={5}>
