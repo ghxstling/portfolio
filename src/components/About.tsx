@@ -15,9 +15,16 @@ export function About() {
     fontSize: {
       xs: '0rem',
       sm: '3rem',
+      md: '4rem',
       lg: '5rem',
     },
     color: 'primary.main',
+  }
+  const TEXT_STYLE = {
+    textAlign: {
+      sm: 'center',
+      md: 'left',
+    },
   }
 
   function Section({ children }: { children: ReactNode }) {
@@ -26,9 +33,9 @@ export function About() {
         direction={'row'}
         spacing={{
           sm: 3,
+          md: 3,
           lg: 5,
         }}
-        alignItems={'center'}
       >
         {children}
       </Stack>
@@ -37,7 +44,7 @@ export function About() {
 
   function Bold({ children }: { children: string }) {
     return (
-      <Typography component="span" sx={{ color: 'primary.light', fontWeight: 'bold' }}>
+      <Typography component="span" sx={{ color: 'primary.light', fontWeight: 'bold', ...TEXT_STYLE }}>
         {children}
       </Typography>
     )
@@ -59,10 +66,18 @@ export function About() {
       <Stack spacing={5}>
         <Box>
           <Typography variant="h2">About</Typography>
-          <Grid container spacing={3}>
+          <Grid
+            container
+            spacing={{
+              xs: 1.5,
+              sm: 1.5,
+              md: 2,
+              lg: 3,
+            }}
+          >
             <Section>
               <DataObject sx={ICON_STYLE} />
-              <Typography textAlign={'left'}>
+              <Typography sx={TEXT_STYLE}>
                 An aspiring Software Developer with a focus on <Bold>backend web development</Bold>. My passion in
                 technology and programming began at a young age, building my first <Bold>Snake</Bold> game using Python
                 in 2018. Since then, I am fueled by a <Bold>desire to understand</Bold> the intricacies of software and
@@ -72,7 +87,7 @@ export function About() {
             </Section>
             <Section>
               <School sx={ICON_STYLE} />
-              <Typography textAlign={'left'}>
+              <Typography sx={TEXT_STYLE}>
                 During my studies at the <Bold>University of Auckland</Bold>, I gained a strong foundation in web
                 development, utilising technologies like <Bold>Python, TypeScript, and React</Bold>. I am a
                 self-motivated learner with proven <Bold>problem-solving skills</Bold> in debugging and optimizing web
@@ -82,7 +97,7 @@ export function About() {
             </Section>
             <Section>
               <VideogameAsset sx={ICON_STYLE} />
-              <Typography textAlign={'left'}>
+              <Typography sx={TEXT_STYLE}>
                 When I am not coding, I enjoy <Bold>playing video games</Bold> with my friends to unwind. I also have a
                 keen interest in <Bold>all things technology</Bold>, particularly computer hardware and mobile phones. I
                 am a <Bold>gym enthusiast</Bold>, regularly working out and focusing on fitness through cooking
