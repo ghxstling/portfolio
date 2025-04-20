@@ -47,7 +47,7 @@ export default function App() {
           <MobileMsg />
           <Header />
           <AvatarCard />
-          <Stack spacing={{ lg: 5, md: 3, sm: 2 }}>
+          <Stack spacing={{ lg: 5, md: 3, sm: 3, xs: 2 }}>
             <About />
             <Projects />
             <Contact />
