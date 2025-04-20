@@ -11,6 +11,7 @@ import Description from '@mui/icons-material/Description'
 import { PDFViewer } from './PDFViewer'
 import { HEADER_MARGIN } from './Header'
 import { handleScrollTo } from './helper/functions'
+import { DiscordActivity } from './DiscordActivity'
 
 export function AvatarCard() {
   const [open, setOpen] = useState(false)
@@ -51,7 +52,6 @@ export function AvatarCard() {
           height: AVATAR_SIZE,
         }}
       />
-
       <Stack
         sx={{
           textAlign: 'left',
@@ -69,7 +69,7 @@ export function AvatarCard() {
         >
           Empowering businesses of tomorrow with innovative software solutions 🚀
         </Typography>
-        <Grid container gap={2} mt={2}>
+        <Grid container gap={2} mt={2} sx={{ maxWidth: '88%' }}>
           <Button variant="contained" onClick={() => handleScrollTo('projects')}>
             Projects
           </Button>
@@ -80,6 +80,7 @@ export function AvatarCard() {
             <Description />
           </Button>
           {open && Modal}
+          <DiscordActivity />
         </Grid>
       </Stack>
     </Grid>
