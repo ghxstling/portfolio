@@ -7,7 +7,6 @@ import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
 import Collapse from '@mui/material/Collapse'
 import Divider from '@mui/material/Divider'
-import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 
 import MenuIcon from '@mui/icons-material/Menu'
@@ -64,30 +63,31 @@ export function Header() {
     }
 
     return buttons.map((button, i) => (
-      <>
+      <Box key={button}>
         <Button
-          key={button}
           onClick={() => handleScrollToMobile(button.toLowerCase())}
           sx={{
             color: 'primary.light',
             py: 1,
           }}
         >
-          <Typography onClick={handleMenuClick}>{button}</Typography>
+          {button}
         </Button>
         {i != buttons.length - 1 && <Divider />}
-      </>
+      </Box>
     ))
   }, [buttons])
 
   const MobileView = useMemo(() => {
     return (
-      <Collapse in={opened} collapsedSize={`${HEADER_HEIGHT}rem`} timeout={250}>
+      <Collapse in={opened} collapsedSize={`${HEADER_HEIGHT}rem`} timeout={100}>
         <Card id="home" sx={{ ...CARD_STYLE, display: isSmall ? 'block' : 'none' }}>
           <Stack>
             <Button
+              onClick={handleMenuClick}
               fullWidth
               sx={{
+                color: 'primary.light',
                 gap: '0.5rem',
                 py: 1,
               }}
@@ -95,16 +95,12 @@ export function Header() {
               {!opened ? (
                 <>
                   <MenuIcon />
-                  <Typography sx={{ color: 'primary.light' }} onClick={handleMenuClick}>
-                    Menu
-                  </Typography>
+                  Menu
                 </>
               ) : (
                 <>
                   <CloseIcon />
-                  <Typography sx={{ color: 'primary.light' }} onClick={handleMenuClick}>
-                    Close
-                  </Typography>
+                  Close
                 </>
               )}
             </Button>
