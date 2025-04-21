@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react'
+
 import useMediaQuery from '@mui/material/useMediaQuery'
 import Modal from '@mui/material/Modal'
 import Paper from '@mui/material/Paper'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Typography from '@mui/material/Typography'
+
 import theme from '../css/theme'
-import { useEffect, useState } from 'react'
-import { Container } from '@mui/material'
 
 export function MobileMsg() {
   const [display, setDisplay] = useState(false)
@@ -39,12 +43,45 @@ export function MobileMsg() {
           p: 2,
         }}
       >
-        <Container>
-          <h1>Mobile View</h1>
-          <p>This website is not optimized for mobile view. Please use a desktop or laptop for the best experience.</p>
-          <p>Click anywhere to close this message.</p>
+        <Container
+          sx={{
+            textAlign: 'center',
+            mt: '2.5rem',
+          }}
+        >
+          <Typography variant="h2" fontSize={'1.5rem'}>
+            Dear Mobile User
+          </Typography>
+          <Typography pb={2}>Thanks for coming to my website!</Typography>
+          <Typography>
+            Just a heads up! This website is not 100% optimized for mobile view. For the best possible experience,
+            please view this website on a desktop or laptop.
+          </Typography>
+
+          <Container
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
+            <Button
+              variant="contained"
+              onClick={handleClose}
+              fullWidth
+              sx={{
+                position: 'relative',
+                bottom: '1rem',
+              }}
+            >
+              Got it!
+            </Button>
+          </Container>
         </Container>
-        dsadsadasds
       </Paper>
     </Modal>
   )
