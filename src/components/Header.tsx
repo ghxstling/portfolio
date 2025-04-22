@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 
-import { handleScrollTo } from './helper/functions'
+import { handleScrollTo as handleScroll } from './helper/functions'
 import theme from '../css/theme'
 
 export const HEADER_HEIGHT = 3.5
@@ -27,11 +27,16 @@ export function Header() {
     return { bgcolor: '#212121', borderRadius: 2, py: 0, mx: '1rem', boxShadow: '0 0 1.5rem rgb(10, 10, 10)' }
   }, [])
 
-  const handleMenuClick = useCallback(() => {
+  const handleMenuOpen = useCallback(() => {
     setOpened((prev: boolean) => !prev)
   }, [])
 
-  const handleMenuClickMobile = useCallback(() => {
+  const handleScrollTo = useCallback((id: string) => {
+    handleScroll(id)
+  }, [])
+
+  const handleScrollToMobile = useCallback((id: string) => {
+    handleScroll(id)
     setOpened(false)
   }, [])
 
@@ -64,14 +69,9 @@ export function Header() {
         {button}
       </Button>
     ))
-  }, [buttons])
+  }, [buttons, handleScrollTo])
 
   const ButtonListMobile = useMemo(() => {
-    const handleScrollToMobile = (id: string) => {
-      handleScrollTo(id)
-      handleMenuClickMobile()
-    }
-
     return buttons.map((button, i) => (
       <Box key={button}>
         <Button
@@ -86,7 +86,7 @@ export function Header() {
         {i != buttons.length - 1 && <Divider />}
       </Box>
     ))
-  }, [buttons, handleMenuClickMobile])
+  }, [buttons, handleScrollToMobile])
 
   const MobileView = useMemo(() => {
     return (
@@ -108,7 +108,7 @@ export function Header() {
         >
           <Stack>
             <Button
-              onClick={handleMenuClick}
+              onClick={handleMenuOpen}
               fullWidth
               disableRipple
               sx={{
@@ -138,7 +138,7 @@ export function Header() {
         </Card>
       </Collapse>
     )
-  }, [ButtonListMobile, CARD_STYLE, handleMenuClick, isSmall, opened])
+  }, [ButtonListMobile, CARD_STYLE, handleMenuOpen, isSmall, opened])
 
   return (
     <Box
