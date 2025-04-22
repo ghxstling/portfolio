@@ -29,6 +29,7 @@ export function Projects() {
   const [projects, setProjects] = useState<ProjectData[] | string>('')
 
   useEffect(() => {
+    // TODO: create an endpoint to fetch projects from the server rather than the client
     async function fetchProjects() {
       try {
         const token = import.meta.env.VITE_GITHUB_ACCESS_TOKEN
