@@ -22,8 +22,8 @@ export function About() {
   }
   const TEXT_STYLE = {
     textAlign: {
-      sm: 'center',
-      md: 'left',
+      xs: 'center',
+      sm: 'left',
     },
   }
 
