@@ -10,7 +10,7 @@ import FormHelperText from '@mui/material/FormHelperText'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 
-export function Contact() {
+function Contact() {
   type Field = string | undefined
 
   const [fullName, setFullName] = useState<Field>(undefined)
@@ -189,3 +189,5 @@ export function Contact() {
     </Paper>
   )
 }
+
+export default Contact

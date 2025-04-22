@@ -17,7 +17,7 @@ import OpenInNew from '@mui/icons-material/OpenInNew'
 
 const GITHUB_USERNAME = 'ghxstling'
 
-export function Projects() {
+function Projects() {
   type ProjectData = {
     id: number
     name: string
@@ -282,3 +282,5 @@ export function Projects() {
     </Paper>
   )
 }
+
+export default Projects

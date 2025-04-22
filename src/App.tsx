@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { Suspense } from 'react'
 
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
@@ -7,23 +7,18 @@ import CssBaseline from '@mui/material/CssBaseline'
 
 import { ThemeProvider } from '@mui/material/styles'
 
-import { Projects } from './components/Projects'
-import { Header } from './components/Header'
-import { AvatarCard } from './components/AvatarCard'
-import { About } from './components/About'
-import { Contact } from './components/Contact'
-import { Footer } from './components/Footer'
+const MobileMsg = React.lazy(() => import('./components/MobileMsg'))
+const Header = React.lazy(() => import('./components/Header'))
+const AvatarCard = React.lazy(() => import('./components/AvatarCard'))
+const About = React.lazy(() => import('./components/About'))
+const Projects = React.lazy(() => import('./components/Projects'))
+const Contact = React.lazy(() => import('./components/Contact'))
+const Footer = React.lazy(() => import('./components/Footer'))
 
 import theme from './css/theme'
-import { MobileMsg } from './components/MobileMsg'
 
 export default function App() {
-  const [loaded, setLoaded] = useState(false)
   const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
-
-  useEffect(() => {
-    setLoaded(true)
-  }, [setLoaded])
 
   const image = {
     position: 'fixed',
@@ -42,7 +37,7 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box component={'img'} src="./assets/code.jpg" alt="Background" sx={image} />
-      {loaded && (
+      <Suspense>
         <Container component={'main'}>
           <MobileMsg />
           <Header />
@@ -54,7 +49,7 @@ export default function App() {
             <Footer />
           </Stack>
         </Container>
-      )}
+      </Suspense>
     </ThemeProvider>
   )
 }
