@@ -9,6 +9,12 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const expressVersion = require('express/package.json').version
+const viteExpressVersion = require('vite-express/package.json').version
+
 dotenv.config({ path: './.env.local' })
 
 const app = express()
@@ -124,6 +130,8 @@ app.get('*', (req, res) => {
 })
 
 ViteExpress.listen(app, port, () => {
+  console.log(`SERVER: Express.js version ${expressVersion}`)
+  console.log(`SERVER: ViteExpress version ${viteExpressVersion}`)
   console.log(`SERVER: ViteExpress is running on port ${port} ...`)
 })
 
