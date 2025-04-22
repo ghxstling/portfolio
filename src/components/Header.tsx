@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
@@ -21,22 +21,32 @@ export const HEADER_MARGIN = 1.5
 export function Header() {
   const [opened, setOpened] = useState(false)
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
-
-  const handleMenuClick = () => {
-    setOpened((prev: boolean) => !prev)
-  }
-
-  const handleMenuClickMobile = () => {
-    setOpened(false)
-  }
+  const headerRef = useRef<HTMLDivElement>(null)
 
   const CARD_STYLE = useMemo(() => {
-    return {
-      bgcolor: '#212121',
-      borderRadius: 2,
-      py: 0,
-      mx: '1rem',
-      boxShadow: '0 0 1.5rem rgb(10, 10, 10)',
+    return { bgcolor: '#212121', borderRadius: 2, py: 0, mx: '1rem', boxShadow: '0 0 1.5rem rgb(10, 10, 10)' }
+  }, [])
+
+  const handleMenuClick = useCallback(() => {
+    setOpened((prev: boolean) => !prev)
+  }, [])
+
+  const handleMenuClickMobile = useCallback(() => {
+    setOpened(false)
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
+        setOpened(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('touchstart', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('touchstart', handleClickOutside)
     }
   }, [])
 
@@ -76,16 +86,31 @@ export function Header() {
         {i != buttons.length - 1 && <Divider />}
       </Box>
     ))
-  }, [buttons])
+  }, [buttons, handleMenuClickMobile])
 
   const MobileView = useMemo(() => {
     return (
-      <Collapse in={opened} collapsedSize={`${HEADER_HEIGHT}rem`} timeout={100}>
-        <Card id="home" sx={{ ...CARD_STYLE, display: isSmall ? 'block' : 'none' }}>
+      <Collapse
+        in={opened}
+        collapsedSize={`${HEADER_HEIGHT}rem`}
+        timeout={200}
+        easing={{
+          enter: 'ease-out',
+          exit: 'ease-in',
+        }}
+      >
+        <Card
+          id="home"
+          sx={{
+            ...CARD_STYLE,
+            display: isSmall ? 'block' : 'none',
+          }}
+        >
           <Stack>
             <Button
               onClick={handleMenuClick}
               fullWidth
+              disableRipple
               sx={{
                 color: 'primary.light',
                 gap: '0.5rem',
@@ -113,11 +138,12 @@ export function Header() {
         </Card>
       </Collapse>
     )
-  }, [ButtonListMobile, CARD_STYLE, isSmall, opened])
+  }, [ButtonListMobile, CARD_STYLE, handleMenuClick, isSmall, opened])
 
   return (
     <Box
       component="header"
+      ref={headerRef}
       sx={{
         position: 'sticky',
         top: HEADER_MARGIN + 'rem',
