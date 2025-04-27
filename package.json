@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"vite\" \"npm run server\"",
-    "server": "node api/server.js",
+    "server": "concurrently \"node api/server.js\" \"node api/discord/deploy-commands.cjs && node api/discord/bot.cjs\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
