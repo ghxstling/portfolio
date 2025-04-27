@@ -12,7 +12,7 @@ if (!token) {
 
 console.log(`SERVER: Loading Discord bot...`)
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences] })
 
 client.commands = new Collection()
 const foldersPath = path.join(__dirname, 'commands')
