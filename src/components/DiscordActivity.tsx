@@ -5,42 +5,16 @@ import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { CircularProgress } from '@mui/material'
-import { constructDiscordAuthUrl } from './helper/functions'
 
 export function DiscordActivity() {
   const [loaded, setLoaded] = useState(false)
   const [activity, setActivity] = useState<string>('')
 
   useEffect(() => {
-    async function triggerDiscordAuth() {
-      const authUrl = constructDiscordAuthUrl()
-      window.location.href = authUrl
-    }
+    //TODO: create a function that fetches the activity from discord.js
 
-    async function fetchActivity() {
-      try {
-        triggerDiscordAuth()
-        const response = await fetch('https://discord.com/api/v10/users/@me/activities', {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer',
-            'User-Agent': 'DiscordBot',
-            'Content-Type': 'application/json',
-          },
-        })
-        const data = await response.json()
-        setActivity(data[0]?.name || 'No activity')
-      } catch (error) {
-        console.error('Error fetching Discord activity:', error)
-        // TODO: UNDO THIS AFTER TESTING
-        setActivity('ERROR')
-        // setLoaded(false)
-      }
-    }
-
-    // TODO: UNDO THIS AFTER TESTING
+    // TODO: remove setLoaded(true) when in production
     setLoaded(true)
-    fetchActivity()
   }, [])
 
   if (!loaded) return null
