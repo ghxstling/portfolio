@@ -15,6 +15,8 @@ const require = createRequire(import.meta.url)
 const expressVersion = require('express/package.json').version
 const viteExpressVersion = require('vite-express/package.json').version
 
+import client from './discord/bot.cjs'
+
 dotenv.config({ path: './.env.local' })
 
 const app = express()
@@ -127,25 +129,43 @@ app.post('/api/email', limiter, (req, res) => {
 })
 
 app.get('/api/discord', (req, res) => {
-  res.status(200).send({
-    message: 'Hello from /api/discord!',
-  })
+  if (client.isReady()) {
+    res.status(200).send({
+      message: 'Hello from /api/discord! Bot is online.',
+      status_code: 200,
+      online: true,
+      user: client.user.tag,
+    })
+  } else {
+    res.status(500).send({
+      message: 'Hello from /api/discord... wait, bot is offline. :(',
+      status_code: 500,
+      online: false,
+      user: null,
+    })
+  }
 })
 
-app.get('/api/discord/callback', (req, res) => {
-  // if (!process.env.NODE_ENV) {
-  //   res.redirect(307, 'https://www.ghxstling.dev')
-  // } else {
-  //   res.redirect(307, 'http://localhost:5173')
-  // }
-  res.status(200).send({
-    message: 'Hello from /api/discord/callback!',
-    status_code: 200,
-    req_query: req.query,
-    req_params: req.params,
-    req_body: req.body,
-    req_headers: req.headers,
-  })
+app.get('/api/discord/my-activity', (req, res) => {
+  if (client.isReady()) {
+    try {
+      // TODO: get activity
+    } catch (error) {
+      console.error('SERVER: Error fetching activity from Discord Bot - ', error)
+      res.status(500).send({
+        message: 'Error: Could not fetch activity from Discord Bot.',
+        status_code: 500,
+        online: true,
+        activity: null,
+      })
+    }
+  } else {
+    res.status(500).send({
+      message: 'Error: Discord Bot is offline.',
+      status_code: 500,
+      online: false,
+    })
+  }
 })
 
 app.get('*', (req, res) => {
