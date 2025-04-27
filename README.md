@@ -39,6 +39,7 @@ This is my portfolio website, built with React and Vite and deployed on Vercel. 
 - [ ] Add 'Skills' and 'Experience' sections
 - [ ] Add an 'Activity' section using Discord API
 - [ ] Add CSS animations and transitions
+- [ ] Add support for viewing the PDF modal on mobile and tablet
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
