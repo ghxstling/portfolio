@@ -35,10 +35,12 @@ This is my portfolio website, built with React and Vite and deployed on Vercel. 
 
 ## Roadmap
 
-- [ ] Add responsiveness for smaller screens (mobile and tablet)
-- [ ] Add 'Skills' and 'Experience' sections
+- [x] Add responsiveness for smaller screens (mobile and tablet)
+  - [ ] Fix responsiveness of PDF Modal
 - [ ] Add an 'Activity' section using Discord API
+- [ ] Add 'Skills' and 'Experience' sections
 - [ ] Add CSS animations and transitions
+- [ ] Add support for viewing the PDF modal on mobile and tablet
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
