@@ -15,17 +15,11 @@ import CircularProgress from '@mui/material/CircularProgress'
 import LinkIcon from '@mui/icons-material/Link'
 import OpenInNew from '@mui/icons-material/OpenInNew'
 
+import { ProjectData } from '../lib/types'
+
 const GITHUB_USERNAME = 'ghxstling'
 
 function Projects() {
-  type ProjectData = {
-    id: number
-    name: string
-    html_url: string
-    homepage: string
-    pushed_at: string
-  }
-
   const [projects, setProjects] = useState<ProjectData[] | string>('')
 
   useEffect(() => {
