@@ -9,6 +9,12 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const expressVersion = require('express/package.json').version
+const viteExpressVersion = require('vite-express/package.json').version
+
 dotenv.config({ path: './.env.local' })
 
 const app = express()
@@ -20,6 +26,7 @@ const staticPath = path.join(__dirname, '..', 'dist')
 app.use(express.static(staticPath))
 app.use(express.static('public'))
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(compression())
 app.use(
   cors({
@@ -119,11 +126,35 @@ app.post('/api/email', limiter, (req, res) => {
   }
 })
 
+app.get('/api/discord', (req, res) => {
+  res.status(200).send({
+    message: 'Hello from /api/discord!',
+  })
+})
+
+app.get('/api/discord/callback', (req, res) => {
+  // if (!process.env.NODE_ENV) {
+  //   res.redirect(307, 'https://www.ghxstling.dev')
+  // } else {
+  //   res.redirect(307, 'http://localhost:5173')
+  // }
+  res.status(200).send({
+    message: 'Hello from /api/discord/callback!',
+    status_code: 200,
+    req_query: req.query,
+    req_params: req.params,
+    req_body: req.body,
+    req_headers: req.headers,
+  })
+})
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(staticPath, 'index.html'))
 })
 
 ViteExpress.listen(app, port, () => {
+  console.log(`SERVER: Express.js version ${expressVersion}`)
+  console.log(`SERVER: ViteExpress version ${viteExpressVersion}`)
   console.log(`SERVER: ViteExpress is running on port ${port} ...`)
 })
 

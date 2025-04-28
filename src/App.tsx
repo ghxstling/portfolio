@@ -14,7 +14,8 @@ import { About } from './components/About'
 import { Contact } from './components/Contact'
 import { Footer } from './components/Footer'
 
-import { theme } from './css/theme'
+import theme from './css/theme'
+import { MobileMsg } from './components/MobileMsg'
 
 export default function App() {
   const [loaded, setLoaded] = useState(false)
@@ -29,7 +30,6 @@ export default function App() {
     inset: '0 50% 0 50%',
     zIndex: -1,
     height: '100vh',
-    width: '100&',
     filter: 'blur(3px) saturate(0)',
     opacity: 0.3,
     justifySelf: 'center',
@@ -44,9 +44,10 @@ export default function App() {
       <Box component={'img'} src="./assets/code.jpg" alt="Background" sx={image} />
       {loaded && (
         <Container component={'main'}>
+          <MobileMsg />
           <Header />
           <AvatarCard />
-          <Stack spacing={{ md: 5, sm: 2.5 }}>
+          <Stack spacing={{ lg: 5, md: 3, sm: 3, xs: 2 }}>
             <About />
             <Projects />
             <Contact />

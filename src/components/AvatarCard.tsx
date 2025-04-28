@@ -5,19 +5,30 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 import Description from '@mui/icons-material/Description'
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard'
+import EmailIcon from '@mui/icons-material/Email'
 
+import theme from '../css/theme'
+import { handleScrollTo } from './helper/functions'
 import { PDFViewer } from './PDFViewer'
 import { HEADER_MARGIN } from './Header'
-import { handleScrollTo } from './helper/functions'
+// import { DiscordActivity } from './DiscordActivity'
 
 export function AvatarCard() {
   const [open, setOpen] = useState(false)
 
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
+  const isMobile = useMediaQuery(theme.breakpoints.between('xs', 'md'))
+
   const handleOpen = () => setOpen(true)
 
-  const AVATAR_SIZE = '20rem'
+  const AVATAR_SIZE = {
+    xs: '15rem',
+    sm: '20rem',
+  }
   const FONT_SIZE = '2.5rem'
 
   const Modal = useMemo(() => {
@@ -34,10 +45,17 @@ export function AvatarCard() {
       sx={{
         justifyContent: 'center',
         alignItems: 'center',
-        py: '3rem',
-        pt: 3 + HEADER_MARGIN + 'rem',
+        py: {
+          xs: '2rem',
+          sm: '3rem',
+        },
+        pt: {
+          xs: 1.5 + HEADER_MARGIN + 'rem',
+          sm: 3 + HEADER_MARGIN + 'rem',
+        },
         fontSize: FONT_SIZE,
         gap: {
+          xs: 3,
           sm: 5,
           md: 0,
         },
@@ -51,12 +69,24 @@ export function AvatarCard() {
           height: AVATAR_SIZE,
         }}
       />
-
       <Stack
         sx={{
-          textAlign: 'left',
-          ml: '5rem',
-          maxWidth: '25rem',
+          textAlign: {
+            xs: 'center',
+            sm: 'left',
+          },
+          ml: {
+            md: '5rem',
+          },
+          alignItems: {
+            xs: 'center',
+            sm: 'normal',
+          },
+          maxWidth: {
+            xs: '15rem',
+            sm: '20rem',
+            md: '25rem',
+          },
         }}
       >
         <Typography variant="h1" mb={1.5}>
@@ -69,17 +99,29 @@ export function AvatarCard() {
         >
           Empowering businesses of tomorrow with innovative software solutions 🚀
         </Typography>
-        <Grid container gap={2} mt={2}>
+        <Grid
+          container
+          gap={2}
+          mt={2}
+          sx={{
+            maxWidth: {
+              xs: '100%',
+              sm: '88%',
+            },
+            justifyContent: isSmall ? 'center' : 'normal',
+          }}
+        >
           <Button variant="contained" onClick={() => handleScrollTo('projects')}>
-            Projects
+            {!isMobile ? 'Projects' : <DeveloperBoardIcon />}
           </Button>
           <Button variant="contained" onClick={() => handleScrollTo('contact')}>
-            Get in Touch
+            {!isMobile ? 'Get in Touch' : <EmailIcon />}
           </Button>
           <Button variant="contained" onClick={handleOpen}>
             <Description />
           </Button>
           {open && Modal}
+          {/* <DiscordActivity /> */}
         </Grid>
       </Stack>
     </Grid>
