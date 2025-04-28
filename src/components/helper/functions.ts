@@ -13,3 +13,11 @@ export const handleScrollTo = (id: string) => {
     window.scrollTo({ top: yPos, behavior: 'smooth' })
   }
 }
+
+export const getApiUrl = (path: string) => {
+  if (!import.meta.env.VITE_API_URL) {
+    return path
+  } else {
+    return import.meta.env.VITE_API_URL + path
+  }
+}
