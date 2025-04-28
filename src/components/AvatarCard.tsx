@@ -15,7 +15,7 @@ import theme from '../css/theme'
 import { handleScrollTo } from './helper/functions'
 import { PDFViewer } from './PDFViewer'
 import { HEADER_MARGIN } from './Header'
-// import { DiscordActivity } from './DiscordActivity'
+import { DiscordActivity } from './DiscordActivity'
 
 function AvatarCard() {
   const [open, setOpen] = useState(false)
@@ -121,7 +121,7 @@ function AvatarCard() {
             <Description />
           </Button>
           {open && Modal}
-          {/* <DiscordActivity /> */}
+          <DiscordActivity />
         </Grid>
       </Stack>
     </Grid>
