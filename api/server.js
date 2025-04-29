@@ -147,6 +147,17 @@ app.get('/api/discord/my-activity', (req, res) => {
     try {
       const { userId, status, activity } = presenceUpdate.getLatestPresence()
 
+      if (userId !== process.env.DISCORD_MY_USER_ID) {
+        console.log('SERVER: [ERROR] Something wrong with your user ID...')
+        res.status(400).send({
+          message: 'Hello from /api/discord/my-activity... wait, something wrong with your user ID.',
+          status_code: 400,
+          online: true,
+          presence: null,
+        })
+        return
+      }
+
       if (activity) {
         res.status(200).send({
           message: 'Hello from /api/discord/my-activity! Activity fetched successfully.',
