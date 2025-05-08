@@ -15,9 +15,9 @@ import theme from '../css/theme'
 import { handleScrollTo } from './helper/functions'
 import { PDFViewer } from './PDFViewer'
 import { HEADER_MARGIN } from './Header'
-// import { DiscordActivity } from './DiscordActivity'
+import { DiscordActivity } from './DiscordActivity'
 
-export function AvatarCard() {
+function AvatarCard() {
   const [open, setOpen] = useState(false)
 
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
@@ -121,9 +121,11 @@ export function AvatarCard() {
             <Description />
           </Button>
           {open && Modal}
-          {/* <DiscordActivity /> */}
+          <DiscordActivity />
         </Grid>
       </Stack>
     </Grid>
   )
 }
+
+export default AvatarCard

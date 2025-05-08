@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid'
 import { HEADER_HEIGHT, HEADER_MARGIN } from '../Header'
 
 export const handleScrollTo = (id: string) => {
@@ -15,18 +14,21 @@ export const handleScrollTo = (id: string) => {
   }
 }
 
-export const constructDiscordAuthUrl = () => {
-  const scope = encodeURIComponent('email identify activities.read')
-  const state = uuid()
-  document.cookie = `auth_state=${state}; SameSite=Lax; Secure; HttpOnly`
-
-  let authUrl: string
-  let redirectUri: string
-  if (!process.env.NODE_ENV) {
-    redirectUri = encodeURIComponent('https://www.ghxstling.dev/api/discord/callback')
-    authUrl = `https://discord.com/oauth2/authorize?client_id=1364032390825115750&response_type=code&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`
+export const getApiUrl = (path: string) => {
+  if (!import.meta.env.VITE_API_URL) {
+    return path
   } else {
-    authUrl = `https://discord.com/oauth2/authorize?client_id=1364032390825115750&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fapi%2Fdiscord%2Fcallback&scope=identify+email+activities.read&state=${state}`
+    return import.meta.env.VITE_API_URL + path
   }
-  return authUrl
+}
+
+export const parseImageUrl = (image?: string | null): string | null => {
+  if (!image) return null
+  if (image.startsWith('spotify:')) {
+    return `https://i.scdn.co/image/${image.split(':')[1]}`
+  } else if (image.startsWith('mp:external/')) {
+    return `https://${image.split('/').slice(3).join('/')}`
+  } else {
+    return null
+  }
 }

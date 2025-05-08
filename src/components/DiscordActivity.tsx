@@ -4,67 +4,156 @@ import Paper from '@mui/material/Paper'
 import Card from '@mui/material/Card'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import { CircularProgress } from '@mui/material'
-import { constructDiscordAuthUrl } from './helper/functions'
+import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
+
+import { getApiUrl, parseImageUrl } from './helper/functions'
+import { PresenceData } from '../lib/types'
 
 export function DiscordActivity() {
-  const [loaded, setLoaded] = useState(false)
-  const [activity, setActivity] = useState<string>('')
+  const [activity, setActivity] = useState<PresenceData | null>(null)
 
   useEffect(() => {
-    async function triggerDiscordAuth() {
-      const authUrl = constructDiscordAuthUrl()
-      window.location.href = authUrl
-    }
-
     async function fetchActivity() {
       try {
-        triggerDiscordAuth()
-        const response = await fetch('https://discord.com/api/v10/users/@me/activities', {
+        const url = getApiUrl('/api/discord/my-activity')
+        const res = await fetch(`${url}`, {
           method: 'GET',
           headers: {
-            Authorization: 'Bearer',
-            'User-Agent': 'DiscordBot',
             'Content-Type': 'application/json',
           },
         })
-        const data = await response.json()
-        setActivity(data[0]?.name || 'No activity')
+        const data = await res.json()
+        setActivity(data.presence)
       } catch (error) {
-        console.error('Error fetching Discord activity:', error)
-        // TODO: UNDO THIS AFTER TESTING
-        setActivity('ERROR')
-        // setLoaded(false)
+        console.error('fetchActivity() - Error fetching data:', error)
       }
     }
 
-    // TODO: UNDO THIS AFTER TESTING
-    setLoaded(true)
     fetchActivity()
   }, [])
 
-  if (!loaded) return null
+  const myActivity = activity?.activity
+
+  const typeMap: Record<number, string> = {
+    0: 'Playing',
+    2: 'Listening to',
+    3: 'Watching',
+  }
+
+  const statusMap: Record<string, [string, string]> = {
+    online: ['Online', '#6fbf73'],
+    idle: ['Idle', '#ff9800'],
+    dnd: ['Do Not Disturb', '#aa2e25'],
+    offline: ['Offline', 'grey'],
+  }
+
+  const status = statusMap[activity?.status || 'offline']
+  const type = typeMap[myActivity?.type ?? -1] || ''
+  const largeImg = parseImageUrl(myActivity?.assets?.largeImage)
+  const smallImg = parseImageUrl(myActivity?.assets?.smallImage)
+
+  if (!activity) return null
 
   return (
-    <Paper
-      component={Card}
-      sx={{
-        width: '100%',
-        height: '7.5rem',
-        p: 2,
-        mt: 1.5,
-      }}
-    >
-      <Stack>
-        <Typography variant="body1" textAlign={'left'}>
-          what am i doing rn?
+    <Suspense>
+      <Stack gap={1} width={'100%'}>
+        <Typography
+          variant="h4"
+          fontWeight={600}
+          fontSize={'1.1rem'}
+          sx={{
+            textDecoration: 'underline',
+            textUnderlineOffset: '0.15rem',
+          }}
+        >
+          My Current Discord Activity
         </Typography>
-        <Suspense fallback={<CircularProgress />}>
-          <Typography variant="body2" textAlign={'left'}>
-            {activity}
-          </Typography>
-        </Suspense>
+        <Paper
+          component={Card}
+          sx={{
+            p: 1,
+            borderRadius: 2,
+            textAlign: 'left',
+            pb: smallImg ? 1.5 : 1,
+          }}
+        >
+          <Grid container gap={0.5} position={'relative'}>
+            <Box width={'100%'}>
+              <Box display={'flex'} gap={0.5} alignItems={'center'}>
+                <Text listText="Status">{status[0]}</Text>
+                <Box bgcolor={status[1]} width={'0.8rem'} height={'0.8rem'} borderRadius={'1rem'} />
+              </Box>
+              <Text listText={type}>{myActivity?.name}</Text>
+            </Box>
+
+            {largeImg && (
+              <Box
+                component={'img'}
+                src={largeImg}
+                width={'25%'}
+                height={'100%'}
+                borderRadius={1}
+                alignSelf={'center'}
+                boxShadow={5}
+              />
+            )}
+            {smallImg && (
+              <Box
+                component={'img'}
+                src={smallImg}
+                width={'10%'}
+                position={'absolute'}
+                left={'17.5%'}
+                bottom={-5}
+                borderRadius={10}
+                boxShadow={10}
+              />
+            )}
+            <Box ml={smallImg ? 1 : 0.5} maxWidth={'70%'}>
+              <Text
+                listText={myActivity?.type === 2 ? 'Title' : undefined}
+                sx={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                }}
+              >
+                {myActivity?.details}
+              </Text>
+              <Text
+                listText={myActivity?.type === 2 ? 'Artist' : undefined}
+                sx={{
+                  wordWrap: 'break-word',
+                  whiteSpace: 'normal',
+                }}
+              >
+                {myActivity?.state}
+              </Text>
+            </Box>
+          </Grid>
+        </Paper>
       </Stack>
-    </Paper>
+    </Suspense>
+  )
+}
+
+function Text({
+  children,
+  listText,
+  sx,
+  ...props
+}: { children: React.ReactNode; listText?: string; sx?: object } & React.ComponentProps<typeof Typography>) {
+  return (
+    <Typography
+      variant="body2"
+      sx={{
+        fontSize: '0.9rem',
+        ...sx,
+      }}
+      {...props}
+    >
+      {listText && <span style={{ fontWeight: 600 }}>{listText + ': '}</span>}
+      {children}
+    </Typography>
   )
 }
