@@ -197,6 +197,35 @@ app.get('/api/discord/my-activity', (req, res) => {
   }
 })
 
+app.get('/api/github/projects', async (req, res) => {
+  try {
+    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos`, {
+      headers: {
+        Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`,
+        'X-GitHub-Api-Version': '2022-11-28',
+      }
+    })
+
+    if (!response.ok) {
+      throw new Error(response.message)
+    }
+
+    const projects = await response.json()
+    res.status(200).send({
+      message: `Hello from /api/github/projects! Projects fetched successfully`,
+      status_code: 200,
+      data: projects
+    })
+
+  } catch (error) {
+    res.status(500).send({
+      message: 'Error: Could not fetch projects from GitHub',
+      status_code: 500,
+      error: error.message
+    })
+  } 
+})
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(staticPath, 'index.html'))
 })
