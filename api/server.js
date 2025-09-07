@@ -16,7 +16,7 @@ dotenv.config({ path: './.env.local' })
 
 const app = express()
 const port = 3001
-ViteExpress.config({ mode: 'production' })
+ViteExpress.config({ mode: process.env.NODE_ENV ? 'development' : 'production' })
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const staticPath = path.join(__dirname, '..', 'dist')
@@ -199,7 +199,7 @@ app.get('/api/discord/my-activity', (req, res) => {
 
 app.get('/api/github/projects', async (req, res) => {
   try {
-    const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos`, {
+    const response = await fetch(`https://api.github.com/users/ghxstling/repos`, {
       headers: {
         Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`,
         'X-GitHub-Api-Version': '2022-11-28',
