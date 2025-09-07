@@ -9,8 +9,11 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
-import client from './discord/bot.cjs'
-import presenceUpdate from './discord/events/presenceUpdate.cjs'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
+const expressVersion = require('express/package.json').version
+const viteExpressVersion = require('vite-express/package.json').version
 
 dotenv.config({ path: './.env.local' })
 

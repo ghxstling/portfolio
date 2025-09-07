@@ -20,19 +20,20 @@ import theme from './css/theme'
 export default function App() {
   const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
 
-  const image = {
-    position: 'fixed',
-    inset: '0 50% 0 50%',
-    zIndex: -1,
-    height: '100vh',
-    filter: 'blur(3px) saturate(0)',
-    opacity: 0.3,
-    justifySelf: 'center',
-    maskMode: 'alpha',
-    maskImage: IMG_LINEAR_GRADIENT,
-    WebkitMaskImage: IMG_LINEAR_GRADIENT,
-  }
+const image = {
+  position: 'fixed',
+  inset: '0 50% 0 50%',
+  zIndex: -1,
+  height: '100vh',
+  filter: 'blur(3px) saturate(0)',
+  opacity: 0.3,
+  justifySelf: 'center',
+  maskMode: 'alpha',
+  maskImage: IMG_LINEAR_GRADIENT,
+  WebkitMaskImage: IMG_LINEAR_GRADIENT,
+}
 
+export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
