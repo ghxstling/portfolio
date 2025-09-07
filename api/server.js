@@ -9,9 +9,6 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
-import client from './discord/bot.cjs'
-import presenceUpdate from './discord/events/presenceUpdate.cjs'
-
 dotenv.config({ path: './.env.local' })
 
 const app = express()
@@ -27,7 +24,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(compression())
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ghxstling.dev'],
+    origin: ['http://localhost:5173', `http://localhost:${port}`, 'https://ghxstling.dev'],
     methods: ['GET', 'POST'],
   })
 )

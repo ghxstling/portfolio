@@ -15,11 +15,11 @@ type PresenceData = {
     details: string | null
     state: string | null
     assets: {
-      large_image: string | null
-      large_text: string | null
-      small_image: string | null
-      small_text: string | null
-    } | null
+      largeImage: string | null
+      largeText: string | null
+      smallImage: string | null
+      smallText: string | null
+    }
   }
 }
 
