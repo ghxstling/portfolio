@@ -10,7 +10,7 @@ import DataObject from '@mui/icons-material/DataObject'
 import VideogameAsset from '@mui/icons-material/VideogameAsset'
 import School from '@mui/icons-material/School'
 
-export function About() {
+function About() {
   const ICON_STYLE = {
     fontSize: {
       xs: '0rem',
@@ -125,3 +125,5 @@ export function About() {
     </Paper>
   )
 }
+
+export default About

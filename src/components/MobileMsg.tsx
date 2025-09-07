@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 
 import theme from '../css/theme'
 
-export function MobileMsg() {
+function MobileMsg() {
   const [display, setDisplay] = useState(false)
 
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
@@ -86,3 +86,5 @@ export function MobileMsg() {
     </Modal>
   )
 }
+
+export default MobileMsg

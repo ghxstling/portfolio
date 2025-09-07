@@ -15,37 +15,25 @@ import CircularProgress from '@mui/material/CircularProgress'
 import LinkIcon from '@mui/icons-material/Link'
 import OpenInNew from '@mui/icons-material/OpenInNew'
 
-const GITHUB_USERNAME = 'ghxstling'
+import { ProjectData } from '../lib/types'
+import { getApiUrl } from './helper/functions'
 
-export function Projects() {
-  type ProjectData = {
-    id: number
-    name: string
-    html_url: string
-    homepage: string
-    pushed_at: string
-  }
-
+function Projects() {
   const [projects, setProjects] = useState<ProjectData[] | string>('')
 
   useEffect(() => {
     // TODO: create an endpoint to fetch projects from the server rather than the client
     async function fetchProjects() {
       try {
-        const token = import.meta.env.VITE_GITHUB_ACCESS_TOKEN
-        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'X-GitHub-Api-Version': '2022-11-28',
-          },
-        })
+        const url = getApiUrl('/api/projects')
+        const response = await fetch(url)
 
         if (!response.ok) {
           throw new Error(`GitHub API error: ${response.status}`)
         }
 
         const repositories = await response.json()
-        setProjects(repositories)
+        setProjects(repositories.data)
       } catch (error) {
         console.error('Error fetching repositories:', error)
         setProjects('GitHub API Error')
@@ -282,3 +270,5 @@ export function Projects() {
     </Paper>
   )
 }
+
+export default Projects
