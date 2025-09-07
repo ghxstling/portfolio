@@ -9,9 +9,6 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
-import client from './discord/bot.cjs'
-import presenceUpdate from './discord/events/presenceUpdate.cjs'
-
 dotenv.config({ path: './.env.local' })
 
 const app = express()
@@ -27,7 +24,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(compression())
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ghxstling.dev'],
+    origin: ['http://localhost:5173', `http://localhost:${port}`, 'https://ghxstling.dev'],
     methods: ['GET', 'POST'],
   })
 )
@@ -147,17 +144,6 @@ app.get('/api/discord/my-activity', (req, res) => {
   if (client.isReady()) {
     try {
       const { userId, status, activity } = presenceUpdate.getLatestPresence()
-
-      if (userId !== process.env.DISCORD_MY_USER_ID) {
-        console.log('SERVER: [ERROR] Something wrong with your user ID...')
-        res.status(400).send({
-          message: 'Hello from /api/discord/my-activity... wait, something wrong with your user ID.',
-          status_code: 400,
-          online: true,
-          presence: null,
-        })
-        return
-      }
 
       if (activity) {
         res.status(200).send({
