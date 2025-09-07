@@ -33,7 +33,7 @@ function Projects() {
         }
 
         const repositories = await response.json()
-        setProjects(repositories)
+        setProjects(repositories.data)
       } catch (error) {
         console.error('Error fetching repositories:', error)
         setProjects('GitHub API Error')
