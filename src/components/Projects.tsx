@@ -15,7 +15,6 @@ import CircularProgress from '@mui/material/CircularProgress'
 import LinkIcon from '@mui/icons-material/Link'
 import OpenInNew from '@mui/icons-material/OpenInNew'
 
-import { ProjectData } from '../lib/types'
 import { getApiUrl } from './helper/functions'
 
 export function Projects() {
@@ -27,10 +26,9 @@ export function Projects() {
     pushed_at: string
   }
 
-  const [projects, setProjects] = useState<ProjectData[] | string>('')
+  const [projects, setProjects] = useState<ProjectData[] | React.ReactNode>('')
 
   useEffect(() => {
-    // TODO: create an endpoint to fetch projects from the server rather than the client
     async function fetchProjects() {
       try {
         const url = getApiUrl('/api/projects')
@@ -43,8 +41,16 @@ export function Projects() {
         const repositories = await response.json()
         setProjects(repositories)
       } catch (error) {
-        console.error('Error fetching repositories:', error)
-        setProjects('GitHub API Error')
+        console.error(`Error fetching repositories: ${error}. Defaulting to fallback text...`)
+        setProjects(
+          <>
+            Something went wrong with fetching projects from GitHub. You may view my projects{' '}
+            <Link href="https://github.com/ghxstling">
+              <strong>here</strong>
+            </Link>
+            .
+          </>
+        )
       }
     }
 
