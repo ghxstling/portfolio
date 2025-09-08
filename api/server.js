@@ -23,17 +23,27 @@ ViteExpress.config({ mode: process.env.NODE_ENV ? 'development' : 'production' }
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const staticPath = path.join(__dirname, '..', 'dist')
+const allowedOrigins = ['http://localhost:5173', 'https://www.ghxstling.dev']
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        /\.app\.github\.dev$/.test(origin) ||
+        /ghxstlings-projects\.vercel\.app$/.test(origin)
+      )
+        return callback(null, true)
+      else return callback(new Error('Not allowed by CORS'))
+    },
+  })
+)
 app.use(express.static(staticPath))
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())
-app.use(
-  cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ghxstling.dev'],
-    methods: ['GET', 'POST'],
-  })
-)
 
 const limiter = rateLimiter({
   windowMs: 5 * 60000,
@@ -179,6 +189,7 @@ app.get('/api/projects', async (req, res) => {
 })
 
 app.get('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins)
   res.sendFile(path.join(staticPath, 'index.html'))
 })
 
