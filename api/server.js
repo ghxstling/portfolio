@@ -19,21 +19,31 @@ dotenv.config({ path: './.env.local' })
 
 const app = express()
 const port = 3001
-ViteExpress.config({ mode: 'production' })
+ViteExpress.config({ mode: process.env.NODE_ENV ? 'development' : 'production' })
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const staticPath = path.join(__dirname, '..', 'dist')
+const allowedOrigins = ['http://localhost:5173', 'https://www.ghxstling.dev']
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        /\.app\.github\.dev$/.test(origin) ||
+        /ghxstlings-projects\.vercel\.app$/.test(origin)
+      )
+        return callback(null, true)
+      else return callback(new Error('Not allowed by CORS'))
+    },
+  })
+)
 app.use(express.static(staticPath))
 app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(compression())
-app.use(
-  cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'https://ghxstling.dev'],
-    methods: ['GET', 'POST'],
-  })
-)
 
 const limiter = rateLimiter({
   windowMs: 5 * 60000,
@@ -60,6 +70,7 @@ app.post('/api/email', limiter, (req, res) => {
   try {
     const { fullName, email, subject, body, phone } = req.body
 
+    if (!process.env.GOOGLE_APP_PASSWORD) throw new Error('GOOGLE_APP_PASSWORD is not defined in environment variables')
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 465,
@@ -148,7 +159,37 @@ app.get('/api/discord/callback', (req, res) => {
   })
 })
 
+app.get('/api/projects', async (req, res) => {
+  try {
+    if (!process.env.GITHUB_ACCESS_TOKEN) throw new Error('GITHUB_ACCESS_TOKEN is not defined in environment variables')
+    const response = await fetch(`https://api.github.com/users/ghxstling/repos`, {
+      headers: {
+        Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN}`,
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(response.message)
+    }
+
+    const projects = await response.json()
+    res.status(200).send({
+      message: `Hello from /api/github/projects! Projects fetched successfully`,
+      status_code: 200,
+      data: projects,
+    })
+  } catch (error) {
+    res.status(500).send({
+      message: 'Error: Could not fetch projects from GitHub',
+      status_code: 500,
+      error: error.message,
+    })
+  }
+})
+
 app.get('*', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', allowedOrigins)
   res.sendFile(path.join(staticPath, 'index.html'))
 })
 

@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl'
 import FormHelperText from '@mui/material/FormHelperText'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import { getApiUrl } from './helper/functions'
 
 export function Contact() {
   type Field = string | undefined
@@ -58,15 +59,9 @@ export function Contact() {
       body,
     }
 
-    let url: string
-    if (!import.meta.env.VITE_API_URL) {
-      url = '/api/email'
-    } else {
-      url = import.meta.env.VITE_API_URL + '/api/email'
-    }
-
     try {
-      const res = await fetch(`${url}`, {
+      const url = getApiUrl('/api/contact')
+      const res = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
