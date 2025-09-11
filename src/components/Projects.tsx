@@ -69,6 +69,28 @@ export function Projects() {
     }
 
     const projectsToDisplay = {
+      'house-of-berry': {
+        displayName: 'House of Berry',
+        description:
+          "The official website for House of Berry, an Auckland-based matcha business. Currently leading the project as the Project Manager and Technical Lead for a team of 4 developers to bring the client's vision to life.",
+        features: [
+          <>
+            Developed using <Bold>Next.js</Bold> and <Bold>Tailwind CSS</Bold> for a fast and responsive user experience
+          </>,
+          <>
+            Facilitated <Bold>weekly meetings</Bold> with the development team to <Bold>assign tasks</Bold>, provide{' '}
+            <Bold>technical knowledge on tools</Bold>, and address any <Bold>challenges</Bold>
+          </>,
+          <>
+            Coordinated with the <Bold>client</Bold> to <Bold>gather requirements</Bold>, provide updates, and ensure
+            the project meets their <Bold>expectations</Bold>
+          </>,
+          <>
+            Reviewed <Bold>code submissions</Bold> via pull requests for <Bold>quality assurance</Bold> and{' '}
+            <Bold>best practices</Bold>
+          </>,
+        ],
+      },
       'markit-uoa': {
         displayName: 'Markit-UOA',
         description:
@@ -112,46 +134,47 @@ export function Projects() {
           </>,
         ],
       },
-      'pc-part-hunter': {
-        displayName: 'PC Part Hunter (WIP)',
-        description:
-          'An e-commerce/web-scraping Next.js web platform that allows users to search for pricing and stock availability of popular PC parts among NZ retailers. This project demonstrates my full-stack development skills.',
-        features: [
-          <>
-            Utilised <Bold>Playwright</Bold> for web scraping and <Bold>Next.js</Bold> for responsive server-side
-            rendering
-          </>,
-          <>
-            Leveraged <Bold>Tailwind CSS</Bold> and <Bold>ShadCN UI</Bold> for a responsive and modern UI
-          </>,
-          <>
-            Implemented <Bold>dark theme toggling</Bold> with <Bold>Next Themes</Bold> for improved user experience
-          </>,
-        ],
-      },
-      'shortr-url': {
-        displayName: 'Shortr URL (WIP)',
-        description: (
-          <>
-            A simple URL shortener built with Vite and Material UI that utilises the{' '}
-            <Link href="https://github.com/spoo-me/url-shortener" target="_blank" underline="hover">
-              spoo.me
-            </Link>{' '}
-            API. This project showcases my understanding of RESTful APIs.
-          </>
-        ),
-        features: [
-          <>
-            Built with <Bold>Vite</Bold> for fast development & deployment
-          </>,
-          <>
-            Utilised <Bold>REST API</Bold> and <Bold>Fetch API</Bold> to shorten URLs and retrieve original URLs
-          </>,
-          <>
-            (WIP) Implemented <Bold>URL options</Bold> such as custom aliases and password protection
-          </>,
-        ],
-      },
+      // !!! OLD PROJECTS !!!
+      // 'pc-part-hunter': {
+      //   displayName: 'PC Part Hunter (WIP)',
+      //   description:
+      //     'An e-commerce/web-scraping Next.js web platform that allows users to search for pricing and stock availability of popular PC parts among NZ retailers. This project demonstrates my full-stack development skills.',
+      //   features: [
+      //     <>
+      //       Utilised <Bold>Playwright</Bold> for web scraping and <Bold>Next.js</Bold> for responsive server-side
+      //       rendering
+      //     </>,
+      //     <>
+      //       Leveraged <Bold>Tailwind CSS</Bold> and <Bold>ShadCN UI</Bold> for a responsive and modern UI
+      //     </>,
+      //     <>
+      //       Implemented <Bold>dark theme toggling</Bold> with <Bold>Next Themes</Bold> for improved user experience
+      //     </>,
+      //   ],
+      // },
+      // 'shortr-url': {
+      //   displayName: 'Shortr URL (WIP)',
+      //   description: (
+      //     <>
+      //       A simple URL shortener built with Vite and Material UI that utilises the{' '}
+      //       <Link href="https://github.com/spoo-me/url-shortener" target="_blank" underline="hover">
+      //         spoo.me
+      //       </Link>{' '}
+      //       API. This project showcases my understanding of RESTful APIs.
+      //     </>
+      //   ),
+      //   features: [
+      //     <>
+      //       Built with <Bold>Vite</Bold> for fast development & deployment
+      //     </>,
+      //     <>
+      //       Utilised <Bold>REST API</Bold> and <Bold>Fetch API</Bold> to shorten URLs and retrieve original URLs
+      //     </>,
+      //     <>
+      //       (WIP) Implemented <Bold>URL options</Bold> such as custom aliases and password protection
+      //     </>,
+      //   ],
+      // },
     }
 
     return Array.isArray(projects) ? (
