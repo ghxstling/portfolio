@@ -17,7 +17,7 @@ import { Footer } from './components/Footer'
 import theme from './css/theme'
 import { MobileMsg } from './components/MobileMsg'
 
-import { Analytics } from '@vercel/analytics/next'
+import { Analytics } from '@vercel/analytics/react'
 
 export default function App() {
   const [loaded, setLoaded] = useState(false)
