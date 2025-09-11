@@ -17,6 +17,8 @@ import { Footer } from './components/Footer'
 import theme from './css/theme'
 import { MobileMsg } from './components/MobileMsg'
 
+import { Analytics } from '@vercel/analytics/next'
+
 export default function App() {
   const [loaded, setLoaded] = useState(false)
   const IMG_LINEAR_GRADIENT = 'linear-gradient(to left, rgba(0, 0, 0, 0), rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0))'
@@ -40,6 +42,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <Analytics />
       <CssBaseline />
       <Box component={'img'} src="./assets/code.jpg" alt="Background" sx={image} />
       {loaded && (
