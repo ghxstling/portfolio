@@ -7,7 +7,7 @@ import GitHub from '@mui/icons-material/GitHub'
 import LinkedIn from '@mui/icons-material/LinkedIn'
 import Instagram from '@mui/icons-material/Instagram'
 
-export function Footer() {
+function Footer() {
   const ICON_SIZE = 'large'
 
   return (
@@ -37,3 +37,5 @@ export function Footer() {
     </Box>
   )
 }
+
+export default Footer

@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { getApiUrl } from './helper/functions'
 
-export function Contact() {
+function Contact() {
   type Field = string | undefined
 
   const [fullName, setFullName] = useState<Field>(undefined)
@@ -184,3 +184,5 @@ export function Contact() {
     </Paper>
   )
 }
+
+export default Contact

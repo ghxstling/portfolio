@@ -284,3 +284,5 @@ export function Projects() {
     </Paper>
   )
 }
+
+export default Projects

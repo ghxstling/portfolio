@@ -9,11 +9,8 @@ import compression from 'compression'
 import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 
-import { createRequire } from 'module'
-
-const require = createRequire(import.meta.url)
-const expressVersion = require('express/package.json').version
-const viteExpressVersion = require('vite-express/package.json').version
+import client from './discord/bot.cjs'
+import presenceUpdate from './discord/events/presenceUpdate.cjs'
 
 dotenv.config({ path: './.env.local' })
 
@@ -129,7 +126,7 @@ app.post('/api/email', limiter, (req, res) => {
       }
     })
   } catch (error) {
-    console.error('SERVER: Error sending email - ', error)
+    console.error(`SERVER: [ERROR] Failed to send email : ${error}`)
     res.status(400).send({
       status_code: 400,
       error: error.message,
@@ -138,25 +135,77 @@ app.post('/api/email', limiter, (req, res) => {
 })
 
 app.get('/api/discord', (req, res) => {
-  res.status(200).send({
-    message: 'Hello from /api/discord!',
-  })
+  if (client.isReady()) {
+    res.status(200).send({
+      message: 'Hello from /api/discord! Bot is online.',
+      status_code: 200,
+      online: true,
+      user: client.user.tag,
+    })
+  } else {
+    console.log('SERVER: [ERROR] Discord bot is offline')
+    res.status(500).send({
+      message: 'Hello from /api/discord... wait, bot is offline. :(',
+      status_code: 500,
+      online: false,
+      user: null,
+    })
+  }
 })
 
-app.get('/api/discord/callback', (req, res) => {
-  // if (!process.env.NODE_ENV) {
-  //   res.redirect(307, 'https://www.ghxstling.dev')
-  // } else {
-  //   res.redirect(307, 'http://localhost:5173')
-  // }
-  res.status(200).send({
-    message: 'Hello from /api/discord/callback!',
-    status_code: 200,
-    req_query: req.query,
-    req_params: req.params,
-    req_body: req.body,
-    req_headers: req.headers,
-  })
+app.get('/api/discord/my-activity', (req, res) => {
+  if (client.isReady()) {
+    try {
+      const { userId, status, activity } = presenceUpdate.getLatestPresence()
+
+      if (userId !== process.env.DISCORD_MY_USER_ID) {
+        console.log('SERVER: [ERROR] Something wrong with your user ID...')
+        res.status(400).send({
+          message: 'Hello from /api/discord/my-activity... wait, something wrong with your user ID.',
+          status_code: 400,
+          online: true,
+          presence: null,
+        })
+        return
+      }
+
+      if (activity) {
+        res.status(200).send({
+          message: 'Hello from /api/discord/my-activity! Activity fetched successfully.',
+          status_code: 200,
+          online: true,
+          presence: {
+            userId,
+            status,
+            activity,
+          },
+        })
+      } else {
+        res.status(404).send({
+          message: 'Hello from /api/discord/my-activity... wait, activity not found.',
+          status_code: 404,
+          online: true,
+          presence: null,
+        })
+      }
+    } catch (error) {
+      console.error(`SERVER: [ERROR] Failed to fetch activity from Discord Bot: ${error}`)
+      res.status(500).send({
+        message: 'Error: Could not fetch activity from Discord Bot.',
+        status_code: 500,
+        online: true,
+        presence: undefined,
+      })
+    }
+  } else {
+    console.log('SERVER: [ERROR] Discord bot is offline')
+    res.status(500).send({
+      message: 'Hello from /api/discord/my-activity... wait, bot is offline. :(',
+      status_code: 500,
+      online: false,
+      presence: undefined,
+    })
+  }
 })
 
 app.get('/api/projects', async (req, res) => {
@@ -194,8 +243,6 @@ app.get('*', (req, res) => {
 })
 
 ViteExpress.listen(app, port, () => {
-  console.log(`SERVER: Express.js version ${expressVersion}`)
-  console.log(`SERVER: ViteExpress version ${viteExpressVersion}`)
   console.log(`SERVER: ViteExpress is running on port ${port} ...`)
 })
 

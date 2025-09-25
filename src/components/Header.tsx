@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
@@ -18,7 +18,7 @@ import theme from '../css/theme'
 export const HEADER_HEIGHT = 3.5
 export const HEADER_MARGIN = 1.5
 
-export function Header() {
+function Header() {
   const [opened, setOpened] = useState(false)
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'))
   const headerRef = useRef<HTMLDivElement>(null)
@@ -71,74 +71,76 @@ export function Header() {
     ))
   }, [buttons, handleScrollTo])
 
-  const ButtonListMobile = useMemo(() => {
-    return buttons.map((button, i) => (
-      <Box key={button}>
-        <Button
-          onClick={() => handleScrollToMobile(button.toLowerCase())}
-          sx={{
-            color: 'primary.light',
-            py: 1,
-          }}
-        >
-          {button}
-        </Button>
-        {i != buttons.length - 1 && <Divider />}
-      </Box>
-    ))
-  }, [buttons, handleScrollToMobile])
+  const MobileMenuButtons = React.memo(
+    ({ buttons, handleScrollToMobile }: { buttons: string[]; handleScrollToMobile: (id: string) => void }) => {
+      return (
+        <Stack direction={'column'} bgcolor={'#101010'}>
+          {buttons.map((button, i) => (
+            <Box key={button}>
+              <Button
+                fullWidth
+                onClick={() => handleScrollToMobile(button.toLowerCase())}
+                sx={{
+                  color: 'primary.light',
+                  py: 1,
+                }}
+              >
+                {button}
+              </Button>
+              {i != buttons.length - 1 && <Divider />}
+            </Box>
+          ))}
+        </Stack>
+      )
+    }
+  )
 
-  const MobileView = useMemo(() => {
+  const MobileMenuContent = useMemo(() => {
+    return <MobileMenuButtons buttons={buttons} handleScrollToMobile={handleScrollToMobile} />
+  }, [MobileMenuButtons, buttons, handleScrollToMobile])
+
+  // FIXME: performance issues with this component
+  const ButtonListMobile = useMemo(() => {
     return (
-      <Collapse
-        in={opened}
-        collapsedSize={`${HEADER_HEIGHT}rem`}
-        timeout={200}
-        easing={{
-          enter: 'ease-out',
-          exit: 'ease-in',
+      <Card
+        id="home"
+        sx={{
+          ...CARD_STYLE,
+          display: isSmall ? 'block' : 'none',
         }}
       >
-        <Card
-          id="home"
-          sx={{
-            ...CARD_STYLE,
-            display: isSmall ? 'block' : 'none',
-          }}
-        >
-          <Stack>
-            <Button
-              onClick={handleMenuOpen}
-              fullWidth
-              disableRipple
-              sx={{
-                color: 'primary.light',
-                gap: '0.5rem',
-                py: 1,
-              }}
-            >
-              {!opened ? (
-                <>
-                  <MenuIcon />
-                  Menu
-                </>
-              ) : (
-                <>
-                  <CloseIcon />
-                  Close
-                </>
-              )}
-            </Button>
-            {opened && (
-              <Card id="home" sx={{ py: 0, borderRadius: '0px 0px 8px 8px', boxShadow: 'none' }}>
-                <Stack direction={'column'}>{ButtonListMobile}</Stack>
-              </Card>
+        <Stack>
+          <Button
+            onClick={handleMenuOpen}
+            fullWidth
+            disableRipple
+            sx={{
+              color: 'primary.light',
+              gap: '0.5rem',
+              py: 1,
+            }}
+          >
+            {!opened ? (
+              <>
+                <MenuIcon />
+                Menu
+              </>
+            ) : (
+              <>
+                <CloseIcon />
+                Close
+              </>
             )}
-          </Stack>
-        </Card>
-      </Collapse>
+          </Button>
+          <Box>
+            <Collapse in={opened} timeout={200}>
+              {MobileMenuContent}
+            </Collapse>
+          </Box>
+        </Stack>
+      </Card>
     )
-  }, [ButtonListMobile, CARD_STYLE, handleMenuOpen, isSmall, opened])
+  }, [CARD_STYLE, MobileMenuContent, handleMenuOpen, isSmall, opened])
 
   return (
     <Box
@@ -169,7 +171,9 @@ export function Header() {
       )}
 
       {/* Mobile (xs) View */}
-      {isSmall && MobileView}
+      {isSmall && ButtonListMobile}
     </Box>
   )
 }
+
+export default Header
