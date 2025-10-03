@@ -78,21 +78,23 @@ export function About() {
             <Section>
               <DataObject sx={ICON_STYLE} />
               <Typography sx={TEXT_STYLE}>
-                An aspiring Software Developer with a focus on <Bold>backend web development</Bold>. My passion in
-                technology and programming began at a young age, building my first <Bold>Snake</Bold> game using Python
-                in 2018. Since then, I am fueled by a <Bold>desire to understand</Bold> the intricacies of software and
-                its potential to provide <Bold>effective solutions</Bold>. I am committed to placing people at the heart
-                of every project, ensuring that my software makes a <Bold>real difference</Bold> in their lives.
+                An aspiring <Bold>Software Developer</Bold> with a focus on <Bold>backend web development</Bold>. My
+                passion in technology and programming began at a young age, building my first <Bold>Snake</Bold> game
+                using Python in 2018. Since then, I am fueled by a <Bold>desire to understand</Bold> the intricacies of
+                software and its potential to provide <Bold>effective solutions</Bold>. I am committed to placing people
+                at the heart of every project, ensuring that my software makes a <Bold>real difference</Bold> in their
+                lives.
               </Typography>
             </Section>
             <Section>
               <School sx={ICON_STYLE} />
               <Typography sx={TEXT_STYLE}>
-                During my studies at the <Bold>University of Auckland</Bold>, I gained a strong foundation in web
-                development, utilising technologies like <Bold>Python, TypeScript, and React</Bold>. I am a
-                self-motivated learner with proven <Bold>problem-solving skills</Bold> in debugging and optimizing web
-                applications, and I <Bold>quickly adapt</Bold> to new technologies (e.g., AWS, SendGrid). I also excel
-                in <Bold>collaborative settings</Bold>, demonstrating strong communication and teamwork abilities.
+                During my studies at the <Bold>University of Auckland</Bold>, I gained a strong foundation in{' '}
+                <Bold>web development</Bold>, utilising technologies like <Bold>Python, TypeScript, and React</Bold>. I
+                am a self-motivated learner with proven <Bold>problem-solving skills</Bold> in debugging and optimizing
+                web applications, and I <Bold>quickly adapt</Bold> to new technologies suitable to{' '}
+                <Bold>project needs</Bold>. I also excel in <Bold>collaborative settings</Bold>, demonstrating{' '}
+                <Bold>strong communication</Bold> and <Bold>teamwork</Bold> abilities with clients and colleagues.
               </Typography>
             </Section>
             <Section>
